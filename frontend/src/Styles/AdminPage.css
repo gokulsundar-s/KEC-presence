@@ -56,6 +56,6 @@
     background-color: transparent;
 }
 
-.edit-button{
+.edit-button, .delete-button{
     padding-top: 3.8rem;
 }

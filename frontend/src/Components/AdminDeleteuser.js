@@ -44,14 +44,14 @@ export default function Deleteuser() {
         <div className = "admindelete-container">
             <p className = "components-header">Delete user</p>
             
-            <form className = "admindelete-form-container" action = "submit" onSubmit={(event) => event.preventDefault()}>
-                <div className = "admindelete-input-container">
-                    <div className = "admindelete-input-subcontainer">
+            <form action = "submit" onSubmit={(event) => event.preventDefault()}>
+                <div className = "form-input-container-block">
+                    <div className = "form-input-container">
                         <p>Mail ID :</p>
                         <input placeholder = "Kongu Mail ID" type = "mail" value={mail} onChange={handleMailChange} require="true"></input>
                     </div>
 
-                    <div className = "admindelete-delete-button">
+                    <div className = "form-buttons-container delete-button">
                         <button type = "submit" value = "login" onClick={handleDeleteuser}>Delete</button>
                     </div>
                 </div>
