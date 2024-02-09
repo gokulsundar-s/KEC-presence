@@ -15,7 +15,7 @@ export default function App() {
           <Route path="/student" element={<StudentPage />} />
           <Route path="/class-advisor" element={<ClassAdvisorPage />} />
           <Route path="/year-incharge" element={<YearInchargePage />} />
-        </Routes>g
+        </Routes>
       </BrowserRouter>
   );
 }
