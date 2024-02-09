@@ -1,0 +1,97 @@
+.admindelete-container-header{
+    margin: 0px;
+    padding-left: 130px;
+    padding-top: 30px;
+    font-size: 30px;
+    font-weight: 600;
+    color: rgb(90, 90, 90);
+}
+
+.admindelete-input-container p{
+    font-weight: 600;
+}
+
+.admindelete-form-container select{
+    font-size: 15px;
+    border-radius: 2px;
+    border-color: black;
+    border-style: solid;
+    color: black;
+    padding: 5px 10px;
+    width: 470px;
+    border-width: 0.1px;
+    height: 35px;
+}   
+
+.admindelete-form-container input  {
+    font-size: 15px;
+    border-radius: 2px;
+    border-color: black;
+    border-style: solid;
+    color: black;
+    padding: 5px 10px;
+    width: 450px;
+    border-width: 0.1px;
+    height: 25px;
+}
+
+.admindelete-input-container{
+    display: flex;
+    justify-content: center;
+}
+
+.admindelete-input-subcontainer{
+    display: block;
+    padding-right: 30px;
+    padding-top: 15px;
+}
+
+.admindelete-form-button{
+    text-align: center;
+    padding-top: 30px;
+}
+
+.admindelete-form-button button{
+    font-size: 15px;
+    border-radius: 5px;
+    padding: 10px 30px;
+    border-style: none; 
+    background-color: rgb(37,145,208);
+    border-color: transparent;
+    color:#ffffff;
+}
+
+.admindelete-form-button button:hover{
+    opacity: 0.9;
+}
+
+.admindelete-message-container{
+    text-align: center;
+}
+
+.admindelete-error-message{
+    color: red;
+}
+
+.admindelete-success-message{
+    color: green;
+}
+
+.admindelete-delete-button{
+    padding-top: 70px;
+}
+
+.admindelete-delete-button button{
+    font-size: 15px;
+    border-radius: 5px;
+    padding: 10px 30px;
+    border-style: none;
+    background-color: rgb(208, 37, 37);
+    border-color: transparent;
+    color:#ffffff;
+    width: 100%;
+}
+
+.admindelete-delete-button button:hover {
+    opacity: 0.9;
+}

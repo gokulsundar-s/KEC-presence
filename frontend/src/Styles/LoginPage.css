@@ -1,0 +1,84 @@
+.loginpage-container{
+    display: flex;
+    justify-content: center;
+    background-color: #ffffff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 20px;
+}
+
+.loginpage-left-container img{
+    height: 500px;
+    width: auto;
+    padding-top: 80px;
+}
+
+.loginpage-right-container{
+    display: flex;
+    flex-direction: column;
+    padding-left: 100px;
+}
+
+.loginpage-right-header img{
+    height: 150px;
+    width: auto;
+    padding-left: 100px;
+}
+
+.loginpage-right-header h4, .loginpage-right-header p{
+    line-height: 10px;
+}
+
+.loginpage-right-input input{
+    font-size: 15px;
+    border-radius: 2px;
+    border-color: black;
+    border-style: solid;
+    color: black;
+    padding: 5px 10px;
+    width: 350px;
+    border-width: 0.1px;
+    height: 25px;
+}
+
+.loginpage-forgetpassword-container{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 5px;
+}
+
+.show-password, .forget-password{
+    font-size: 15px;
+}
+
+.forget-password a{
+    text-decoration: none;
+}
+
+.loginpage-right-button{
+    padding-top: 10px;
+}
+
+.loginpage-right-button button{
+    font-size: 15px;
+    border-radius: 5px;
+    padding: 10px 30px;
+    border-style: none;
+    background-color: rgb(37,145,208);
+    border-color: transparent;
+    color:#ffffff;
+    width: 100%;
+}
+
+.loginpage-right-button button:hover{
+    opacity: 0.9;
+}
+
+.loginpage-error-container{
+    color: red;
+    text-align: center;
+    font-size: 15px;
+    padding-top: 10px;
+}

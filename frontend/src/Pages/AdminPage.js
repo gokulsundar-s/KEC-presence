@@ -1,0 +1,42 @@
+import { React, useState } from "react";
+import AdminDashboard from "../Components/AdminDashboard";
+import AdminAdduser from "../Components/AdminAdduser";
+import AdminEdituser from "../Components/AdminEdituser";
+import AdminDeleteuser from "../Components/AdminDeleteuser";
+import AdminUseractivity from "../Components/AdminUseractivity";
+import "../Styles/AdminPage.css";
+
+export default function Admin() {
+    const [activeTab, setactiveTab] = useState(1);
+
+    const handleTabClick = (id) => {
+      setactiveTab(id);
+    };
+    
+    return (
+      <div className = "adminpage-container">
+          <ul  className = "adminpage-left-container">
+            <div className = "adminpage-logo">
+              <img src={require("F:/Projects/kecpresence/frontend/src/Sources/KEC.png")} alt = "logo1"></img>
+              <p>Admin</p>
+            </div>
+
+            <button className={activeTab === 1 ? 'active' : ''} onClick={() => handleTabClick(1)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/dashboard.png")} alt = "icon"></img><p>Dashboard</p></div></button>
+            <button className={activeTab === 2 ? 'active' : ''} onClick={() => handleTabClick(2)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/add.png")} alt = "icon"></img><p>Add User</p></div></button>
+            <button className={activeTab === 3 ? 'active' : ''} onClick={() => handleTabClick(3)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/edit.png")} alt = "icon"></img><p>Edit User</p></div></button>
+            <button className={activeTab === 4 ? 'active' : ''} onClick={() => handleTabClick(4)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/delete.png")} alt = "icon"></img><p>Delete User</p></div></button>
+            <button className={activeTab === 5 ? 'active' : ''} onClick={() => handleTabClick(5)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/user-activity.png")} alt = "icon"></img><p>User Activity</p></div></button>
+            <button><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/setting.png")} alt = "icon"></img><p>Settings</p></div></button>
+          </ul>
+
+        <div className = "adminpage-right-container">
+          {activeTab === 1 && <AdminDashboard />}
+          {activeTab === 2 && <AdminAdduser />}
+          {activeTab === 3 && <AdminEdituser />}
+          {activeTab === 4 && <AdminDeleteuser />}
+          {activeTab === 5 && <AdminUseractivity />}
+        </div>
+
+    </div>
+  )
+}
