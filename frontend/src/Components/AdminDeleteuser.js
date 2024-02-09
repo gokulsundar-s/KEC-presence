@@ -1,6 +1,6 @@
 import { React,useState } from "react";
 import axios from 'axios';
-import "../Styles/AdminDeleteuser.css";
+import "../Styles/AdminPage.css";
 
 export default function Deleteuser() {
     const [mail, setMail] = useState('');
@@ -42,7 +42,7 @@ export default function Deleteuser() {
     
     return(
         <div className = "admindelete-container">
-            <p className = "admindelete-container-header">Delete user</p>
+            <p className = "components-header">Delete user</p>
             
             <form className = "admindelete-form-container" action = "submit" onSubmit={(event) => event.preventDefault()}>
                 <div className = "admindelete-input-container">

@@ -27,6 +27,7 @@ export default function LoginPage() {
     const handleLogin = async () => {
         try{
             const result = await axios.post('http://localhost:3003/login', { mail,password });
+            
             if(result.data !== "failed"){
                 const jwt_data = jwtDecode(result.data);
                 if(jwt_data.usertype === "Admin" ){
@@ -47,26 +48,26 @@ export default function LoginPage() {
     };
 
     return (
-         <div className = "loginpage-container">
+        <div className = "loginpage-container">
             
             <div className = "loginpage-left-container">
-                <img src={require("../../src/Sources/clock-image.png")} alt = "clock"></img>
+                <img src={require("../../src/Sources/clock-image.png")} alt = "clock_image"></img>
             </div>
-
+            
             <div className = "loginpage-right-container">
-                <div className = "loginpage-right-header">
-                    <img src={require("F:/Projects/kecpresence/frontend/src/Sources/KEC 2.png")} alt = "clock"></img>
+                <div className = "loginpage-right-container-header">
+                    <img src={require("../../src/Sources/KEC 2.png")} alt = "KEC_logo"></img>
                     <h4>Sign In</h4>
                     <p>Welcome back. Please login to your account.</p>
                 </div>
-                    
+                
                 <form action = "login" onSubmit={(event) => event.preventDefault()}>
-                    <div className = "loginpage-right-input">
+                    <div className = "loginpage-input-container">
                         <p>Email</p>
                         <input placeholder = "kongu mail ID" type = "mail" value={mail} onChange={(event) => handleMailChange(event)} required></input>
                     </div>
 
-                    <div className = "loginpage-right-input">
+                    <div className = "loginpage-input-container">
                         <p>Password</p>
                         <input placeholder = "Password" type={showpassword ? 'text' : 'password'} value={password} onChange={handlePasswordChange} required></input>
                     </div>
@@ -78,18 +79,15 @@ export default function LoginPage() {
                         </div>
 
                         <div className = "forget-password">
-                            <a href = "loginpage.html">Forgot password?</a>
+                            <a href = "/">Forgot password?</a>
                         </div>
                     </div>
 
-                    <div className = "loginpage-right-button">
+                    <div className = "buttons-container">
                         <button type = "submit" value = "login" onClick={handleLogin}>Login</button>
                     </div>
                     
-                    <div className = "loginpage-error-container">
-                        <p>{error}</p>
-                    </div>
-
+                    <p className = "error-container">{error}</p>
                 </form>
             </div>
         </div>

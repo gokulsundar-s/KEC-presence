@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import axios from 'axios';
-import "../Styles/AdminEdituser.css";
+import "../Styles/AdminPage.css";
 
 export default function Edituser() {
     const [usertype, setUsertype] = useState('');
@@ -149,13 +149,13 @@ export default function Edituser() {
 
     return(
         <div className = "adminedit-container">
-            <p className = "adminedit-container-header">Edit user data</p>
+            <p className = "components-header">Edit user data</p>
             
             <div className = "adminedit-form-container">
                 <form action = "submit" onSubmit={(event) => event.preventDefault()}>
                     
-                    <div className = "adminedit-input-container">
-                        <div className = "adminedit-input-subcontainer">
+                    <div className = "form-input-container-block">
+                        <div className = "form-input-container">
                             <p>User Type :</p>
                             <select value={usertype} onChange={handleUsertypeChange} require="true">
                                 <option>User Type</option>
@@ -166,20 +166,23 @@ export default function Edituser() {
                             </select>
                         </div>
 
-                        <div className = "adminedit-input-subcontainer">
+                        <div className = "form-input-container">
                             <p>Mail ID :</p>
                             <input placeholder = "Kongu Mail ID" type = "mail" value={mail} onChange={handleMailChange} require="true"></input>
                         </div>
-                        <div className = "adminedit-edit-button">
+                        
+                        <div className = "form-buttons-container edit-button">
                             <button onClick={() => handleSearch()}>Search</button>
                         </div>
                     </div>
-                    <div className = "adminedit-message-container">
-                        <p className = "adminedit-edit-message">{editmessage}</p>
-                    </div>
                     
-                    <div className = "adminedit-input-container">
-                        <div className = "adminedit-input-subcontainer">
+                    <p className = "error-container">{editmessage}</p>
+                    
+                    
+        
+                    
+                    <div className = "form-input-container-block">
+                        <div className = "form-input-container">
                         <p>Department :</p>
                             <select value={department} onChange={handleDepartmentChange} require="true">
                                 <option>Department</option>
@@ -204,19 +207,19 @@ export default function Edituser() {
                             </select>
                         </div>
                         
-                        <div className = "adminedit-input-subcontainer">
+                        <div className = "form-input-container">
                             <p>Name :</p>
                             <input placeholder = "Name" type = "text" value={name} onChange={handleNameChange} require="true"></input>
                         </div>
                     </div>
 
-                    <div className = "adminedit-input-container">
-                        <div className = "adminedit-input-subcontainer">
+                    <div className = "form-input-container-block">
+                        <div className = "form-input-container">
                             <p>Roll Number :</p>
                             <input placeholder = "Roll Number" type = "text" value={roll} onChange={handleRollNumberChange} require="true"></input>
                         </div>
 
-                        <div className = "adminedit-input-subcontainer">
+                        <div className = "form-input-container">
                             <p>Year :</p>
                             <select value={year} onChange={handleYearChange} require="true">
                                 <option>Year</option>
@@ -229,8 +232,8 @@ export default function Edituser() {
                         </div>
                     </div>
 
-                    <div className = "adminedit-input-container">
-                        <div className = "adminedit-input-subcontainer">
+                    <div className = "form-input-container-block">
+                        <div className = "form-input-container">
                             <p>Section :</p>
                             <select value={section} onChange={handleSectionChange} require="true">
                                 <option>Section</option>
@@ -241,25 +244,25 @@ export default function Edituser() {
                             </select>
                         </div>
                         
-                        <div className = "adminedit-input-subcontainer">
+                        <div className = "form-input-container">
                             <p>Phone Number :</p>
                             <input placeholder = "Phone number" type = "tel" value={phone} onChange={handlePhoneChange} require="true"></input>
                         </div>
                     </div>
 
 
-                    <div className = "adminedit-input-container">
-                        <div className = "adminedit-input-subcontainer">
+                    <div className = "form-input-container-block">
+                        <div className = "form-input-container">
                             <p>Parent's Phone Number :</p>
                                 <input placeholder = "Parent's Phone Number" type = "tel" value={pphone} onChange={handlePphoneChange} require="true"></input>
                         </div>
-                        <div className = "adminedit-input-subcontainer">
+                        <div className = "form-input-container">
                             <p>Parent's Mail ID :</p>
                             <input placeholder = "Parent's Mail ID" type = "mail" value={pmail} onChange={handlePmailChange} require="true"></input>
                         </div>
                     </div>
                 
-                    <div className = "adminedit-form-button">
+                    <div className = "form-buttons-container">
                         <button onClick={() => handleEdituser()}>Submit</button>
                     </div>
 

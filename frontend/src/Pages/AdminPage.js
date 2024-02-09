@@ -4,7 +4,6 @@ import AdminAdduser from "../Components/AdminAdduser";
 import AdminEdituser from "../Components/AdminEdituser";
 import AdminDeleteuser from "../Components/AdminDeleteuser";
 import AdminUseractivity from "../Components/AdminUseractivity";
-import "../Styles/AdminPage.css";
 
 export default function Admin() {
     const [activeTab, setactiveTab] = useState(1);
@@ -15,8 +14,8 @@ export default function Admin() {
     
     return (
       <div className = "adminpage-container">
-          <ul  className = "adminpage-left-container">
-            <div className = "adminpage-logo">
+          <ul  className = "sidebar-container">
+            <div className = "sidebar-logo">
               <img src={require("F:/Projects/kecpresence/frontend/src/Sources/KEC.png")} alt = "logo1"></img>
               <p>Admin</p>
             </div>

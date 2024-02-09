@@ -1,10 +1,10 @@
 import { React } from "react";
-import "../Styles/AdminUseractivity.css";
+import "../Styles/AdminPage.css";
 
 export default function Deleteuser() {
     return(
         <div className = "admin-useractivity-container">
-            <p className = "adminactivity-container-header">User activity</p>
+            <p className = "components-header">User activity</p>
         </div>
     )
 }

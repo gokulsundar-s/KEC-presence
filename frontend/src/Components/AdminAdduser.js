@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import axios from 'axios';
-import "../Styles/AdminAdduser.css";
+import "../Styles/AdminPage.css";
 
 export default function Adduser() {
     const [usertype, setUsertype] = useState('');
@@ -50,11 +50,12 @@ export default function Adduser() {
     const handleAdduser = async () => {
         setName(name.toUpperCase());
         setRoll(roll.toUpperCase());
-
+        
         if(usertype === "" || usertype === "User Type"){
             setErrormessage("Enter a valid user type!!");
             setSuccessmessage("");
         }
+        
         else if(department === "" || department === "Department"){
             setErrormessage("Enter a valid department!!");
             setSuccessmessage("");
@@ -129,14 +130,14 @@ export default function Adduser() {
     
     return(
         <div className = "adminadd-container">
-            <p className = "adminadd-container-header">Add new user</p>
+            <p className = "components-header">Add new user</p>
             
             <div className = "adminadd-form-container">
                 <form action = "submit" onSubmit={(event) => event.preventDefault()}>
                     
-                    <div className = "adminadd-input-container">
-                        <div className = "adminadd-input-subcontainer">
-                            <p>User Type :</p>
+                    <div className = "form-input-container-block">
+                        <div className = "form-input-container">
+                            <p>User Type</p>
                             <select value={usertype} onChange={(event) => handleUsertypeChange(event)} require="true">                                    
                                 <option>User Type</option>
                                 <option>Student</option>
@@ -146,8 +147,8 @@ export default function Adduser() {
                             </select>
                         </div>
          
-                        <div className = "adminadd-input-subcontainer">
-                            <p>Department :</p>
+                        <div className = "form-input-container">
+                            <p>Department</p>
                             <select value={department} onChange={(event) => handleDepartmentChange(event)} require="true">
                                 <option>Department</option>
                                 <option>Artificial Intelligence and Data Science</option>
@@ -172,21 +173,21 @@ export default function Adduser() {
                         </div>
                     </div>
 
-                    <div className = "adminadd-input-container">
-                        <div className = "adminadd-input-subcontainer">
-                            <p>Name :</p>
+                    <div className = "form-input-container-block">
+                        <div className = "form-input-container">
+                            <p>Name</p>
                             <input placeholder = "Name" type = "text" value={name} onChange={(event) => handleNameChange(event)} require="true"></input>
                         </div>
                             
-                        <div className = "adminadd-input-subcontainer">
-                            <p>Roll Number :</p>
+                        <div className = "form-input-container">
+                            <p>Roll Number</p>
                             <input placeholder = "Roll Number" type = "text" value={roll} onChange={(event) => handleRollNumberChange(event)} require="true"></input>
                         </div>
                     </div>
 
-                    <div className = "adminadd-input-container">
-                        <div className = "adminadd-input-subcontainer">
-                            <p>Year :</p>
+                    <div className = "form-input-container-block">
+                        <div className = "form-input-container">
+                            <p>Year</p>
                             <select value={year} onChange={(event) => handleYearChange(event)} require="true">
                                 <option>Year</option>
                                 <option>1</option>
@@ -197,8 +198,8 @@ export default function Adduser() {
                             </select>
                         </div>
                         
-                        <div className = "adminadd-input-subcontainer">
-                            <p>Section :</p>
+                        <div className = "form-input-container">
+                            <p>Section</p>
                             <select value={section} onChange={(event) => handleSectionChange(event)} require="true">
                                 <option>Section</option>
                                 <option>A</option>
@@ -209,38 +210,36 @@ export default function Adduser() {
                         </div>
                     </div>
 
-                    <div className = "adminadd-input-container">
-                        <div className = "adminadd-input-subcontainer">
-                            <p>Mail ID :</p>
+                    <div className = "form-input-container-block">
+                        <div className = "form-input-container">
+                            <p>Mail ID</p>
                             <input placeholder = "Kongu Mail ID" type = "mail" value={mail} onChange={(event) => handleMailChange(event)} require="true"></input>
                         </div>
                         
-                        <div className = "adminadd-input-subcontainer">
-                            <p>Phone Number :</p>
+                        <div className = "form-input-container">
+                            <p>Phone Number</p>
                             <input placeholder = "Phone number" type = "tel" value={phone} onChange={(event) => handlePhoneChange(event)} require="true"></input>
                         </div>
                     </div>
                     
-                    <div className = "adminadd-input-container">
-                        <div className = "adminadd-input-subcontainer">
-                            <p>Parent's Phone Number :</p>
+                    <div className = "form-input-container-block">
+                        <div className = "form-input-container">
+                            <p>Parent's Phone Number</p>
                             <input placeholder = "Parent's Phone Number" type = "tel" value={pphone} onChange={(event) => handlePphoneChange(event)} require="true"></input>
                         </div>
 
-                        <div className = "adminadd-input-subcontainer">
-                            <p>Parent's Mail ID :</p>
+                        <div className = "form-input-container">
+                            <p>Parent's Mail ID</p>
                             <input placeholder = "Parent's Mail ID" type = "mail" value={pmail} onChange={(event) => handlePmailChange(event)} require="true"></input>
                         </div>
                     </div>
                         
-                    <div className = "adminadd-form-button">
+                    <div className = "form-buttons-container">
                         <button onClick={() => handleAdduser()}>Submit</button>
                     </div>
-
-                    <div className = "adminadd-message-container">
-                        <p className = "adminadd-error-message">{errormessage}</p>
-                        <p className = "adminadd-success-message">{successmessage}</p>
-                    </div>
+                    
+                    <p className = "error-container">{errormessage}</p>
+                    <p className = "success-container">{successmessage}</p>
                 </form>
             </div>
         </div>

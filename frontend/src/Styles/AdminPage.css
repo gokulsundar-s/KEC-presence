@@ -1,52 +1,61 @@
-.adminpage-left-container{
-    margin: 0;
-    padding: 0;
-    width: 100px;
-    background-color: rgb(37,145,208);
-    position: fixed;
-    height: 100%;
-    overflow: auto;
+.form-input-container-block {
+    display: flex;
+    justify-content: center;
 }
 
-.adminpage-logo img{
-    height: 60px;
-    padding-top: 20px;
-    padding-left: 18px;
+.form-input-container {
+    padding-right: 2rem;
+    padding-top: 0.5rem; 
 }
 
-.adminpage-logo p{
+.form-input-container p {
+    font-weight: 600;
+}
+
+.form-input-container select {
+    font-size: 0.93rem;
+    border-radius: 0.12rem;
+    border-color: black;
+    border-style: solid;
+    color: black;
+    padding: 0.31rem 0.62rem;
+    width: 29.37rem;
+    border-width: 0.006rem;
+    height: 2.18rem;
+}
+
+.form-input-container input {
+    font-size: 0.93rem;
+    border-radius: 0.12rem;
+    border-color: black;
+    border-style: solid;
+    color: black;
+    padding: 0.3125rem 0.62rem;
+    width: 28.12rem;
+    border-width: 0.006rem;
+    height: 1.56rem;
+}
+
+.form-buttons-container {
     text-align: center;
-    color: white;
-    margin-top: -1px;
-    padding-bottom: 10px;
+    padding-top: 1.8rem;
 }
 
-.adminpage-left-container button{
-    width: 100%;
-    height: 90px;
-    background-color: rgb(37,145,208);
-    border: none;
-    color: white;
-    font-size: 16px;
+.form-buttons-container button {
+    font-size: 0.93rem;
+    border-radius: 0.31rem;
+    padding: 0.625rem 1.87rem;
+    border-style: solid;
+    background-color: #1B9FFE;
+    border-color: #1B9FFE;
+    color: #ffffff;
 }
 
-.adminpage-left-container button.active{
-    background-color: rgba(0, 0, 0, 0.5);
-
+.form-buttons-container button:hover {
+    color: #1B9FFE;
+    background-color: transparent;
 }
 
-.adminpage-left-container button:hover{
-    background-color: rgba(0, 0, 0, 0.5);
-
-}
-
-.adminpage-left-container button img{
-    padding-top: 8px;
-    height: 25px;
-    width: auto;
-}
-
-.adminpage-left-container button p{
-    font-size: 12px;
-    font-weight: 700;
+.edit-button{
+    padding-top: 3.8rem;
 }
