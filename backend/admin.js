@@ -124,7 +124,7 @@ app.post('/addrequest', async (req, res) => {
     const { reqtype, reason, fromdate, todate, session, days, status } = req.body;
     const newReq = new Request({ reqtype, reason, fromdate, todate, session, days, status });
     await newReq.save();
-    res.json("Request added successfully!");
+    res.json("success");
 });
 
 app.listen(PORT, () => {

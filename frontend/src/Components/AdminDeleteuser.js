@@ -56,10 +56,8 @@ export default function Deleteuser() {
                     </div>
                 </div>
 
-                <div className = "admindelete-message-container">
-                    <p className = "admindelete-error-message">{errormessage}</p>
-                    <p className = "admindelete-success-message">{successmessage}</p>
-                </div>
+                <p className = "error-container">{errormessage}</p>
+                <p className = "success-container">{successmessage}</p>
             </form>
         </div>
     )

@@ -15,7 +15,7 @@ export default function Admin() {
     return (
       <div className = "adminpage-container">
           <ul  className = "sidebar-container">
-            <div className = "sidebar-logo">
+            <div className = "sidebar-container-logo">
               <img src={require("F:/Projects/kecpresence/frontend/src/Sources/KEC.png")} alt = "logo1"></img>
               <p>Admin</p>
             </div>

@@ -1,0 +1,64 @@
+.form-input-container-block {
+    display: flex;
+    justify-content: center;
+}
+
+.form-input-container {
+    padding-right: 2rem;
+    padding-top: 0.5rem; 
+}
+
+.form-input-container p {
+    font-weight: 600;
+}
+
+.form-input-container select {
+    font-size: 0.93rem;
+    border-radius: 0.12rem;
+    border-color: black;
+    border-style: solid;
+    color: black;
+    padding: 0.31rem 0.62rem;
+    width: 29.37rem;
+    border-width: 0.006rem;
+    height: 2.18rem;
+}
+
+.form-input-container input {
+    font-size: 0.93rem;
+    border-radius: 0.12rem;
+    border-color: black;
+    border-style: solid;
+    color: black;
+    padding: 0.3125rem 0.62rem;
+    width: 28.12rem;
+    border-width: 0.006rem;
+    height: 1.56rem;
+}
+
+.form-buttons-container {
+    text-align: center;
+    padding-top: 1.8rem;
+}
+
+.form-buttons-container button {
+    font-size: 0.93rem;
+    border-radius: 0.31rem;
+    padding: 0.625rem 1.87rem;
+    border-style: solid;
+    background-color: #1B9FFE;
+    border-color: #1B9FFE;
+    color: #ffffff;
+}
+
+.form-buttons-container button:hover {
+    color: #1B9FFE;
+    background-color: transparent;
+}
+
+.upload-container input{
+    padding: 20px 20px;
+    border-radius: 2px;
+    border-width: 2px;
+    border-style: dashed;
+}

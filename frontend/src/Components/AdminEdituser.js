@@ -266,10 +266,8 @@ export default function Edituser() {
                         <button onClick={() => handleEdituser()}>Submit</button>
                     </div>
 
-                    <div className = "adminedit-message-container">
-                        <p className = "adminedit-error-message">{errormessage}</p>
-                        <p className = "adminedit-success-message">{successmessage}</p>
-                    </div>
+                    <p className = "error-container">{errormessage}</p>
+                    <p className = "success-container">{successmessage}</p>
                 </form>
             </div>
         </div>
