@@ -123,7 +123,7 @@ export default function Adduser() {
 
             catch(error){
                 setSuccessmessage("");
-                setErrormessage("Some error occured!!");
+                setErrormessage("Some error occured! Try again!!");
             }
         }
     }

@@ -28,6 +28,11 @@ const Users = mongoose.model('users', {
   });
 
 const Request = mongoose.model('request', {
+    name: String,
+    roll: String,
+    department: String,
+    year: String,
+    section: String,
     reqtype: String,
     reason: String,
     fromdate: String,
@@ -42,7 +47,7 @@ app.post('/login', async (req, res) => {
     const user = await Users.findOne({ mail: mail , password: password });
     
     if(user){
-        const token = jwt.sign({ usertype: user.usertype, department: user.department, name: user.name, rollnumber: user.rollnumber, mail: user.mail, year: user.year, section: user.section, phone: user.phone, pphone: user.pphone, pmail: user.pmail }, secretKey, { expiresIn: '1d' });
+        const token = jwt.sign({ usertype: user.usertype, department: user.department, name: user.name, roll: user.roll, mail: user.mail, year: user.year, section: user.section, phone: user.phone, pphone: user.pphone, pmail: user.pmail }, secretKey, { expiresIn: '1d' });
         res.json(token);
     }
     else{
@@ -107,10 +112,8 @@ app.post('/deleteuser', async (req, res) => {
     if(!user){
         res.json("not-found")
     }
-    
     else{
         const del = await Users.deleteOne({ mail });
-        
         if(del.acknowledged === true){
             res.json("success");
         }
@@ -121,10 +124,28 @@ app.post('/deleteuser', async (req, res) => {
 });
 
 app.post('/addrequest', async (req, res) => {
-    const { reqtype, reason, fromdate, todate, session, days, status } = req.body;
-    const newReq = new Request({ reqtype, reason, fromdate, todate, session, days, status });
-    await newReq.save();
-    res.json("success");
+    const { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, days, status } = req.body;
+    const check = await Request.findOne({ name, roll });
+    
+    if(!check._id && (check.fromdate <= fromdate || check.todate >= todate)){
+        const dates = false;
+        console.log("true");
+    }
+
+    // if(!check && !dates){
+    //     const newReq = new Request({ name, roll, department, year, section, reqtype, reason, fromdate, todate, session, days, status });
+    //     await newReq.save();
+        
+    //     if(newReq._id){
+    //         res.json("success");
+    //     }
+    //     else{
+    //         res.json("failure");
+    //     }
+    // }
+    // else{
+    //     res.json("exists");
+    // }
 });
 
 app.listen(PORT, () => {

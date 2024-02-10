@@ -1,5 +1,7 @@
 import { React, useState } from "react";
 import axios from 'axios';
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
 import "../Styles/StudentPage.css";
 
 export default function Request() {
@@ -59,11 +61,39 @@ export default function Request() {
         }
         else{
             setReason(reason.toUpperCase());
-            const result = await axios.post('http://localhost:3003/addrequest', { reqtype, reason, fromdate, todate, session, days, status });
-            
-            if(result.data === "success"){
-                setErrormessage("");
-                setSuccessmessage("Request posted successfully!!");
+            const data = jwtDecode(Cookies.get('data'));
+            const name = data.name.toUpperCase();
+            const roll = data.roll.toUpperCase();
+            const dept = data.department;
+            const department = dept;
+            const year = data.year;
+            const section = data.section;
+
+            try{
+                const result = await axios.post('http://localhost:3003/addrequest', { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, days, status });
+                
+                if(result.data === "success"){
+                    setErrormessage("");
+                    setSuccessmessage("Request posted successfully!!");
+                    // setReqtype('');
+                    // setReason('');
+                    // setFromdate('');
+                    // setTodate('');
+                    // setSession('');
+                    // setDays('');
+                }
+                else if(result.data === "exists"){
+                    setErrormessage("Duplicate request with the same dates!!");
+                    setSuccessmessage("");
+                }
+                else if(result.data === "failure"){
+                    setErrormessage("Error in posting the request!!");
+                    setSuccessmessage("");
+                }
+            }
+            catch(error){
+                setErrormessage("Some error occured! Try again!!");
+                setSuccessmessage("");
             }
         }
     }

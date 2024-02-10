@@ -2,6 +2,7 @@ import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
 import "../Styles/LoginPage.css";
 
 export default function LoginPage() {
@@ -29,6 +30,7 @@ export default function LoginPage() {
             const result = await axios.post('http://localhost:3003/login', { mail,password });
             
             if(result.data !== "failed"){
+                Cookies.set('data',result.data,{ expires: 1 });
                 const jwt_data = jwtDecode(result.data);
                 if(jwt_data.usertype === "Admin" ){
                     navigate("/admin");
