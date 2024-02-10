@@ -57,8 +57,6 @@
 }
 
 .upload-container input{
-    padding: 20px 20px;
-    border-radius: 2px;
-    border-width: 2px;
+    border-width: 0.09rem;
     border-style: dashed;
 }

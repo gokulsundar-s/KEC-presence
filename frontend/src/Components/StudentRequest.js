@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 import axios from 'axios';
+import {toast} from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import "../Styles/StudentPage.css";
@@ -10,10 +11,7 @@ export default function Request() {
     const [fromdate, setFromdate] = useState('');
     const [todate, setTodate] = useState('');
     const [session, setSession] = useState('');
-    const [days, setDays] = useState('');
     const [status] = useState('pending');
-    const [errormessage,setErrormessage] = useState('');
-    const [successmessage,setSuccessmessage] = useState('');
     
     const handleReqTypeChange = (event) => {
         setReqtype(event.target.value);
@@ -30,34 +28,22 @@ export default function Request() {
     const handleSessionChange = (event) => {
         setSession(event.target.value);
     };
-    const handleDaysChange = (event) => {
-        setDays(event.target.value);
-    };
 
     const handleAddrequest = async () => {
         if(reqtype === "" || reqtype === "Request Type"){
-            setErrormessage("Enter a valid request type!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid request type!!");
         }
         else if(reason === ""){
-            setErrormessage("Enter a valid reason!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid reason!!");
         }
         else if(fromdate === ""){
-            setErrormessage("Enter a valid from date!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid from date!!");
         }
         else if(todate === ""){
-            setErrormessage("Enter a valid to date!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid to date!!");
         }
         else if(session === "" || session === "Session"){
-            setErrormessage("Enter a valid session!!");
-            setSuccessmessage("");
-        }
-        else if(days === ""){
-            setErrormessage("Enter a valid days count!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid session!!");
         }
         else{
             setReason(reason.toUpperCase());
@@ -70,30 +56,25 @@ export default function Request() {
             const section = data.section;
 
             try{
-                const result = await axios.post('http://localhost:3003/addrequest', { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, days, status });
+                const result = await axios.post('http://localhost:3003/addrequest', { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, status });
                 
                 if(result.data === "success"){
-                    setErrormessage("");
-                    setSuccessmessage("Request posted successfully!!");
-                    // setReqtype('');
-                    // setReason('');
-                    // setFromdate('');
-                    // setTodate('');
-                    // setSession('');
-                    // setDays('');
+                    toast.success("Request posted successfully!!");
+                    setReqtype('');
+                    setReason('');
+                    setFromdate('');
+                    setTodate('');
+                    setSession('');
                 }
                 else if(result.data === "exists"){
-                    setErrormessage("Duplicate request with the same dates!!");
-                    setSuccessmessage("");
+                    toast.error("Duplicate request is detected!!");
                 }
                 else if(result.data === "failure"){
-                    setErrormessage("Error in posting the request!!");
-                    setSuccessmessage("");
+                    toast.error("Error in posting the request!!");
                 }
             }
             catch(error){
-                setErrormessage("Some error occured! Try again!!");
-                setSuccessmessage("");
+                toast.error("Some error occured! Try again!!");
             }
         }
     }
@@ -141,13 +122,6 @@ export default function Request() {
                             </div>
 
                             <div className = "form-input-container">
-                                <p>Total Days :</p>
-                                <input placeholder = "Total Days" type="number" min="1" max="20" value={days} onChange={(event) => handleDaysChange(event)} require="true"></input>
-                            </div>
-                        </div>
-
-                        <div className = "form-input-container-block">
-                            <div className = "form-input-container">
                                 <p>Upload the Proof in PDF (if available) :</p>
                                 <div className = "upload-container"> 
                                     <input className = "proof-button" type = "file" placeholder="Upload the Proof in PDF" require="true"></input>
@@ -158,9 +132,6 @@ export default function Request() {
                         <div className = "form-buttons-container">
                             <button onClick={() => handleAddrequest()}>Submit</button>
                         </div>
-
-                        <p className = "error-container">{errormessage}</p>
-                        <p className = "success-container">{successmessage}</p>
                     </form>
                 </div>
             </div>

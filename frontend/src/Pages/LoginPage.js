@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 import "../Styles/LoginPage.css";
 
 export default function LoginPage() {
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
     const [showpassword, setShowPassword] = useState(false);
-    const [error, setError] = useState(false);
 
     const navigate = useNavigate();
     
@@ -41,11 +41,11 @@ export default function LoginPage() {
             }
 
             else if(result.data === "failed"){
-                setError("Invalid mail ID or password!!");
+                toast.error("Invalid mail ID or password!!");
             }
         }
         catch(error){
-            setError("Some error occured!! Try again!!");
+            toast.error("Some error occured! Try again!!");
         }
     };
 
@@ -88,8 +88,6 @@ export default function LoginPage() {
                     <div className = "buttons-container">
                         <button type = "submit" value = "login" onClick={handleLogin}>Login</button>
                     </div>
-                    
-                    <p className = "error-container">{error}</p>
                 </form>
             </div>
         </div>

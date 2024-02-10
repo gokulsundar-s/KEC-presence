@@ -1,41 +1,35 @@
 import { React,useState } from "react";
 import axios from 'axios';
+import { toast } from "react-toastify";
 import "../Styles/AdminPage.css";
 
 export default function Deleteuser() {
     const [mail, setMail] = useState('');
-    const [errormessage, setErrormessage] = useState('');
-    const [successmessage, setSuccessmessage] = useState('');
 
     const handleMailChange = (event) => {
         setMail(event.target.value);
     };
     const handleDeleteuser = async () => {
         if(!mail || (!mail.includes("@kongu.edu") && !mail.includes("@kongu.ac.in"))){
-            setErrormessage("Enter a valid kongu mail ID!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid kongu mail ID!!");
         }
         else{
             try{
                 const result = await axios.post('http://localhost:3003/deleteuser', { mail });
 
                 if(result.data === "not-found"){
-                    setSuccessmessage("");
-                    setErrormessage("Entered mail ID doesn't exists!!");
+                    toast.error("Entered mail ID doesn't exists!!");
                 }
                 else if(result.data === "success"){
-                    setErrormessage("");
-                    setSuccessmessage("User mail ID removed successfully!!");
+                    toast.success("User mail ID removed successfully!!");
                     setMail("");
                 }
                 else if(result.data === "error"){
-                    setSuccessmessage("");
-                    setErrormessage("Error in removing user data!!");
+                    toast.error("Error in removing user data!!");
                 }
             }
             catch(error){
-                setSuccessmessage("");
-                setErrormessage("Some error occured!!");
+                toast.errore("Some error occured!!");
             }
         }
     }
@@ -55,9 +49,6 @@ export default function Deleteuser() {
                         <button type = "submit" value = "login" onClick={handleDeleteuser}>Delete</button>
                     </div>
                 </div>
-
-                <p className = "error-container">{errormessage}</p>
-                <p className = "success-container">{successmessage}</p>
             </form>
         </div>
     )

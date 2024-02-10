@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 import axios from 'axios';
+import {toast} from "react-toastify";
 import "../Styles/AdminPage.css";
 
 export default function Adduser() {
@@ -13,8 +14,6 @@ export default function Adduser() {
     const [phone, setPhone] = useState('');
     const [pphone, setPphone] = useState('');
     const [pmail, setPmail] = useState('');
-    const [errormessage, setErrormessage] = useState('');
-    const [successmessage, setSuccessmessage] = useState('');
 
     const handleUsertypeChange = (event) => {
         setUsertype(event.target.value);
@@ -52,54 +51,42 @@ export default function Adduser() {
         setRoll(roll.toUpperCase());
         
         if(usertype === "" || usertype === "User Type"){
-            setErrormessage("Enter a valid user type!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid user type!!");
         }
         
         else if(department === "" || department === "Department"){
-            setErrormessage("Enter a valid department!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid department!!");
         }
         else if(name === ""){
-            setErrormessage("Enter a valid name!!");
-            setSuccessmessage("");
-            
+            toast.error("Enter a valid name!!");
         }
         else if(roll === "" && roll.length !== 8){
-            setErrormessage("Enter a valid roll number!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid roll number!!");
         }
         else if(year === "" || year === "Year"){
-            setErrormessage("Enter a valid year!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid year!!");
         }
         else if(section === "" || section === "Section"){
-            setErrormessage("Enter a valid section!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid section!!");
         }
         else if(!mail || (!mail.includes("@kongu.edu") && !mail.includes("@kongu.ac.in"))){
-            setErrormessage("Enter a valid kongu mail ID!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid kongu mail ID!!");
         }
         else if(phone === "" || phone.length !== 10){
-            setErrormessage("Enter a valid phone number!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid phone number!!");
         }
         else if(pphone === "" || pphone.length !== 10){
-            setErrormessage("Enter a valid parent's phone number!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid parent's phone number!!");
         }
         else if(!pmail || !pmail.includes("@")){
-            setErrormessage("Enter a valid parent's mail ID!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid parent's mail ID!!");
         }
         else{
             try{
                 const result = await axios.post('http://localhost:3003/adduser', { usertype, department, name, roll, mail, year,section, phone, pphone, pmail })
 
                 if(result.data === "success"){
-                    setErrormessage("");
-                    setSuccessmessage("New user added successfully!!");
+                    toast.success("New user added successfully!!");
                     setMail("");
                     setUsertype("");
                     setDepartment("");
@@ -112,18 +99,15 @@ export default function Adduser() {
                     setPmail("");  
                 }
                 else if(result.data === "exists"){
-                    setSuccessmessage("");
-                    setErrormessage("User mail already exists!!");
+                    toast.error("User mail already exists!!");
                 }
                 else if(result.data === "error"){
-                    setSuccessmessage("");
-                    setErrormessage("Error in adding a new user!!")
+                    toast.error("Error in adding a new user!!")
                 }
             }
 
             catch(error){
-                setSuccessmessage("");
-                setErrormessage("Some error occured! Try again!!");
+                toast.error("Some error occured! Try again!!");
             }
         }
     }
@@ -237,9 +221,6 @@ export default function Adduser() {
                     <div className = "form-buttons-container">
                         <button onClick={() => handleAdduser()}>Submit</button>
                     </div>
-                    
-                    <p className = "error-container">{errormessage}</p>
-                    <p className = "success-container">{successmessage}</p>
                 </form>
             </div>
         </div>

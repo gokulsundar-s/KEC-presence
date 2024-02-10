@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 import axios from 'axios';
+import { toast } from "react-toastify";
 import "../Styles/AdminPage.css";
 
 export default function Edituser() {
@@ -13,9 +14,6 @@ export default function Edituser() {
     const [phone, setPhone] = useState('');
     const [pphone, setPphone] = useState('');
     const [pmail, setPmail] = useState('');
-    const [errormessage, setErrormessage] = useState('');
-    const [successmessage, setSuccessmessage] = useState('');
-    const [editmessage, setEditmessage] = useState('');
     
     const handleUsertypeChange = (event) => {
         setUsertype(event.target.value);
@@ -50,15 +48,15 @@ export default function Edituser() {
 
     const handleSearch = async () => {
         if(usertype === "" || usertype === "User Type"){
-            setEditmessage("Select usertype!!")
+            toast.error("Select usertype!!")
         }
         else if(mail ===""){
-            setEditmessage("Enter a valid mail ID");
+            toast.error("Enter a valid mail ID");
         }
         else{
             const result = await axios.post('http://localhost:3003/searchuser', { usertype, mail });
             if(result.data === null){
-                setEditmessage("No data found!!");
+                toast.error("No data found!!");
                 setDepartment("");
                 setName("");
                 setRoll("");
@@ -69,7 +67,6 @@ export default function Edituser() {
                 setPmail("");            
             }
             else if(result.data !== null){
-                setEditmessage("");
                 setDepartment(result.data.department);
                 setName(result.data.name);
                 setRoll(result.data.roll);
@@ -87,43 +84,34 @@ export default function Edituser() {
         setRoll(roll.toUpperCase());
         
         if(department === "" || department === "Department"){
-            setErrormessage("Enter a valid department!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid department!!");
         }
         else if(name === ""){
-            setErrormessage("Enter a valid name!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid name!!");
         }
         else if(roll === "" && roll.length !== 8){
-            setErrormessage("Enter a valid roll number!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid roll number!!");
         }
         else if(year === "" || year === "Year"){
-            setErrormessage("Enter a valid year!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid year!!");
         }
         else if(section === "" || section === "Section"){
-            setErrormessage("Enter a valid section!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid section!!");
         }
         else if(phone === "" || phone.length !== 10){
-            setErrormessage("Enter a valid phone number!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid phone number!!");
         }
         else if(pphone === "" || pphone.length !== 10){
-            setErrormessage("Enter a valid parent's phone number!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid parent's phone number!!");
         }
         else if(!pmail || !pmail.includes("@")){
-            setErrormessage("Enter a valid parent's mail ID!!");
-            setSuccessmessage("");
+            toast.error("Enter a valid parent's mail ID!!");
         }
         else{
             try{
                 const result = await axios.post('http://localhost:3003/edituser', { usertype, department, name, roll, mail, year,section, phone, pphone, pmail });
                 if(result.data === "true"){
-                    setSuccessmessage("User data updated successfully!!");
-                    setErrormessage("");
+                    toast.success("User data updated successfully!!");
                     setMail("");
                     setUsertype("");
                     setDepartment("");
@@ -136,13 +124,11 @@ export default function Edituser() {
                     setPmail("");  
                 }
                 else if(result.data === "false"){
-                    setSuccessmessage("");
-                    setErrormessage("User data is not modified!!");
+                    toast.error("User data is not modified!!");
                 }
             }
             catch(error){
-                setSuccessmessage("");
-                setErrormessage("Some error occured!!");
+                toast.error("Some error occured!!");
             }
         }
     };
@@ -175,12 +161,7 @@ export default function Edituser() {
                             <button onClick={() => handleSearch()}>Search</button>
                         </div>
                     </div>
-                    
-                    <p className = "error-container">{editmessage}</p>
-                    
-                    
-        
-                    
+                
                     <div className = "form-input-container-block">
                         <div className = "form-input-container">
                         <p>Department :</p>
@@ -265,9 +246,6 @@ export default function Edituser() {
                     <div className = "form-buttons-container">
                         <button onClick={() => handleEdituser()}>Submit</button>
                     </div>
-
-                    <p className = "error-container">{errormessage}</p>
-                    <p className = "success-container">{successmessage}</p>
                 </form>
             </div>
         </div>
