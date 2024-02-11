@@ -11,7 +11,8 @@ export default function Request() {
     const [fromdate, setFromdate] = useState('');
     const [todate, setTodate] = useState('');
     const [session, setSession] = useState('');
-    const [status] = useState('pending');
+    const [advoicerstatus] = useState('pending');
+    const [yearinchargestatus] = useState('pending');
     
     const handleReqTypeChange = (event) => {
         setReqtype(event.target.value);
@@ -50,13 +51,12 @@ export default function Request() {
             const data = jwtDecode(Cookies.get('data'));
             const name = data.name.toUpperCase();
             const roll = data.roll.toUpperCase();
-            const dept = data.department;
-            const department = dept;
+            const department = data.department;
             const year = data.year;
             const section = data.section;
 
             try{
-                const result = await axios.post('http://localhost:3003/addrequest', { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, status });
+                const result = await axios.post('http://localhost:3003/addrequest', { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, advoicerstatus, yearinchargestatus });
                 
                 if(result.data === "success"){
                     toast.success("Request posted successfully!!");

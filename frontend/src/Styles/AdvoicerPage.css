@@ -1,0 +1,52 @@
+.advoicer-request-main-container{
+    margin: 0 25%;
+    padding: 1rem 0rem;
+    list-style: none;
+}
+
+.advoicer-request-container{
+    display: flex;
+    justify-content: space-around;
+    background-color: #fff;
+    border-radius: 1rem;
+    border-color: #353535;
+    border-style: solid;
+    border-width: 0.09rem;
+    padding: 3% 0%;
+    box-shadow: 0.2rem 0.2rem 0.3rem #00000020;
+}
+
+.advoicer-request-lines{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: left;
+    color: #353535;
+    line-height: 0.6rem;
+}
+
+.advoicer-request-lines button{
+    font-weight: 700;
+    padding: 0.5rem;
+    background-color: transparent;
+    border-style: solid;
+    border-radius: 0.3rem;
+}
+
+.advoicer-accept-button{
+    color: green;
+    border-color: green;
+}
+
+.advoicer-accept-button:hover{
+    background-color: rgba(0, 128, 0, 0.05);
+}
+
+.advoicer-reject-button{
+    color: red;
+    border-color: red;
+}
+
+.advoicer-reject-button:hover{
+    background-color: rgba(255, 0, 0, 0.05);
+}

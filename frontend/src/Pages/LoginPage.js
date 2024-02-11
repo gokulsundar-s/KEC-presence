@@ -32,11 +32,17 @@ export default function LoginPage() {
             if(result.data !== "failed"){
                 Cookies.set('data',result.data,{ expires: 1 });
                 const jwt_data = jwtDecode(result.data);
+                
+                toast.success("You have logged in successfully!!")
+                
                 if(jwt_data.usertype === "Admin" ){
                     navigate("/admin");
                 }
                 else if(jwt_data.usertype === "Student"){
                     navigate("/student");
+                }
+                else if(jwt_data.usertype === "Class advoicer"){
+                    navigate("/advoicer");
                 }
             }
 

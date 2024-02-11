@@ -11,7 +11,8 @@ app.use(cors());
 
 const secretKey = "SZ9NkP*va21$FCw";
 
-mongoose.connect('mongodb+srv://kecpresence:kecpresence@cluster.tporjml.mongodb.net/');
+// mongoose.connect('mongodb+srv://kecpresence:kecpresence@cluster.tporjml.mongodb.net/kecpresence');
+mongoose.connect('mongodb://localhost:27017/kecpresence');
 
 const Users = mongoose.model('users', {
     usertype: String,
@@ -38,15 +39,14 @@ const Request = mongoose.model('request', {
     fromdate: String,
     todate: String,
     session: String,
-    days: String,
-    status: String,
+    advoicerstatus: String,
+    yearinchargestatus: String,
   });
 
 app.post('/login', async (req, res) => {
     const { mail, password } = req.body;
     const user = await Users.findOne({ mail: mail , password: password });
     
-    console.log(mail, password);
     if(user){
         const token = jwt.sign({ usertype: user.usertype, department: user.department, name: user.name, roll: user.roll, mail: user.mail, year: user.year, section: user.section, phone: user.phone, pphone: user.pphone, pmail: user.pmail }, secretKey, { expiresIn: '1d' });
         res.json(token);
@@ -125,10 +125,10 @@ app.post('/deleteuser', async (req, res) => {
 });
 
 app.post('/addrequest', async (req, res) => {
-    const { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, status } = req.body;
+    const { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, advoicerstatus, yearinchargestatus } = req.body;
     const check = await Request.findOne({ fromdate: { $lte: fromdate }, todate: { $gte: todate }});
     if(!check){
-        const newReq = new Request({ name, roll, department, year, section, reqtype, reason, fromdate, todate, session, status });
+        const newReq = new Request({ name, roll, department, year, section, reqtype, reason, fromdate, todate, session, advoicerstatus, yearinchargestatus });
         await newReq.save();
         
         if(newReq._id){
@@ -141,6 +141,18 @@ app.post('/addrequest', async (req, res) => {
     else{
         res.json("exists");
     }
+});
+
+app.post('/advoicerreq', async (req, res) => {
+    const { department, year, section } = req.body;
+    const items = await Request.find({department, year, section, advoicerstatus:"pending"});
+    res.json(items);
+});
+
+app.post('/advoicerhistory', async (req, res) => {
+    const { department, year, section } = req.body;
+    const items = await Request.find({department, year, section, $or:[{advoicerstatus:"accepted"}, {advoicerstatus:"rejected"} ]});
+    res.json(items);
 });
 
 app.listen(PORT, () => {
