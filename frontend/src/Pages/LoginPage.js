@@ -44,6 +44,9 @@ export default function LoginPage() {
                 else if(jwt_data.usertype === "Class advoicer"){
                     navigate("/advoicer");
                 }
+                else if(jwt_data.usertype === "Year incharge"){
+                    navigate("/year-incharge");
+                }
             }
 
             else if(result.data === "failed"){

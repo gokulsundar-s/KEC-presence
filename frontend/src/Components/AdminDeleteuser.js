@@ -15,7 +15,7 @@ export default function Deleteuser() {
         }
         else{
             try{
-                const result = await axios.post('http://localhost:3003/deleteuser', { mail });
+                const result = await axios.post('http://localhost:3003/admindeleteuser', { mail });
 
                 if(result.data === "not-found"){
                     toast.error("Entered mail ID doesn't exists!!");

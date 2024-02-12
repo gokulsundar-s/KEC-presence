@@ -56,7 +56,7 @@ export default function Request() {
             const section = data.section;
 
             try{
-                const result = await axios.post('http://localhost:3003/addrequest', { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, advoicerstatus, yearinchargestatus });
+                const result = await axios.post('http://localhost:3003/stidentrequest', { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, advoicerstatus, yearinchargestatus });
                 
                 if(result.data === "success"){
                     toast.success("Request posted successfully!!");

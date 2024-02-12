@@ -1,4 +1,6 @@
 import { React, useState } from "react";
+import YearInchargeRequest from "../Components/YearInchargeRequestes";
+import YearInchargeHistory from "../Components/YearInchargeHistory";
 
 export default function YearIncharge() {
     const [activeTab, setactiveTab] = useState(1);
@@ -23,10 +25,8 @@ export default function YearIncharge() {
 
         <div className = "yearinchargepage-right-container">
           {activeTab === 1}
-          {activeTab === 2}
-          {activeTab === 3}
-          {activeTab === 4}
-          {activeTab === 5}
+          {activeTab === 2 && <YearInchargeRequest/>}
+          {activeTab === 3 && <YearInchargeHistory/>}
         </div>
 
     </div>

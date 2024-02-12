@@ -1,11 +1,11 @@
-import { React, useEffect,useState } from "react";
+import { React, useEffect, useState } from "react";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
-import "../Styles/AdvoicerPage.css";
+import "../Styles/YearInchargePage.css";
 
-export default function AdvoicerRequest() {
+export default function YearInchargeHistory() {
     const [datas, setDatas] = useState([]);
 
     useEffect(() => {
@@ -14,8 +14,7 @@ export default function AdvoicerRequest() {
               const data = jwtDecode(Cookies.get('data'));
               const department = data.department;
               const year = data.year;
-              const section = data.section;
-              const response = await axios.post('http://localhost:3003/advoicerrequests',{ department, year, section });
+              const response = await axios.post('http://localhost:3003/yearinchargehistory',{ department, year });
               setDatas(response.data);
 
             } catch (error) {
@@ -27,30 +26,30 @@ export default function AdvoicerRequest() {
     }, []);
     
     return(
-      <div className="advoicerrequest-container">
-        <p className="components-header">Requests</p>
+      <div className="yearinchargehistory-container">
+        <p className="components-header">History</p>
           
         <ul>
           {datas.map(datas => (
-          <li key={datas._id} className = "advoicer-request-main-container">
-            <div  className = "advoicer-request-container">
+          <li key={datas._id} className = "yearincharge-request-main-container">
+            <div  className = "yearincharge-request-container">
               
-              <div className = "advoicer-request-lines">  
+              <div className = "yearincharge-request-lines">  
                 <p><b>Name : </b>{datas.name}</p>
+                <p><b>Year : </b>{datas.year}</p>
                 <p><b>Type of request : </b>{datas.reqtype}</p>
                 <p><b>From date : </b>{datas.fromdate}</p>
-                <p><b>Session : </b>{datas.session}</p><br/><br/>
-      
-                <button className = "advoicer-accept-button">&#10004; Accept</button>
-
-              </div>
+                <p><b>Session : </b>{datas.session}</p>
+                <p><b>Advoicer status : </b>{datas.advoicerstatus}</p>
+               </div>
             
-              <div className = "advoicer-request-lines">
+              <div className = "yearincharge-request-lines">
                 <p><b>Roll Number : </b>{datas.roll}</p>
+                <p><b>Section : </b>{datas.section}</p>
                 <p><b>Reson : </b>{datas.reason}</p>
                 <p><b>To date : </b>{datas.todate}</p>
-                <p><b>Total days: </b></p><br/><br/>
-                <button className = "advoicer-reject-button">&#10006; Reject</button>
+                <p><b>Total days: </b></p>
+                <p><b>year Incharge status : </b>{datas.yearinchargestatus}</p>
               </div>
             </div>
           </li>

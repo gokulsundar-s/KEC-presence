@@ -56,7 +56,7 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.post('/adduser', async (req, res) => {
+app.post('/adminadduser', async (req, res) => {
     const { usertype, department, name, roll, mail, year,section, phone, pphone, pmail} = req.body;
     const user = await Users.findOne({ mail: mail });
     
@@ -85,13 +85,13 @@ app.post('/adduser', async (req, res) => {
     }
 });
 
-app.post('/searchuser', async (req, res) => {
+app.post('/adminsearchuser', async (req, res) => {
     const { usertype, mail } = req.body;
     const user = await Users.findOne({ usertype, mail });
     res.json(user);
 });
 
-app.post('/edituser', async (req, res) => {
+app.post('/adminedituser', async (req, res) => {
     const { usertype, department, name, roll, mail, year,section, phone, pphone, pmail } = req.body;
     const user = await Users.findOne({ usertype, mail });
     
@@ -106,7 +106,7 @@ app.post('/edituser', async (req, res) => {
     }
 });
 
-app.post('/deleteuser', async (req, res) => {
+app.post('/admindeleteuser', async (req, res) => {
     const { mail } = req.body;
     const user = await Users.findOne({ mail });
 
@@ -124,7 +124,7 @@ app.post('/deleteuser', async (req, res) => {
     } 
 });
 
-app.post('/addrequest', async (req, res) => {
+app.post('/studentrequest', async (req, res) => {
     const { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, advoicerstatus, yearinchargestatus } = req.body;
     const check = await Request.findOne({ fromdate: { $lte: fromdate }, todate: { $gte: todate }});
     if(!check){
@@ -143,7 +143,13 @@ app.post('/addrequest', async (req, res) => {
     }
 });
 
-app.post('/advoicerreq', async (req, res) => {
+app.post('/studentshistory', async (req, res) => {
+    const { roll } = req.body;
+    const items = await Request.find({ roll });
+    res.json(items);
+});
+
+app.post('/advoicerrequests', async (req, res) => {
     const { department, year, section } = req.body;
     const items = await Request.find({department, year, section, advoicerstatus:"pending"});
     res.json(items);
@@ -152,6 +158,18 @@ app.post('/advoicerreq', async (req, res) => {
 app.post('/advoicerhistory', async (req, res) => {
     const { department, year, section } = req.body;
     const items = await Request.find({department, year, section, $or:[{advoicerstatus:"accepted"}, {advoicerstatus:"rejected"} ]});
+    res.json(items);
+});
+
+app.post('/yearinchargerequests', async (req, res) => {
+    const { department, year } = req.body;
+    const items = await Request.find({department, year, advoicerstatus:"accepted", yearinchargestatus:"pending"});
+    res.json(items);
+});
+
+app.post('/yearinchargehistory', async (req, res) => {
+    const { department, year } = req.body;
+    const items = await Request.find({department, year, advoicerstatus: 'accepted', $or:[{yearinchargestatus:"accepted"}, {yearinchargestatus:"rejected"}] });
     res.json(items);
 });
 

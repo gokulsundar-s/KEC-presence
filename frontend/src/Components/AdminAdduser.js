@@ -14,9 +14,33 @@ export default function Adduser() {
     const [phone, setPhone] = useState('');
     const [pphone, setPphone] = useState('');
     const [pmail, setPmail] = useState('');
+    const [disableroll, setDisableroll] = useState(false);
+    const [disableyear, setDisableyear] = useState(false);
+    const [disablesection, setDisablesection] = useState(false);
+    const [disablepphone, setDisablepphone] = useState(false);
+    const [disablepmail, setDisablepmail] = useState(false);
+    const [error, setError] = useState(true);
 
     const handleUsertypeChange = (event) => {
         setUsertype(event.target.value);
+        if(event.target.value === "Class advoicer"){
+            setDisableroll(true);
+            setDisablepphone(true);
+            setDisablepmail(true);
+        }
+        else if(event.target.value === "Year incharge"){
+            setDisableroll(true);
+            setDisablesection(true);
+            setDisablepphone(true);
+            setDisablepmail(true);
+        }
+        else if(event.target.value === "Head of the department"){
+            setDisableroll(true);
+            setDisableyear(true);
+            setDisablesection(true);
+            setDisablepphone(true);
+            setDisablepmail(true);
+        }
     };
     const handleDepartmentChange = (event) => {
         setDepartment(event.target.value);
@@ -53,37 +77,106 @@ export default function Adduser() {
         if(usertype === "" || usertype === "User Type"){
             toast.error("Enter a valid user type!!");
         }
+
+        if(usertype === "Student"){
+            if(department === "" || department === "Department"){
+                toast.error("Enter a valid department!!");
+            }
+            else if(name === ""){
+                toast.error("Enter a valid name!!");
+            }
+            else if(roll === "" && roll.length !== 8){
+                toast.error("Enter a valid roll number!!");
+            }
+            else if(year === "" || year === "Year"){
+                toast.error("Enter a valid year!!");
+            }
+            else if(section === "" || section === "Section"){
+                toast.error("Enter a valid section!!");
+            }
+            else if(!mail || (!mail.includes("@kongu.edu") && !mail.includes("@kongu.ac.in"))){
+                toast.error("Enter a valid kongu mail ID!!");
+            }
+            else if(phone === "" || phone.length !== 10){
+                toast.error("Enter a valid phone number!!");
+            }
+            else if(pphone === "" || pphone.length !== 10){
+                toast.error("Enter a valid parent's phone number!!");
+            }
+            else if(!pmail || !pmail.includes("@")){
+                toast.error("Enter a valid parent's mail ID!!");
+            }
+            else{
+                setError(false);
+            }
+        }
         
-        else if(department === "" || department === "Department"){
-            toast.error("Enter a valid department!!");
+        else if(usertype === "Class advoicer"){
+            if(department === "" || department === "Department"){
+                toast.error("Enter a valid department!!");
+            }
+            else if(name === ""){
+                toast.error("Enter a valid name!!");
+            }
+            else if(year === "" || year === "Year"){
+                toast.error("Enter a valid year!!");
+            }
+            else if(section === "" || section === "Section"){
+                toast.error("Enter a valid section!!");
+            }
+            else if(!mail || (!mail.includes("@kongu.edu") && !mail.includes("@kongu.ac.in"))){
+                toast.error("Enter a valid kongu mail ID!!");
+            }
+            else if(phone === "" || phone.length !== 10){
+                toast.error("Enter a valid phone number!!");
+            }
+            else{
+                setError(false);
+            }
         }
-        else if(name === ""){
-            toast.error("Enter a valid name!!");
+        
+        else if(usertype === "Year incharge"){
+            if(department === "" || department === "Department"){
+                toast.error("Enter a valid department!!");
+            }
+            else if(name === ""){
+                toast.error("Enter a valid name!!");
+            }
+            else if(year === "" || year === "Year"){
+                toast.error("Enter a valid year!!");
+            }
+            else if(!mail || (!mail.includes("@kongu.edu") && !mail.includes("@kongu.ac.in"))){
+                toast.error("Enter a valid kongu mail ID!!");
+            }
+            else if(phone === "" || phone.length !== 10){
+                toast.error("Enter a valid phone number!!");
+            }
+            else{
+                setError(false);
+            }
         }
-        else if(roll === "" && roll.length !== 8){
-            toast.error("Enter a valid roll number!!");
+        
+        else if(usertype === "Head of the department"){
+            if(department === "" || department === "Department"){
+                toast.error("Enter a valid department!!");
+            }
+            else if(name === ""){
+                toast.error("Enter a valid name!!");
+            }
+            else if(!mail || (!mail.includes("@kongu.edu") && !mail.includes("@kongu.ac.in"))){
+                toast.error("Enter a valid kongu mail ID!!");
+            }
+            else if(phone === "" || phone.length !== 10){
+                toast.error("Enter a valid phone number!!");
+            }
+            else{
+                setError(false);
+            }
         }
-        else if(year === "" || year === "Year"){
-            toast.error("Enter a valid year!!");
-        }
-        else if(section === "" || section === "Section"){
-            toast.error("Enter a valid section!!");
-        }
-        else if(!mail || (!mail.includes("@kongu.edu") && !mail.includes("@kongu.ac.in"))){
-            toast.error("Enter a valid kongu mail ID!!");
-        }
-        else if(phone === "" || phone.length !== 10){
-            toast.error("Enter a valid phone number!!");
-        }
-        else if(pphone === "" || pphone.length !== 10){
-            toast.error("Enter a valid parent's phone number!!");
-        }
-        else if(!pmail || !pmail.includes("@")){
-            toast.error("Enter a valid parent's mail ID!!");
-        }
-        else{
+        
+        if(!error){
             try{
-                const result = await axios.post('http://localhost:3003/adduser', { usertype, department, name, roll, mail, year,section, phone, pphone, pmail })
+                const result = await axios.post('http://localhost:3003/adminadduser', { usertype, department, name, roll, mail, year,section, phone, pphone, pmail })
 
                 if(result.data === "success"){
                     toast.success("New user added successfully!!");
@@ -99,7 +192,7 @@ export default function Adduser() {
                     setPmail("");  
                 }
                 else if(result.data === "exists"){
-                    toast.error("User mail already exists!!");
+                    toast.error("User already exists!!");
                 }
                 else if(result.data === "error"){
                     toast.error("Error in adding a new user!!")
@@ -165,14 +258,14 @@ export default function Adduser() {
                             
                         <div className = "form-input-container">
                             <p>Roll Number</p>
-                            <input placeholder = "Roll Number" type = "text" value={roll} onChange={(event) => handleRollNumberChange(event)} require="true"></input>
+                            <input placeholder = "Roll Number" type = "text" value={roll} onChange={(event) => handleRollNumberChange(event)} require="true" disabled={disableroll}></input>
                         </div>
                     </div>
 
                     <div className = "form-input-container-block">
                         <div className = "form-input-container">
                             <p>Year</p>
-                            <select value={year} onChange={(event) => handleYearChange(event)} require="true">
+                            <select value={year} onChange={(event) => handleYearChange(event)} require="true" disabled={disableyear}>
                                 <option>Year</option>
                                 <option>1</option>
                                 <option>2</option>
@@ -184,7 +277,7 @@ export default function Adduser() {
                         
                         <div className = "form-input-container">
                             <p>Section</p>
-                            <select value={section} onChange={(event) => handleSectionChange(event)} require="true">
+                            <select value={section} onChange={(event) => handleSectionChange(event)} require="true" disabled={disablesection}>
                                 <option>Section</option>
                                 <option>A</option>
                                 <option>B</option>
@@ -209,12 +302,12 @@ export default function Adduser() {
                     <div className = "form-input-container-block">
                         <div className = "form-input-container">
                             <p>Parent's Phone Number</p>
-                            <input placeholder = "Parent's Phone Number" type = "tel" value={pphone} onChange={(event) => handlePphoneChange(event)} require="true"></input>
+                            <input placeholder = "Parent's Phone Number" type = "tel" value={pphone} onChange={(event) => handlePphoneChange(event)} require="true" disabled={disablepphone}></input>
                         </div>
 
                         <div className = "form-input-container">
                             <p>Parent's Mail ID</p>
-                            <input placeholder = "Parent's Mail ID" type = "mail" value={pmail} onChange={(event) => handlePmailChange(event)} require="true"></input>
+                            <input placeholder = "Parent's Mail ID" type = "mail" value={pmail} onChange={(event) => handlePmailChange(event)} require="true" disabled={disablepmail}></input>
                         </div>
                     </div>
                         

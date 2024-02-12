@@ -54,7 +54,7 @@ export default function Edituser() {
             toast.error("Enter a valid mail ID");
         }
         else{
-            const result = await axios.post('http://localhost:3003/searchuser', { usertype, mail });
+            const result = await axios.post('http://localhost:3003/adminsearchuser', { usertype, mail });
             if(result.data === null){
                 toast.error("No data found!!");
                 setDepartment("");
@@ -109,7 +109,7 @@ export default function Edituser() {
         }
         else{
             try{
-                const result = await axios.post('http://localhost:3003/edituser', { usertype, department, name, roll, mail, year,section, phone, pphone, pmail });
+                const result = await axios.post('http://localhost:3003/adminedituser', { usertype, department, name, roll, mail, year,section, phone, pphone, pmail });
                 if(result.data === "true"){
                     toast.success("User data updated successfully!!");
                     setMail("");
