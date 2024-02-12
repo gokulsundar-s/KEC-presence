@@ -1,4 +1,4 @@
-import { React, useEffect,useState } from "react";
+import { React, useEffect,useState, useCallback } from "react";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
@@ -25,6 +25,21 @@ export default function AdvoicerRequest() {
 
         fetchData();
     }, []);
+
+    const handleAccept = useCallback(async (id) => {
+      const objid = id;
+      const response = await axios.post('http://localhost:3003/advoiceraccept', { objid });
+      if(response.data === "false"){
+        toast.error("The update is not done!!");
+      }
+      else if(response.data === "true"){
+        toast.success("Update done successfully!!");
+      }
+  }, []);
+    
+    const handleReject = async () => {
+
+    }
     
     return(
       <div className="advoicerrequest-container">
@@ -39,9 +54,10 @@ export default function AdvoicerRequest() {
                 <p><b>Name : </b>{datas.name}</p>
                 <p><b>Type of request : </b>{datas.reqtype}</p>
                 <p><b>From date : </b>{datas.fromdate}</p>
-                <p><b>Session : </b>{datas.session}</p><br/><br/>
+                <p><b>Session : </b>{datas.session}</p>
+                <p><b>Leave taken already : </b></p><br/><br/>
       
-                <button className = "advoicer-accept-button">&#10004; Accept</button>
+                <button className = "advoicer-accept-button" onClick={() => handleAccept(datas._id)}>&#10004; Accept</button>
 
               </div>
             
@@ -49,8 +65,10 @@ export default function AdvoicerRequest() {
                 <p><b>Roll Number : </b>{datas.roll}</p>
                 <p><b>Reson : </b>{datas.reason}</p>
                 <p><b>To date : </b>{datas.todate}</p>
-                <p><b>Total days: </b></p><br/><br/>
-                <button className = "advoicer-reject-button">&#10006; Reject</button>
+                <p><b>No. of days requested : </b></p>
+                <p><b>OD taken already : </b></p><br/><br/>
+
+                <button className = "advoicer-reject-button" onClick={() => handleReject(datas._id)}>&#10006; Reject</button>
               </div>
             </div>
           </li>

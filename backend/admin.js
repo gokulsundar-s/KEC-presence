@@ -29,6 +29,7 @@ const Users = mongoose.model('users', {
   });
 
 const Request = mongoose.model('request', {
+    requestid: String,
     name: String,
     roll: String,
     department: String,
@@ -109,7 +110,7 @@ app.post('/adminedituser', async (req, res) => {
 app.post('/admindeleteuser', async (req, res) => {
     const { mail } = req.body;
     const user = await Users.findOne({ mail });
-
+    
     if(!user){
         res.json("not-found")
     }
@@ -153,6 +154,21 @@ app.post('/advoicerrequests', async (req, res) => {
     const { department, year, section } = req.body;
     const items = await Request.find({department, year, section, advoicerstatus:"pending"});
     res.json(items);
+});
+
+app.post('/advoiceraccept', async (req, res) => {
+    const { objid } = req.body;
+    const objectId = new ObjectId(objid);
+    const user = await Users.findOne({ objectId });
+    if(user){
+        const update = await Users.updateOne({objid}, {$set:{ advoicerstatus:"accepted" }});
+        if(update.modifiedCount == "0"){
+            res.json("false");
+        }
+        else if(update.modifiedCount != "0"){
+            res.json("true");
+        }
+    }
 });
 
 app.post('/advoicerhistory', async (req, res) => {
