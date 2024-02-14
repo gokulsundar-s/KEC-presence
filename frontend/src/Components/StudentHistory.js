@@ -43,7 +43,7 @@ export default function History() {
                         <div className = "student-history-lines">
                             <p><b>Reson : </b>{datas.reason}</p>
                             <p><b>To date : </b>{datas.todate}</p>
-                            <p><b>Total days: </b></p>
+                            <p><b>Total days : </b>{datas.days}</p>
                             <p><b>year Incharge status : </b>{datas.yearinchargestatus}</p>
                         </div>
                     </div>

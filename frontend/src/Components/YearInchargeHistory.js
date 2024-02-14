@@ -14,7 +14,7 @@ export default function YearInchargeHistory() {
               const data = jwtDecode(Cookies.get('data'));
               const department = data.department;
               const year = data.year;
-              const response = await axios.post('http://localhost:3003/yearinchargehistory',{ department, year });
+              const response = await axios.post('http://localhost:3003/inchargehistory',{ department, year });
               setDatas(response.data);
 
             } catch (error) {
@@ -48,8 +48,8 @@ export default function YearInchargeHistory() {
                 <p><b>Section : </b>{datas.section}</p>
                 <p><b>Reson : </b>{datas.reason}</p>
                 <p><b>To date : </b>{datas.todate}</p>
-                <p><b>Total days: </b></p>
-                <p><b>year Incharge status : </b>{datas.yearinchargestatus}</p>
+                <p><b>Total days : </b>{datas.days}</p>
+                <p><b>year Incharge status : </b>{datas.inchargestatus}</p>
               </div>
             </div>
           </li>

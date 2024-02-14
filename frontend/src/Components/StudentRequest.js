@@ -12,7 +12,7 @@ export default function Request() {
     const [todate, setTodate] = useState('');
     const [session, setSession] = useState('');
     const [advoicerstatus] = useState('pending');
-    const [yearinchargestatus] = useState('pending');
+    const [inchargestatus] = useState('pending');
     
     const handleReqTypeChange = (event) => {
         setReqtype(event.target.value);
@@ -56,7 +56,7 @@ export default function Request() {
             const section = data.section;
 
             try{
-                const result = await axios.post('http://localhost:3003/stidentrequest', { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, advoicerstatus, yearinchargestatus });
+                const result = await axios.post('http://localhost:3003/studentrequest', { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, advoicerstatus, inchargestatus });
                 
                 if(result.data === "success"){
                     toast.success("Request posted successfully!!");

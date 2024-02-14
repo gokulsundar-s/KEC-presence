@@ -1,4 +1,4 @@
-import { React, useEffect,useState } from "react";
+import { React, useEffect, useState, useCallback } from "react";
 import axios from 'axios';
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
@@ -14,7 +14,7 @@ export default function YearInchargeRequest() {
               const data = jwtDecode(Cookies.get('data'));
               const department = data.department;
               const year = data.year;
-              const response = await axios.post('http://localhost:3003/yearinchargerequests',{ department, year });
+              const response = await axios.post('http://localhost:3003/inchargerequests',{ department, year });
               setDatas(response.data);
 
             } catch (error) {
@@ -24,6 +24,19 @@ export default function YearInchargeRequest() {
 
         fetchData();
     }, []);
+
+    const handleUpdate = useCallback(async (id,status) => {
+      const objid = id;
+      const inchargestatus = status;
+
+      const response = await axios.post('http://localhost:3003/inchargeupdate', { objid, inchargestatus });
+      if(response.data === "false"){
+        toast.error("The update is not done!!");
+      }
+      else if(response.data === "true"){
+        toast.success("Update done successfully!!");
+      }
+  }, []);
     
     return(
       <div className="yearinchargerequest-container">
@@ -41,7 +54,7 @@ export default function YearInchargeRequest() {
                 <p><b>From date : </b>{datas.fromdate}</p>
                 <p><b>Session : </b>{datas.session}</p><br/><br/>
       
-                <button className = "yearincharge-accept-button">&#10004; Accept</button>
+                <button className = "yearincharge-accept-button" onClick={() => handleUpdate(datas._id,"accpeted")}>&#10004; Accept</button>
 
               </div>
             
@@ -50,8 +63,8 @@ export default function YearInchargeRequest() {
                 <p><b>Section : </b>{datas.section}</p>
                 <p><b>Reson : </b>{datas.reason}</p>
                 <p><b>To date : </b>{datas.todate}</p>
-                <p><b>Total days: </b></p><br/><br/>
-                <button className = "yearincharge-reject-button">&#10006; Reject</button>
+                <p><b>Total days: </b>{datas.days}</p><br/><br/>
+                <button className = "yearincharge-reject-button" onClick={() => handleUpdate(datas._id,"rejected")}>&#10006; Reject</button>
               </div>
             </div>
           </li>
@@ -59,5 +72,5 @@ export default function YearInchargeRequest() {
         </ul>
 
       </div>
-    );
+    )
 }

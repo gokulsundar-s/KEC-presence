@@ -26,9 +26,11 @@ export default function AdvoicerRequest() {
         fetchData();
     }, []);
 
-    const handleAccept = useCallback(async (id) => {
+    const handleUpdate = useCallback(async (id,status) => {
       const objid = id;
-      const response = await axios.post('http://localhost:3003/advoiceraccept', { objid });
+      const advoicerstatus = status;
+
+      const response = await axios.post('http://localhost:3003/advoicerupdate', { objid, advoicerstatus });
       if(response.data === "false"){
         toast.error("The update is not done!!");
       }
@@ -36,11 +38,7 @@ export default function AdvoicerRequest() {
         toast.success("Update done successfully!!");
       }
   }, []);
-    
-    const handleReject = async () => {
 
-    }
-    
     return(
       <div className="advoicerrequest-container">
         <p className="components-header">Requests</p>
@@ -57,7 +55,7 @@ export default function AdvoicerRequest() {
                 <p><b>Session : </b>{datas.session}</p>
                 <p><b>Leave taken already : </b></p><br/><br/>
       
-                <button className = "advoicer-accept-button" onClick={() => handleAccept(datas._id)}>&#10004; Accept</button>
+                <button className = "advoicer-accept-button" onClick={() => handleUpdate(datas._id,"accepted")} refresh="true">&#10004; Accept</button>
 
               </div>
             
@@ -65,10 +63,11 @@ export default function AdvoicerRequest() {
                 <p><b>Roll Number : </b>{datas.roll}</p>
                 <p><b>Reson : </b>{datas.reason}</p>
                 <p><b>To date : </b>{datas.todate}</p>
-                <p><b>No. of days requested : </b></p>
+                <p><b>No. of days requested : </b>{datas.days}</p>
                 <p><b>OD taken already : </b></p><br/><br/>
 
-                <button className = "advoicer-reject-button" onClick={() => handleReject(datas._id)}>&#10006; Reject</button>
+                <button className = "advoicer-reject-button" onClick={() => handleUpdate(datas._id,"rejected")}>&#10006; Reject</button>
+
               </div>
             </div>
           </li>

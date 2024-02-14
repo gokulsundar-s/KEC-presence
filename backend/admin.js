@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 3003;
 const jwt = require('jsonwebtoken');
+const { ObjectId } = require('mongodb');
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -29,7 +30,6 @@ const Users = mongoose.model('users', {
   });
 
 const Request = mongoose.model('request', {
-    requestid: String,
     name: String,
     roll: String,
     department: String,
@@ -39,10 +39,12 @@ const Request = mongoose.model('request', {
     reason: String,
     fromdate: String,
     todate: String,
+    days: String,
     session: String,
     advoicerstatus: String,
-    yearinchargestatus: String,
+    inchargestatus: String,
   });
+
 
 app.post('/login', async (req, res) => {
     const { mail, password } = req.body;
@@ -126,10 +128,14 @@ app.post('/admindeleteuser', async (req, res) => {
 });
 
 app.post('/studentrequest', async (req, res) => {
-    const { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, advoicerstatus, yearinchargestatus } = req.body;
+    const { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, advoicerstatus, inchargestatus } = req.body;
+    const date1 = new Date(fromdate);  
+    const date2 = new Date(todate);  
+    const time = date2.getTime() - date1.getTime();  
+    const days = (time / (1000 * 60 * 60 * 24))+1;  
     const check = await Request.findOne({ fromdate: { $lte: fromdate }, todate: { $gte: todate }});
     if(!check){
-        const newReq = new Request({ name, roll, department, year, section, reqtype, reason, fromdate, todate, session, advoicerstatus, yearinchargestatus });
+        const newReq = new Request({ name, roll, department, year, section, reqtype, reason, fromdate, todate, days, session, advoicerstatus, inchargestatus });
         await newReq.save();
         
         if(newReq._id){
@@ -156,12 +162,11 @@ app.post('/advoicerrequests', async (req, res) => {
     res.json(items);
 });
 
-app.post('/advoiceraccept', async (req, res) => {
-    const { objid } = req.body;
-    const objectId = new ObjectId(objid);
-    const user = await Users.findOne({ objectId });
+app.post('/advoicerupdate', async (req, res) => {
+    const { objid, advoicerstatus } = req.body;
+    const user = await Request.findById({ _id:new ObjectId(objid) });
     if(user){
-        const update = await Users.updateOne({objid}, {$set:{ advoicerstatus:"accepted" }});
+        const update = await Request.updateOne({ _id:new ObjectId(objid)}, {$set:{ advoicerstatus }});
         if(update.modifiedCount == "0"){
             res.json("false");
         }
@@ -171,21 +176,39 @@ app.post('/advoiceraccept', async (req, res) => {
     }
 });
 
+
 app.post('/advoicerhistory', async (req, res) => {
     const { department, year, section } = req.body;
     const items = await Request.find({department, year, section, $or:[{advoicerstatus:"accepted"}, {advoicerstatus:"rejected"} ]});
     res.json(items);
 });
 
-app.post('/yearinchargerequests', async (req, res) => {
-    const { department, year } = req.body;
-    const items = await Request.find({department, year, advoicerstatus:"accepted", yearinchargestatus:"pending"});
+
+app.post('/inchargerequests', async (req, res) => {
+    const { department, year, section } = req.body;
+    const items = await Request.find({department, year, advoicerstatus:"accepted", inchargestatus:"pending"});
     res.json(items);
 });
 
-app.post('/yearinchargehistory', async (req, res) => {
+app.post('/inchargeupdate', async (req, res) => {
+    const { objid, inchargestatus } = req.body;
+    const user = await Request.findById({ _id:new ObjectId(objid) });
+
+    if(user){
+        const update = await Request.updateOne({ _id:new ObjectId(objid)}, {$set:{ inchargestatus }});
+        if(update.modifiedCount == "0"){
+            res.json("false");
+        }
+        else if(update.modifiedCount != "0"){
+            res.json("true");
+        }
+    }
+});
+
+app.post('/inchargehistory', async (req, res) => {
     const { department, year } = req.body;
-    const items = await Request.find({department, year, advoicerstatus: 'accepted', $or:[{yearinchargestatus:"accepted"}, {yearinchargestatus:"rejected"}] });
+    const items = await Request.find({department, year, advoicerstatus: 'accepted', $or:[{inchargestatus:"accepted"}, {inchargestatus:"rejected"} ] });
+    console.log(department,year,items);
     res.json(items);
 });
 
