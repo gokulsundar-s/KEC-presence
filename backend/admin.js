@@ -208,7 +208,6 @@ app.post('/inchargeupdate', async (req, res) => {
 app.post('/inchargehistory', async (req, res) => {
     const { department, year } = req.body;
     const items = await Request.find({department, year, advoicerstatus: 'accepted', $or:[{inchargestatus:"accepted"}, {inchargestatus:"rejected"} ] });
-    console.log(department,year,items);
     res.json(items);
 });
 

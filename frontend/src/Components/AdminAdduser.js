@@ -23,13 +23,23 @@ export default function Adduser() {
 
     const handleUsertypeChange = (event) => {
         setUsertype(event.target.value);
-        if(event.target.value === "Class advoicer"){
+        if(event.target.value === "Student"){
+            setDisableroll(false);
+            setDisableyear(false);
+            setDisablesection(false);
+            setDisablepphone(false);
+            setDisablepmail(false);
+        }
+        else if(event.target.value === "Class advoicer"){
             setDisableroll(true);
+            setDisableyear(false);
+            setDisablesection(false);
             setDisablepphone(true);
             setDisablepmail(true);
         }
         else if(event.target.value === "Year incharge"){
             setDisableroll(true);
+            setDisableyear(false);
             setDisablesection(true);
             setDisablepphone(true);
             setDisablepmail(true);

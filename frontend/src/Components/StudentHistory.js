@@ -44,7 +44,7 @@ export default function History() {
                             <p><b>Reson : </b>{datas.reason}</p>
                             <p><b>To date : </b>{datas.todate}</p>
                             <p><b>Total days : </b>{datas.days}</p>
-                            <p><b>year Incharge status : </b>{datas.yearinchargestatus}</p>
+                            <p><b>year Incharge status : </b>{datas.inchargestatus}</p>
                         </div>
                     </div>
                 </li>
