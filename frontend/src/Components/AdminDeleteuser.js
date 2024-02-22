@@ -21,7 +21,7 @@ export default function Deleteuser() {
                     toast.error("Entered mail ID doesn't exists!!");
                 }
                 else if(result.data === "success"){
-                    toast.success("User mail ID removed successfully!!");
+                    toast.success("User removed successfully!!");
                     setMail("");
                 }
                 else if(result.data === "error"){

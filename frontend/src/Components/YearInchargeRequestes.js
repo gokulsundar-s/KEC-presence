@@ -54,7 +54,7 @@ export default function YearInchargeRequest() {
                 <p><b>From date : </b>{datas.fromdate}</p>
                 <p><b>Session : </b>{datas.session}</p><br/><br/>
       
-                <button className = "yearincharge-accept-button" onClick={() => handleUpdate(datas._id,"accpeted")}>&#10004; Accept</button>
+                <button className = "yearincharge-accept-button" onClick={() => handleUpdate(datas._id,"accepted")}>&#10004; Accept</button>
 
               </div>
             

@@ -6,6 +6,8 @@ const app = express();
 const PORT = process.env.PORT || 3003;
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
+const bcrypt = require("bcrypt");
+
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -75,6 +77,9 @@ app.post('/adminadduser', async (req, res) => {
             const randomIndex = Math.floor(Math.random() * charset.length);
             password += charset.charAt(randomIndex);
         }
+        
+        const salt = await bcrypt.genSalt(1);
+        const encpass = await bcrypt.hash(password, salt);  
     
         const newUser = new Users({ usertype, department, name, roll, mail, year,section, phone, pphone, pmail, password });
         await newUser.save();
@@ -207,7 +212,7 @@ app.post('/inchargeupdate', async (req, res) => {
 
 app.post('/inchargehistory', async (req, res) => {
     const { department, year } = req.body;
-    const items = await Request.find({department, year, advoicerstatus: 'accepted', $or:[{inchargestatus:"accepted"}, {inchargestatus:"rejected"} ] });
+    const items = await Request.find({department, year, $or:[{inchargestatus:"accepted"}, {inchargestatus:"rejected"}], advoicerstatus:"accepted" });
     res.json(items);
 });
 
