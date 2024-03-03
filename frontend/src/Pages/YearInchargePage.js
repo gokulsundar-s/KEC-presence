@@ -1,6 +1,8 @@
 import { React, useState } from "react";
 import YearInchargeRequest from "../Components/YearInchargeRequestes";
 import YearInchargeHistory from "../Components/YearInchargeHistory";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 export default function YearIncharge() {
     const [activeTab, setactiveTab] = useState(1);
@@ -20,7 +22,12 @@ export default function YearIncharge() {
             <button className={activeTab === 1 ? 'active' : ''} onClick={() => handleTabClick(1)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/dashboard.png")} alt = "icon"></img><p>Dashboard</p></div></button>
             <button className={activeTab === 2 ? 'active' : ''} onClick={() => handleTabClick(2)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/add.png")} alt = "icon"></img><p>Requests</p></div></button>
             <button className={activeTab === 3 ? 'active' : ''} onClick={() => handleTabClick(3)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/history.png")} alt = "icon"></img><p>History</p></div></button>
-            <button><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/setting.png")} alt = "icon"></img><p>Settings</p></div></button>
+            
+            <Popup trigger=
+                {<button><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/setting.png")} alt = "icon"></img><p>Settings</p></div></button>} position="right">
+                  <button className = "profile-button">Change Password</button>
+                  <button className = "logout-button">Logout</button>
+            </Popup>
           </ul>
 
         <div className = "yearinchargepage-right-container">

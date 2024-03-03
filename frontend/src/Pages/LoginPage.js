@@ -48,9 +48,11 @@ export default function LoginPage() {
                     navigate("/year-incharge");
                 }
             }
-
-            else if(result.data === "failed"){
-                toast.error("Invalid mail ID or password!!");
+            else if(result.data === "wrongpass"){
+                toast.error("Invalid password!!");
+            }
+            else if(result.data === "nouser"){
+                toast.error("No user found!!");
             }
         }
         catch(error){

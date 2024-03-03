@@ -4,10 +4,12 @@ import AdminAdduser from "../Components/AdminAdduser";
 import AdminEdituser from "../Components/AdminEdituser";
 import AdminDeleteuser from "../Components/AdminDeleteuser";
 import AdminUseractivity from "../Components/AdminUseractivity";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import "../Styles/AdvoicerPage.css";
 
 export default function Admin() {
     const [activeTab, setactiveTab] = useState(1);
-
     const handleTabClick = (id) => {
       setactiveTab(id);
     };
@@ -25,7 +27,12 @@ export default function Admin() {
             <button className={activeTab === 3 ? 'active' : ''} onClick={() => handleTabClick(3)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/edit.png")} alt = "icon"></img><p>Edit User</p></div></button>
             <button className={activeTab === 4 ? 'active' : ''} onClick={() => handleTabClick(4)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/delete.png")} alt = "icon"></img><p>Delete User</p></div></button>
             <button className={activeTab === 5 ? 'active' : ''} onClick={() => handleTabClick(5)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/user-activity.png")} alt = "icon"></img><p>User Activity</p></div></button>
-            <button><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/setting.png")} alt = "icon"></img><p>Settings</p></div></button>
+            
+            <Popup trigger=
+                {<button><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/setting.png")} alt = "icon"></img><p>Settings</p></div></button>} position="right">
+                  <button className = "profile-button">Change Password</button>
+                  <button className = "logout-button">Logout</button>
+            </Popup>
           </ul>
 
         <div className = "adminpage-right-container">

@@ -55,7 +55,7 @@ export default function AdvoicerRequest() {
                 <p><b>Session : </b>{datas.session}</p>
                 <p><b>Leave taken already : </b></p><br/><br/>
       
-                <button className = "advoicer-accept-button" onClick={() => handleUpdate(datas._id,"accepted")} refresh="true">&#10004; Accept</button>
+                <button className = "advoicer-accept-button" onClick={() => handleUpdate(datas._id,"accepted")}>&#10004; Accept</button>
 
               </div>
             

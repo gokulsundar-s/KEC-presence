@@ -50,14 +50,20 @@ const Request = mongoose.model('request', {
 
 app.post('/login', async (req, res) => {
     const { mail, password } = req.body;
-    const user = await Users.findOne({ mail: mail , password: password });
-    
+    const user = await Users.findOne({ mail: mail, password: password });
     if(user){
-        const token = jwt.sign({ usertype: user.usertype, department: user.department, name: user.name, roll: user.roll, mail: user.mail, year: user.year, section: user.section, phone: user.phone, pphone: user.pphone, pmail: user.pmail }, secretKey, { expiresIn: '1d' });
-        res.json(token);
+        // const validate = await bcrypt.compare(password, user.password);
+        const validate = true;
+        if(validate){
+            const token = jwt.sign({ usertype: user.usertype, department: user.department, name: user.name, roll: user.roll, mail: user.mail, year: user.year, section: user.section, phone: user.phone, pphone: user.pphone, pmail: user.pmail }, secretKey, { expiresIn: '1d' });
+            res.json(token);
+        }
+        else{
+            res.json("wrongpass")
+        }
     }
     else{
-        res.json("failed");
+        res.json("nouser")
     }
 });
 
@@ -78,10 +84,9 @@ app.post('/adminadduser', async (req, res) => {
             password += charset.charAt(randomIndex);
         }
         
-        const salt = await bcrypt.genSalt(1);
-        const encpass = await bcrypt.hash(password, salt);  
+        const salt = await bcrypt.genSalt(1); 
     
-        const newUser = new Users({ usertype, department, name, roll, mail, year,section, phone, pphone, pmail, password });
+        const newUser = new Users({ usertype, department, name, roll, mail, year,section, phone, pphone, pmail, password /*: await bcrypt.hash(password, salt)*/});
         await newUser.save();
         
         if(newUser._id){
