@@ -11,7 +11,7 @@ export default function ClassAdvisor() {
     const handleTabClick = (id) => {
       setactiveTab(id);
     };
-    
+        
     return (
       <div className = "advisorpage-container">
           <ul  className = "sidebar-container">
