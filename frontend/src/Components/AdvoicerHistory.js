@@ -57,38 +57,39 @@ export default function AdvoicerHistory() {
         <p className="components-header">History</p>
         <ul>
           {datas.map(datas => (
-            <li key={datas._id} className = "advoicer-request-main-container">
-              <div className = "advoicer-edit-button-container">
+            <li key={datas._id} className="advoicer-request-boxes">
+              <div className = "advoicer-request-main-container">
+                <div className = "advoicer-edit-button-container">
                 
-                <Popup trigger={<button className = "advoicer-edit-button"><img src={require("F:/Projects/kecpresence/frontend/src/Sources/pencil.png")} alt = "icon"></img></button>} modal nested>
-                  {close => {
-                    return (
-                      <div className='advoicer-edit-container'>
-                        <button className = "advoicer-close-button" onClick={() => close()}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/close.png")} alt = "icon"></img></button>
+                  <Popup trigger={<button className = "advoicer-edit-button"><img src={require("F:/Projects/kecpresence/frontend/src/Sources/pencil.png")} alt = "icon"></img></button>} modal nested>
+                    {close => {
+                      return (
+                        <div className='advoicer-edit-container'>
+                          <button className = "advoicer-close-button" onClick={() => close()}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/close.png")} alt = "icon"></img></button>
                         
-                        <div  className = "advoicer-request-container">              
-                          <div className = "advoicer-request-lines">  
-                            <p><b>Name : </b>{datas.name}</p>
-                            <p><b>Type of request : </b>{datas.reqtype}</p>
-                            <p><b>From date : </b>{datas.fromdate}</p>
-                            <p><b>Session : </b>{datas.session}</p>
-                            <p><b>Advoicer status : </b>{
-                              <select className = "advoicer-request-edit-select" value={newstatus} onChange={(event) => handleNewstatus(event)}>
-                                <option>Change the option</option>
-                                <option>accepted</option>
-                                <option>rejected</option>
-                              </select>
-                            }</p>
-                          </div>
+                          <div  className = "advoicer-request-container">              
+                            <div className = "advoicer-request-lines">  
+                              <p><b>Name : </b>{datas.name}</p>
+                              <p><b>Type of request : </b>{datas.reqtype}</p>
+                              <p><b>From date : </b>{datas.fromdate}</p>
+                              <p><b>Session : </b>{datas.session}</p>
+                              <p><b>Advoicer status : </b>{
+                                <select className = "advoicer-request-edit-select" value={newstatus} onChange={(event) => handleNewstatus(event)}>
+                                  <option>Change the option</option>
+                                  <option>accepted</option>
+                                  <option>rejected</option>
+                                </select>
+                              }</p>
+                            </div>
             
-                        <div className = "advoicer-request-lines">
-                          <p><b>Roll Number : </b>{datas.roll}</p>
-                          <p><b>Reson : </b>{datas.reason}</p>
-                          <p><b>To date : </b>{datas.todate}</p>
-                          <p><b>Total days: </b>{datas.days}</p>
-                          <p><b>year Incharge status : </b>{datas.inchargestatus}</p>
+                          <div className = "advoicer-request-lines">
+                            <p><b>Roll Number : </b>{datas.roll}</p>
+                            <p><b>Reson : </b>{datas.reason}</p>
+                            <p><b>To date : </b>{datas.todate}</p>
+                            <p><b>Total days: </b>{datas.days}</p>
+                            <p><b>year Incharge status : </b>{datas.inchargestatus}</p>
+                          </div>
                         </div>
-                       </div>
 
                         <div className = "advoicer-request-edit-save-container">
                           <button onClick={() => handleUpdate(datas._id,newstatus)}>Save</button>
@@ -117,7 +118,8 @@ export default function AdvoicerHistory() {
                   <p><b>year Incharge status : </b>{datas.inchargestatus}</p>
                 </div> 
               </div>
-            </li>
+            </div>
+          </li>
         ))}
         </ul>
 

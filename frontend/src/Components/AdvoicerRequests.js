@@ -45,7 +45,9 @@ export default function AdvoicerRequest() {
           
         <ul>
           {datas.map(datas => (
-          <li key={datas._id} className = "advoicer-request-main-container">
+          <li key={datas._id} className = "advoicer-request-boxes">
+            <div className = "advoicer-request-main-container">
+
             <div  className = "advoicer-request-container">
               
               <div className = "advoicer-request-lines">  
@@ -70,10 +72,12 @@ export default function AdvoicerRequest() {
 
               </div>
             </div>
-          </li>
+          </div>
+        </li>
         ))}
         </ul>
 
-      </div>
+</div>
     );
-}
+  }
+  

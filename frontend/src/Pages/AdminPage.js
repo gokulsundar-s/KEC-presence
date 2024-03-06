@@ -4,6 +4,7 @@ import AdminAdduser from "../Components/AdminAdduser";
 import AdminEdituser from "../Components/AdminEdituser";
 import AdminDeleteuser from "../Components/AdminDeleteuser";
 import AdminUseractivity from "../Components/AdminUseractivity";
+import Cookies from "js-cookie";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import "../Styles/AdvoicerPage.css";
@@ -14,6 +15,10 @@ export default function Admin() {
       setactiveTab(id);
     };
     
+    const handleLogout = async () => {
+      Cookies.remove('data');
+    }
+
     return (
       <div className = "adminpage-container">
           <ul  className = "sidebar-container">
@@ -31,7 +36,7 @@ export default function Admin() {
             <Popup trigger=
                 {<button><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/setting.png")} alt = "icon"></img><p>Settings</p></div></button>} position="right">
                   <button className = "profile-button">Change Password</button>
-                  <button className = "logout-button">Logout</button>
+                  <button className = "logout-button" onClick={handleLogout}>Logout</button>
             </Popup>
           </ul>
 

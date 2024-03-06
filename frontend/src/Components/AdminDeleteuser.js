@@ -29,7 +29,7 @@ export default function Deleteuser() {
                 }
             }
             catch(error){
-                toast.errore("Some error occured!!");
+                toast.error("Some error occured!!");
             }
         }
     }

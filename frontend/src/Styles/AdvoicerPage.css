@@ -50,6 +50,10 @@
     background-color: rgba(255, 0, 0, 0.05);
 }
 
+.advoicer-request-boxes{
+    padding-bottom: 1rem;
+}
+
 .advoicer-edit-button-container{
     text-align: right;
     margin-top: -1rem;
