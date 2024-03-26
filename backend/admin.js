@@ -3,19 +3,17 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
-const PORT = process.env.PORT || 3003;
+const dotenv = require('dotenv');
+const PORT = 3003;
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 const bcrypt = require("bcrypt");
 
-
+dotenv.config();
 app.use(bodyParser.json());
 app.use(cors());
 
-const secretKey = "SZ9NkP*va21$FCw";
-
-// mongoose.connect('mongodb+srv://kecpresence:kecpresence@cluster.tporjml.mongodb.net/kecpresence');
-mongoose.connect('mongodb://localhost:27017/kecpresence');
+mongoose.connect(process.env.mongodb_url);
 
 const Users = mongoose.model('users', {
     usertype: String,
@@ -55,7 +53,7 @@ app.post('/login', async (req, res) => {
         // const validate = await bcrypt.compare(password, user.password);
         const validate = true;
         if(validate){
-            const token = jwt.sign({ usertype: user.usertype, department: user.department, name: user.name, roll: user.roll, mail: user.mail, year: user.year, section: user.section, phone: user.phone, pphone: user.pphone, pmail: user.pmail }, secretKey, { expiresIn: '1d' });
+            const token = jwt.sign({ usertype: user.usertype, department: user.department, name: user.name, roll: user.roll, mail: user.mail, year: user.year, section: user.section, phone: user.phone, pphone: user.pphone, pmail: user.pmail }, process.env.secretKey, { expiresIn: '1d' });
             res.json(token);
         }
         else{
