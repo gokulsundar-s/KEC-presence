@@ -1,17 +1,44 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import StudentDashboard from "../Components/StudentDashboard";
 import StudentRequest from "../Components/StudentRequest";
 import StudentHistory from "../Components/StudentHistory";
-
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 
 export default function StudentPage() {
     const [activeTab, setactiveTab] = useState(1);
 
+    const navigate = useNavigate();
+
     const handleTabClick = (id) => {
       setactiveTab(id);
     };
+
+    useEffect(() => {
+      if(Cookies.get('data') === undefined){
+        navigate("/");
+      }
+
+      else{
+        const jwt_data = jwtDecode(Cookies.get('data'));
+        
+        if(jwt_data.usertype === undefined){
+          navigate("/");
+        }
+        else if(jwt_data.usertype === "Advoicer"){
+          navigate("/advoicer");
+        }
+        else if(jwt_data.usertype === "Student"){
+          navigate("/student");
+        }
+        else if(jwt_data.usertype === "Admin"){
+          navigate("/admin");
+        } 
+      }
+  });
 
     return (
       <div className = "student-container">

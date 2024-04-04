@@ -1,10 +1,12 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AdminDashboard from "../Components/AdminDashboard";
 import AdminAdduser from "../Components/AdminAdduser";
 import AdminEdituser from "../Components/AdminEdituser";
 import AdminDeleteuser from "../Components/AdminDeleteuser";
 import AdminUseractivity from "../Components/AdminUseractivity";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import "../Styles/AdvoicerPage.css";
@@ -13,20 +15,43 @@ export default function Admin() {
     const [activeTab, setactiveTab] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
 
+    const navigate = useNavigate();
+
     const handleTabClick = (id) => {
       setactiveTab(id);
     };
     
     const handleLogout = async () => {
       Cookies.remove('data');
+      window.location.reload(false);
     }
     
     setTimeout(() => {
       setIsLoading(false);},2000);
+      
+      useEffect(() => {
+        if(Cookies.get('data') === undefined){
+          navigate("/");
+        }
 
+        else{
+          const jwt_data = jwtDecode(Cookies.get('data'));
+          
+          if(jwt_data.usertype === "Advoicer"){
+            navigate("/advoicer");
+          }
+          else if(jwt_data.usertype === "Student"){
+            navigate("/student");
+          }
+          else if(jwt_data.usertype === "Admin"){
+            navigate("/admin");
+          }
+        }
+    },[navigate]);
+    
     return (
       <>
-      {isLoading ? (<div><p>Loading...</p></div>) : (
+      {isLoading ? (<div className = "loading-container"><p>Loading...</p></div>) : (
       
       <div className = "adminpage-container">
           <ul  className = "sidebar-container">
@@ -54,8 +79,7 @@ export default function Admin() {
           {activeTab === 4 && <AdminDeleteuser />}
           {activeTab === 5 && <AdminUseractivity />}
         </div>
-    </div>
-      )}
+    </div>)}
       </>
   )
 }

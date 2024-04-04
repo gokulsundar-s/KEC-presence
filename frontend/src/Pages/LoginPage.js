@@ -10,6 +10,10 @@ export default function LoginPage() {
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
     const [showpassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    setTimeout(() => {
+        setIsLoading(false);},2000);
 
     const navigate = useNavigate();
     
@@ -32,7 +36,7 @@ export default function LoginPage() {
             if(result.data !== "failed"){
                 Cookies.set('data',result.data,{ expires: 1 });
                 const jwt_data = jwtDecode(result.data);
-                              
+                
                 if(jwt_data.usertype === "Admin" ){
                     navigate("/admin");
                 }
@@ -59,6 +63,8 @@ export default function LoginPage() {
     };
 
     return (
+        <>
+        {isLoading ? (<div className = "loading-container"><p>Loading...</p></div>) : (
         <div className = "loginpage-container">
             
             <div className = "loginpage-left-container">
@@ -99,6 +105,7 @@ export default function LoginPage() {
                     </div>
                 </form>
             </div>
-        </div>
+        </div>)}
+        </>
     )
 }

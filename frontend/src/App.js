@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from './Pages/LoginPage';
 import AdminPage from './Pages/AdminPage';
@@ -8,13 +8,13 @@ import StudentPage from './Pages/StudentPage';
 import './App.css';
 
 export default function App() {  
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  setTimeout(() => {
-    setIsLoading(false);},2000);
+  // setTimeout(() => {
+  //   setIsLoading(false);},2000);
   return (
     <>
-    {isLoading ? (<div><p>Loading...</p></div>) : (
+    {/* {isLoading ? (<div><p>Loading...</p></div>) : ( */}
     <BrowserRouter>
         <Routes>
           <Route path="/" element={<LoginPage />} />
@@ -24,7 +24,7 @@ export default function App() {
           <Route path="/year-incharge" element={<YearInchargePage />} />
         </Routes>
       </BrowserRouter>
-    )}
+    {/* )} */}
     </>
-    );
+    )
 }
