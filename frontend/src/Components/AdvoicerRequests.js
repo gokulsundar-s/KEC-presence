@@ -24,7 +24,8 @@ export default function AdvoicerRequest() {
         };
 
         fetchData();
-    }, []);
+    }
+    , []);
 
     const handleUpdate = useCallback(async (id,status) => {
       const objid = id;

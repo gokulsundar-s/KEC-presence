@@ -16,6 +16,11 @@ export default function YearIncharge() {
       setactiveTab(id);
     };
 
+    const handleLogout = async () => {
+      Cookies.remove('data');
+      window.location.reload(false);
+    }
+
     useEffect(() => {
       if(Cookies.get('data') === undefined){
         navigate("/");
@@ -24,10 +29,7 @@ export default function YearIncharge() {
       else{
         const jwt_data = jwtDecode(Cookies.get('data'));
         
-        if(jwt_data.usertype === undefined){
-          navigate("/");
-        }
-        else if(jwt_data.usertype === "Advoicer"){
+        if(jwt_data.usertype === "Advoicer"){
           navigate("/advoicer");
         }
         else if(jwt_data.usertype === "Student"){
@@ -35,9 +37,9 @@ export default function YearIncharge() {
         }
         else if(jwt_data.usertype === "Admin"){
           navigate("/admin");
-        } 
+        }
       }
-    });
+  },[navigate]);
     
     return (
       <div className = "yearinchargepage-container">
@@ -54,7 +56,7 @@ export default function YearIncharge() {
             <Popup trigger=
                 {<button><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/setting.png")} alt = "icon"></img><p>Settings</p></div></button>} position="right">
                   <button className = "profile-button">Change Password</button>
-                  <button className = "logout-button">Logout</button>
+                  <button className = "logout-button" onClick={handleLogout}>Logout</button>
             </Popup>
           </ul>
 

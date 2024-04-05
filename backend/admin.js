@@ -8,6 +8,9 @@ const PORT = 3003;
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 const bcrypt = require("bcrypt");
+const formData = require("form-data");
+const Mailgun = require("mailgun.js");
+const mailgun = new Mailgun(formData);
 
 dotenv.config();
 app.use(bodyParser.json());
@@ -180,7 +183,7 @@ app.post('/advoicerupdate', async (req, res) => {
         }
         else if(update.modifiedCount != "0"){
             res.json("true");
-        }
+        };
     }
 });
 

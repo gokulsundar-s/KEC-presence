@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
@@ -28,6 +28,26 @@ export default function LoginPage() {
     const handleCheckboxChange = () => {
         setShowPassword(prevState => !prevState);
     };
+
+    useEffect(() => {
+        if(Cookies.get('data') === undefined){
+          navigate("/");
+        }
+
+        else{
+          const jwt_data = jwtDecode(Cookies.get('data'));
+          
+          if(jwt_data.usertype === "Advoicer"){
+            navigate("/advoicer");
+          }
+          else if(jwt_data.usertype === "Student"){
+            navigate("/student");
+          }
+          else if(jwt_data.usertype === "Admin"){
+            navigate("/admin");
+          }
+        }
+    },[navigate]);
 
     const handleLogin = async () => {
         try{
