@@ -8,9 +8,8 @@ const PORT = 3003;
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 const bcrypt = require("bcrypt");
-const formData = require("form-data");
-const Mailgun = require("mailgun.js");
-const mailgun = new Mailgun(formData);
+const nodemailer = require('nodemailer');
+
 
 dotenv.config();
 app.use(bodyParser.json());
@@ -92,6 +91,7 @@ app.post('/adminadduser', async (req, res) => {
         
         if(newUser._id){
             res.json("success");
+
         }
         else{
             res.json("error");

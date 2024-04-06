@@ -10,12 +10,16 @@ import 'reactjs-popup/dist/index.css';
 
 export default function ClassAdvisor() {
     const [activeTab, setactiveTab] = useState(1);
+    const [isLoading, setIsLoading] = useState(true);
 
     const navigate = useNavigate();
 
     const handleTabClick = (id) => {
       setactiveTab(id);
     };
+
+    setTimeout(() => {
+      setIsLoading(false);},2000);
 
     const handleLogout = async () => {
       Cookies.remove('data');
@@ -43,6 +47,9 @@ export default function ClassAdvisor() {
   },[navigate]);
 
     return (
+      <>
+      {isLoading ? (<div className = "loading-container"><p>Loading...</p></div>) : (
+      
       <div className = "advisorpage-container">
           <ul  className = "sidebar-container">
             <div className = "sidebar-container-logo">
@@ -67,6 +74,7 @@ export default function ClassAdvisor() {
           {activeTab === 3 && <AdvoicerHistory/>}
         </div>
 
-    </div>
+    </div>)}
+      </>
   )
 }

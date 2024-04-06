@@ -6,7 +6,8 @@ import Cookies from "js-cookie";
 import "../Styles/AdvoicerPage.css";
 
 export default function AdvoicerRequest() {
-    const [datas, setDatas] = useState([]);
+    
+  const [datas, setDatas] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -78,7 +79,7 @@ export default function AdvoicerRequest() {
         ))}
         </ul>
 
-</div>
+      </div>
     );
   }
   
