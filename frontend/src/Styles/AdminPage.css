@@ -24,6 +24,10 @@
     height: 2.18rem;
 }
 
+.form-input-container select.disable {
+    cursor: not-allowed;
+}
+
 .form-input-container input {
     font-size: 0.93rem;
     border-radius: 0.12rem;
@@ -34,6 +38,10 @@
     width: 28.12rem;
     border-width: 0.006rem;
     height: 1.56rem;
+}
+
+.form-input-container input.disable {
+    cursor: not-allowed;
 }
 
 .form-buttons-container {

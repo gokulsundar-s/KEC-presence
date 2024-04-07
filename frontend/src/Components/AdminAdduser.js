@@ -268,14 +268,14 @@ export default function Adduser() {
                             
                         <div className = "form-input-container">
                             <p>Roll Number</p>
-                            <input placeholder = "Roll Number" type = "text" value={roll} onChange={(event) => handleRollNumberChange(event)} require="true" disabled={disableroll}></input>
+                            <input placeholder = "Roll Number" type = "text" value={roll} onChange={(event) => handleRollNumberChange(event)} require="true" disabled={disableroll} className={disableroll === true ? 'disable' : ''}></input>
                         </div>
                     </div>
 
                     <div className = "form-input-container-block">
                         <div className = "form-input-container">
                             <p>Year</p>
-                            <select value={year} onChange={(event) => handleYearChange(event)} require="true" disabled={disableyear}>
+                            <select value={year} onChange={(event) => handleYearChange(event)} require="true" disabled={disableyear} className={disableyear === true ? 'disable' : ''}>
                                 <option>Year</option>
                                 <option>1</option>
                                 <option>2</option>
@@ -287,7 +287,7 @@ export default function Adduser() {
                         
                         <div className = "form-input-container">
                             <p>Section</p>
-                            <select value={section} onChange={(event) => handleSectionChange(event)} require="true" disabled={disablesection}>
+                            <select value={section} onChange={(event) => handleSectionChange(event)} require="true" disabled={disablesection} className={disablesection === true ? 'disable' : ''}>
                                 <option>Section</option>
                                 <option>A</option>
                                 <option>B</option>
@@ -312,12 +312,12 @@ export default function Adduser() {
                     <div className = "form-input-container-block">
                         <div className = "form-input-container">
                             <p>Parent's Phone Number</p>
-                            <input placeholder = "Parent's Phone Number" type = "tel" value={pphone} onChange={(event) => handlePphoneChange(event)} require="true" disabled={disablepphone}></input>
+                            <input placeholder = "Parent's Phone Number" type = "tel" value={pphone} onChange={(event) => handlePphoneChange(event)} require="true" disabled={disablepphone} className={disablepphone === true ? 'disable' : ''}></input>
                         </div>
 
                         <div className = "form-input-container">
                             <p>Parent's Mail ID</p>
-                            <input placeholder = "Parent's Mail ID" type = "mail" value={pmail} onChange={(event) => handlePmailChange(event)} require="true" disabled={disablepmail}></input>
+                            <input placeholder = "Parent's Mail ID" type = "mail" value={pmail} onChange={(event) => handlePmailChange(event)} require="true" disabled={disablepmail} className={disablepmail === true ? 'disable' : ''}></input>
                         </div>
                     </div>
                         

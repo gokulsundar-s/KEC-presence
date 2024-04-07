@@ -32,7 +32,6 @@ export default function History() {
                 {datas.map(datas => (
                 <li key={datas._id} className = "student-history-main-container">
                     <div  className = "student-history-container">
-              
                         <div className = "student-history-lines">  
                             <p><b>Type of request : </b>{datas.reqtype}</p>
                             <p><b>From date : </b>{datas.fromdate}</p>

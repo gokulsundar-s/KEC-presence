@@ -4,7 +4,6 @@ import AdminDashboard from "../Components/AdminDashboard";
 import AdminAdduser from "../Components/AdminAdduser";
 import AdminEdituser from "../Components/AdminEdituser";
 import AdminDeleteuser from "../Components/AdminDeleteuser";
-import AdminUseractivity from "../Components/AdminUseractivity";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import Popup from 'reactjs-popup';
@@ -63,7 +62,6 @@ export default function Admin() {
             <button className={activeTab === 2 ? 'active' : ''} onClick={() => handleTabClick(2)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/add.png")} alt = "icon"></img><p>Add User</p></div></button>
             <button className={activeTab === 3 ? 'active' : ''} onClick={() => handleTabClick(3)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/edit.png")} alt = "icon"></img><p>Edit User</p></div></button>
             <button className={activeTab === 4 ? 'active' : ''} onClick={() => handleTabClick(4)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/delete.png")} alt = "icon"></img><p>Delete User</p></div></button>
-            <button className={activeTab === 5 ? 'active' : ''} onClick={() => handleTabClick(5)}><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/user-activity.png")} alt = "icon"></img><p>User Activity</p></div></button>
             
             <Popup trigger=
                 {<button><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/setting.png")} alt = "icon"></img><p>Settings</p></div></button>} position="right">
@@ -77,7 +75,6 @@ export default function Admin() {
           {activeTab === 2 && <AdminAdduser />}
           {activeTab === 3 && <AdminEdituser />}
           {activeTab === 4 && <AdminDeleteuser />}
-          {activeTab === 5 && <AdminUseractivity />}
         </div>
     </div>)}
       </>
