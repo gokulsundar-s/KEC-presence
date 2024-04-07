@@ -28,7 +28,7 @@ export default function History() {
         <div className = "studenthistory-container">
             <p className = "components-header">History</p>
 
-            <ul>
+            {/* <ul>
                 {datas.map(datas => (
                 <li key={datas._id} className = "student-history-main-container">
                     <div  className = "student-history-container">
@@ -48,8 +48,34 @@ export default function History() {
                     </div>
                 </li>
                 ))}
-            </ul>
+            </ul> */}
 
+            <div className = "history-table">
+            <table>
+                <tr>
+                <th>Type of request</th>
+                <th>Reson</th>
+                <th>From date</th>
+                <th>To date</th>
+                <th>Session</th>
+                <th>Total days</th>
+                <th>Advoicer status</th>
+                <th>year Incharge status</th>
+            </tr>
+            {datas.map(datas => (
+                <tr key={datas._id} className = "student-history-main-container">
+                    <td>{datas.reqtype}</td>
+                    <td>{datas.reason}</td>
+                    <td>{datas.fromdate}</td>
+                    <td>{datas.todate}</td>
+                    <td>{datas.session}</td>
+                    <td>{datas.days}</td>
+                    <td>{datas.advoicerstatus}</td>
+                    <td>{datas.inchargestatus}</td>
+                </tr>
+                ))}
+            </table>
+            </div>
         </div>
     )
 }

@@ -24,7 +24,7 @@ export default function Admin() {
       Cookies.remove('data');
       window.location.reload(false);
     }
-    
+       
     setTimeout(() => {
       setIsLoading(false);},2000);
       
@@ -65,7 +65,20 @@ export default function Admin() {
             
             <Popup trigger=
                 {<button><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/setting.png")} alt = "icon"></img><p>Settings</p></div></button>} position="right">
-                  <button className = "profile-button">Change Password</button>
+                   <Popup trigger=
+                {<button className = "profile-button">Change Password</button>} modal nested>{
+                        <div className='model '>
+                            <div className='content'>
+                                Welcome to GFG!!!
+                                <button> Submit</button>
+                            </div>
+                            <div>
+                                
+                            </div>
+                        </div>
+                    
+                }
+            </Popup>
                   <button className = "logout-button" onClick={handleLogout}>Logout</button>
             </Popup>
           </ul>

@@ -107,3 +107,21 @@ body{
     align-items: center;
     height: 100vh;
 }
+
+.history-table{
+    align-items: center;
+}
+
+table {
+    border: 2px solid forestgreen;
+    width: 80%;
+    height: 200px;
+}
+ 
+th {
+    background-color: gray;
+}
+ 
+td {
+    text-align: center;
+}
