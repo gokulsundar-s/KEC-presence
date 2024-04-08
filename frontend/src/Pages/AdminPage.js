@@ -10,9 +10,19 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import "../Styles/AdvoicerPage.css";
 
+const render = (state, action) => {
+  switch (action.type){
+    case 'FETCH_REQUEST':
+      return {...state, isLoading:true};
+    case 'FETCH_SUCCESS':
+      return {...state, isLoading:false};
+    case 'FETCH_FAILED':
+      return {...state, isLoading:false};
+  }
+}
 export default function Admin() {
     const [activeTab, setactiveTab] = useState(1);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading] = useState(true);
 
     const navigate = useNavigate();
 
@@ -23,11 +33,7 @@ export default function Admin() {
     const handleLogout = async () => {
       Cookies.remove('data');
       window.location.reload(false);
-    }
-       
-    setTimeout(() => {
-      setIsLoading(false);},2000);
-      
+    }     
       useEffect(() => {
         if(Cookies.get('data') === undefined){
           navigate("/");
