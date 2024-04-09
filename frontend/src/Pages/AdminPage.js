@@ -10,21 +10,14 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import "../Styles/AdvoicerPage.css";
 
-const render = (state, action) => {
-  switch (action.type){
-    case 'FETCH_REQUEST':
-      return {...state, isLoading:true};
-    case 'FETCH_SUCCESS':
-      return {...state, isLoading:false};
-    case 'FETCH_FAILED':
-      return {...state, isLoading:false};
-  }
-}
 export default function Admin() {
     const [activeTab, setactiveTab] = useState(1);
-    const [isLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     const navigate = useNavigate();
+
+    setTimeout(() => {
+      setIsLoading(false);},2000);
 
     const handleTabClick = (id) => {
       setactiveTab(id);
