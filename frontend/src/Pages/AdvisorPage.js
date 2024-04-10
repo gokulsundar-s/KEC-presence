@@ -63,8 +63,8 @@ export default function ClassAdvisor() {
             
             <Popup trigger=
                 {<button><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/setting.png")} alt = "icon"></img><p>Settings</p></div></button>} position="right">
-                  <button className = "profile-button">Change Password</button>
-                  <button className = "logout-button" onClick={handleLogout}>Logout</button>
+                  <button className = "settings-button">Change Password</button>
+                  <button className = "settings-button logout-button" onClick={handleLogout}>Logout</button>
             </Popup>
           </ul>
 

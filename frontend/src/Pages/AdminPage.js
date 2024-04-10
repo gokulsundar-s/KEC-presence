@@ -64,22 +64,10 @@ export default function Admin() {
             
             <Popup trigger=
                 {<button><div><img src={require("F:/Projects/kecpresence/frontend/src/Sources/setting.png")} alt = "icon"></img><p>Settings</p></div></button>} position="right">
-                   <Popup trigger=
-                {<button className = "profile-button">Change Password</button>} modal nested>{
-                        <div className='model '>
-                            <div className='content'>
-                                Welcome to GFG!!!
-                                <button> Submit</button>
-                            </div>
-                            <div>
-                                
-                            </div>
-                        </div>
-                    
-                }
+                  <button className = "settings-button">Change Password</button>
+                  <button className = "settings-button logout-button" onClick={handleLogout}>Logout</button>
             </Popup>
-                  <button className = "logout-button" onClick={handleLogout}>Logout</button>
-            </Popup>
+                  
           </ul>
 
         <div className = "adminpage-right-container">

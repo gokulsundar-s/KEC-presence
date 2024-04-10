@@ -42,6 +42,7 @@ export default function History() {
                         <th>Advoicer status</th>
                         <th>year Incharge status</th>
                         <th></th>
+                        <th></th>
                     </tr>
                     
                     {datas.map(datas => (
@@ -55,36 +56,59 @@ export default function History() {
                         <td>{datas.advoicerstatus}</td>
                         <td>{datas.inchargestatus}</td>
                         
-                        <div className = "advoicer-edit-button-container">
-                        <Popup trigger={<button className = "advoicer-edit-button"><img src={require("F:/Projects/kecpresence/frontend/src/Sources/pencil.png")} alt = "icon"></img></button>} modal nested>
-                    {close => {
-                      return (
-                        <div className='advoicer-edit-container'>
-                          <button className = "advoicer-close-button" onClick={() => close()}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/close.png")} alt = "icon"></img></button>
-                        
-                          <div  className = "advoicer-request-container">              
-                            <div className = "advoicer-request-lines">  
-                              <p><b>Type of request : </b>{datas.reqtype}</p>
-                              <p><b>From date : </b>{datas.fromdate}</p>
-                              <p><b>Session : </b>{datas.session}</p>
-                            </div>
+                        <td>
+                          <div className = "request-edit-button-container">
+                            <Popup trigger={<button className = "request-edit-button"><img src={require("F:/Projects/kecpresence/frontend/src/Sources/pencil.png")} alt = "icon"></img></button>} modal nested>
+                            {close => {
+                            return (
+                              <div className='request-edit-popup-container'>
+                                <button className = "request-popup-close-button" onClick={() => close()}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/close.png")} alt = "icon"></img></button>
+                                <div  className = "request-edit-container">              
+                                    <div className = "request-edit-components">  
+                                      <p><b>Type of request : </b>{datas.reqtype}</p>
+                                      <p><b>From date : </b>{datas.fromdate}</p>
+                                      <p><b>Session : </b>{datas.session}</p>
+                                    </div>
             
-                          <div className = "advoicer-request-lines">
-                            <p><b>Reson : </b>{datas.reason}</p>
-                            <p><b>To date : </b>{datas.todate}</p>
-                            <p><b>Total days: </b>{datas.days}</p>
-                          </div>
-                        </div>
+                                    <div className = "request-edit-components">
+                                      <p><b>Reson : </b>{datas.reason}</p>
+                                      <p><b>To date : </b>{datas.todate}</p>
+                                      <p><b>Total days: </b>{datas.days}</p>
+                                    </div>
+                                </div>
 
-                        <div className = "advoicer-request-edit-save-container">
-                          <button>Save</button>
+                                <div className = "request-edit-save-button-container">
+                                  <button>Save</button>
+                                </div>
+                              </div>);
+                              }}
+                            </Popup>
+                          </div>
+                        </td>
+                        
+                        <td>
+                          <div className="request-delete-popup-container">
+                            <Popup trigger={<button className = "request-delete-button"><img src={require("F:/Projects/kecpresence/frontend/src/Sources/trash.png")} alt = "icon"></img></button>} modal nested> 
+                            {close => {
+                            return (
+                              <div className = "request-delete-container">
+                                <div className = "request-delete-header">
+                                  <p><b>Are you sure to delete your request?</b></p>
+                                </div>
+
+                                <div className = "request-delete-buttons-container">
+                                  <div className="request-delete-yes-button-container">
+                                    <button><b>Yes</b></button>
+                                  </div>
+                                  <div className="request-delete-no-button-container">
+                                    <button onClick={()=>close()}><b>No</b></button>
+                                  </div>
+                                </div>
+                              </div>);
+                            }}
+                          </Popup>
                         </div>
-                      </div>
-                    );
-                  }
-                }
-            </Popup>
-                        </div>
+                      </td>
                     </tr>
                     ))}
                 </table>
