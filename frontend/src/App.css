@@ -108,20 +108,29 @@ body{
     height: 100vh;
 }
 
-.history-table{
-    align-items: center;
+.request-history-table-container{
+    overflow-x: auto;
+    padding: 3% 10%;
 }
 
-table {
-    border: 2px solid forestgreen;
-    width: 80%;
-    height: 200px;
+.request-history-table-container table{
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ffffff;
 }
- 
-th {
-    background-color: gray;
+
+th{
+    background-color: #e8e8e8;
 }
- 
-td {
+
+td,th {
     text-align: center;
+    padding: 1.2%;
+}  
+
+.advoicer-edit-button-container{
+    padding-top: 2rem;
 }

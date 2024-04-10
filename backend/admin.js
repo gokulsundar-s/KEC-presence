@@ -163,13 +163,13 @@ app.post('/studentrequest', async (req, res) => {
 
 app.post('/studentshistory', async (req, res) => {
     const { roll } = req.body;
-    const items = await Request.find({ roll });
+    const items = await Request.find({ roll }).sort({ _id: -1 });
     res.json(items);
 });
 
 app.post('/advoicerrequests', async (req, res) => {
     const { department, year, section } = req.body;
-    const items = await Request.find({department, year, section, advoicerstatus:"pending"});
+    const items = await Request.find({department, year, section, advoicerstatus:"pending"}).sort({ _id: -1 });
     res.json(items);
 });
 
@@ -190,14 +190,14 @@ app.post('/advoicerupdate', async (req, res) => {
 
 app.post('/advoicerhistory', async (req, res) => {
     const { department, year, section } = req.body;
-    const items = await Request.find({department, year, section, $or:[{advoicerstatus:"accepted"}, {advoicerstatus:"rejected"} ]});
+    const items = await Request.find({department, year, section, $or:[{advoicerstatus:"accepted"}, {advoicerstatus:"rejected"} ]}).sort({ _id: -1 });
     res.json(items);
 });
 
 
 app.post('/inchargerequests', async (req, res) => {
     const { department, year, section } = req.body;
-    const items = await Request.find({department, year, advoicerstatus:"accepted", inchargestatus:"pending"});
+    const items = await Request.find({department, year, advoicerstatus:"accepted", inchargestatus:"pending"}).sort({ _id: -1 });
     res.json(items);
 });
 
@@ -218,7 +218,7 @@ app.post('/inchargeupdate', async (req, res) => {
 
 app.post('/inchargehistory', async (req, res) => {
     const { department, year } = req.body;
-    const items = await Request.find({department, year, $or:[{inchargestatus:"accepted"}, {inchargestatus:"rejected"}], advoicerstatus:"accepted" });
+    const items = await Request.find({department, year, $or:[{inchargestatus:"accepted"}, {inchargestatus:"rejected"}], advoicerstatus:"accepted" }).sort({ _id: -1 });
     res.json(items);
 });
 
