@@ -40,7 +40,7 @@ export default function History() {
                         <th>Session</th>
                         <th>Total days</th>
                         <th>Advoicer status</th>
-                        <th>year Incharge status</th>
+                        <th>Year Incharge status</th>
                         <th></th>
                         <th></th>
                     </tr>

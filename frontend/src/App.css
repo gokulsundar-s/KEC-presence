@@ -105,8 +105,8 @@ body{
 
 /* ------------------Requests table------------------ */
 .request-history-table-container{
-    padding: 3% 5%;
-    padding-left: 12%;
+    padding: 3% 2%;
+    padding-left: 8.5%;
 }
 
 .request-history-table-container table{
@@ -202,6 +202,11 @@ tr:nth-child(odd){
     background-color: #ffffff;
     border-style: solid;
     color: #1B9FFE;
+}
+
+.request-edit-input{
+    height: 1.5rem;
+    font-size: 0.9rem;
 }
 
 /* ------------------Requests delete popup------------------ */
