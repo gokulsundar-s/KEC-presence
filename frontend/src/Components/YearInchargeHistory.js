@@ -52,77 +52,181 @@ export default function YearInchargeHistory() {
     }, []);
     
     return(
-      <div className="yearinchargehistory-container">
-        <p className="components-header">History</p>
+      <div className = "studenthistory-container">
+          <p className = "components-header">History</p>
+
+          <div className = "request-history-table-container">
+              <table>
+                  <tr>
+                      <th>Name</th>
+                      <th>Roll Number</th>
+                      <th>Type of request</th>
+                      <th>Reson</th>
+                      <th>From date</th>
+                      <th>To date</th>
+                      <th>Session</th>
+                      <th>Total days</th>
+                      <th>Advoicer status</th>
+                      <th>Year Incharge status</th>
+                      <th></th>
+                      <th></th>
+                  </tr>
+                  
+                  {datas.map(datas => (
+                  <tr key={datas._id}>
+                      <td>{datas.name}</td>
+                      <td>{datas.roll}</td>
+                      <td>{datas.reqtype}</td>
+                      <td>{datas.reason}</td>
+                      <td>{datas.fromdate}</td>
+                      <td>{datas.todate}</td>
+                      <td>{datas.session}</td>
+                      <td>{datas.days}</td>
+                      <td>{datas.advoicerstatus}</td>
+                      <td>{datas.inchargestatus}</td>
+                      
+                      <td>
+                        <div className = "request-edit-button-container">
+                          <Popup trigger={<button className = "request-edit-button"><img src={require("F:/Projects/kecpresence/frontend/src/Sources/pencil.png")} alt = "icon"></img></button>} modal nested>
+                          {close => {
+                          return (
+                            <div className='request-edit-popup-container'>
+                              <button className = "request-popup-close-button" onClick={() => close()}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/close.png")} alt = "icon"></img></button>
+                              <div  className = "request-edit-container">              
+                                  <div className = "request-edit-components">  
+                                    <p><b>Name : </b>{datas.name}</p>
+                                    <p><b>Type of request : </b>{datas.reqtype}</p>
+                                    <p><b>From date : </b>{datas.fromdate}</p>
+                                    <p><b>Session : </b>{datas.session}</p>
+                                    <p><b>Advoicer status : </b>{datas.advoicerstatus}</p>
+                                  </div>
           
-        <ul>
-          {datas.map(datas => (
-          <li key={datas._id} className = "yearincharge-request-main-container">
-            <div  className = "yearincharge-edit-button-container">
-            
-            <Popup trigger={<button className = "yearincharge-edit-button"><img src={require("F:/Projects/kecpresence/frontend/src/Sources/pencil.png")} alt = "icon"></img></button>} modal nested>
-                  {close => {
-                    return (
-                      <div className='yearincharge-edit-container'>
-                        <button className = "yearincharge-close-button" onClick={() => close()}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/close.png")} alt = "icon"></img></button>
-                        
-                        <div  className = "yearincharge-request-container">              
-                          <div className = "yearincharge-request-lines">  
-                            <p><b>Name : </b>{datas.name}</p>
-                            <p><b>Type of request : </b>{datas.reqtype}</p>
-                            <p><b>From date : </b>{datas.fromdate}</p>
-                            <p><b>Session : </b>{datas.session}</p>
-                            <p><b>Advoicer status : </b>{datas.inchargestatus}</p>
-                          </div>
-            
-                        <div className = "yearincharge-request-lines">
-                          <p><b>Roll Number : </b>{datas.roll}</p>
-                          <p><b>Reson : </b>{datas.reason}</p>
-                          <p><b>To date : </b>{datas.todate}</p>
-                          <p><b>Total days: </b>{datas.days}</p>
-                          <p><b>year Incharge status : </b>{
-                              <select className = "yearincharge-request-edit-select" value={newstatus} onChange={(event) => handleNewstatus(event)}>
-                                <option>Change the option</option>
-                                <option>accepted</option>
-                                <option>rejected</option>
-                              </select>
-                            }</p>
-                        </div>
-                       </div>
+                                  <div className = "request-edit-components">
+                                    <p><b>Roll Number : </b>{datas.roll}</p>
+                                    <p><b>Reson : </b>{datas.reason}</p>
+                                    <p><b>To date : </b>{datas.todate}</p>
+                                    <p><b>Total days: </b>{datas.days}</p>
+                                    <p><b>year Incharge status : </b>{
+                                    <select className = "advoicer-request-edit-select" value={newstatus} onChange={(event) => handleNewstatus(event)}>
+                                      <option>Change the option</option>
+                                      <option>accepted</option>
+                                      <option>rejected</option>
+                                    </select>
+                                    }</p>
+                                  </div>
+                              </div>
 
-                        <div className = "yearincharge-request-edit-save-container">
-                          <button onClick={() => handleUpdate(datas._id,newstatus)}>Save</button>
+                              <div className = "request-edit-save-button-container">
+                              <button onClick={() => handleUpdate(datas._id,newstatus)}>Save</button>
+                              </div>
+                            </div>);
+                            }}
+                          </Popup>
                         </div>
+                      </td>
+                      
+                      <td>
+                        <div className="request-delete-popup-container">
+                          <Popup trigger={<button className = "request-delete-button"><img src={require("F:/Projects/kecpresence/frontend/src/Sources/trash.png")} alt = "icon"></img></button>} modal nested> 
+                          {close => {
+                          return (
+                            <div className = "request-delete-container">
+                              <div className = "request-delete-header">
+                                <p><b>Are you sure to delete your request?</b></p>
+                              </div>
+
+                              <div className = "request-delete-buttons-container">
+                                <div className="request-delete-yes-button-container">
+                                  <button><b>Yes</b></button>
+                                </div>
+                                <div className="request-delete-no-button-container">
+                                  <button onClick={()=>close()}><b>No</b></button>
+                                </div>
+                              </div>
+                            </div>);
+                          }}
+                        </Popup>
                       </div>
-                    );
-                  }
-                }
-            </Popup>
-            </div>
-            <div  className = "yearincharge-request-container">  
-              <div className = "yearincharge-request-lines">  
-                <p><b>Name : </b>{datas.name}</p>
-                <p><b>Year : </b>{datas.year}</p>
-                <p><b>Type of request : </b>{datas.reqtype}</p>
-                <p><b>From date : </b>{datas.fromdate}</p>
-                <p><b>Session : </b>{datas.session}</p>
-                <p><b>Advoicer status : </b>{datas.advoicerstatus}</p>
-               </div>
-            
-              <div className = "yearincharge-request-lines">
-                <p><b>Roll Number : </b>{datas.roll}</p>
-                <p><b>Section : </b>{datas.section}</p>
-                <p><b>Reson : </b>{datas.reason}</p>
-                <p><b>To date : </b>{datas.todate}</p>
-                <p><b>Total days : </b>{datas.days}</p>
-                <p><b>year Incharge status : </b>{datas.inchargestatus}</p>
-              </div>
+                    </td>
+                  </tr>
+                  ))}
+              </table>
           </div>
-          </li>
-        ))}
-        
-        </ul>
-
       </div>
-    );
+  )
 }
+//     return(
+//       <div className="yearinchargehistory-container">
+//         <p className="components-header">History</p>
+          
+//         <ul>
+//           {datas.map(datas => (
+//           <li key={datas._id} className = "yearincharge-request-main-container">
+//             <div  className = "yearincharge-edit-button-container">
+            
+//             <Popup trigger={<button className = "yearincharge-edit-button"><img src={require("F:/Projects/kecpresence/frontend/src/Sources/pencil.png")} alt = "icon"></img></button>} modal nested>
+//                   {close => {
+//                     return (
+//                       <div className='yearincharge-edit-container'>
+//                         <button className = "yearincharge-close-button" onClick={() => close()}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/close.png")} alt = "icon"></img></button>
+                        
+//                         <div  className = "yearincharge-request-container">              
+//                           <div className = "yearincharge-request-lines">  
+//                             <p><b>Name : </b>{datas.name}</p>
+//                             <p><b>Type of request : </b>{datas.reqtype}</p>
+//                             <p><b>From date : </b>{datas.fromdate}</p>
+//                             <p><b>Session : </b>{datas.session}</p>
+//                             <p><b>Advoicer status : </b>{datas.inchargestatus}</p>
+//                           </div>
+            
+//                         <div className = "yearincharge-request-lines">
+//                           <p><b>Roll Number : </b>{datas.roll}</p>
+//                           <p><b>Reson : </b>{datas.reason}</p>
+//                           <p><b>To date : </b>{datas.todate}</p>
+//                           <p><b>Total days: </b>{datas.days}</p>
+//                           <p><b>year Incharge status : </b>{
+//                               <select className = "yearincharge-request-edit-select" value={newstatus} onChange={(event) => handleNewstatus(event)}>
+//                                 <option>Change the option</option>
+//                                 <option>accepted</option>
+//                                 <option>rejected</option>
+//                               </select>
+//                             }</p>
+//                         </div>
+//                        </div>
+
+//                         <div className = "yearincharge-request-edit-save-container">
+//                           <button onClick={() => handleUpdate(datas._id,newstatus)}>Save</button>
+//                         </div>
+//                       </div>
+//                     );
+//                   }
+//                 }
+//             </Popup>
+//             </div>
+//             <div  className = "yearincharge-request-container">  
+//               <div className = "yearincharge-request-lines">  
+//                 <p><b>Name : </b>{datas.name}</p>
+//                 <p><b>Year : </b>{datas.year}</p>
+//                 <p><b>Type of request : </b>{datas.reqtype}</p>
+//                 <p><b>From date : </b>{datas.fromdate}</p>
+//                 <p><b>Session : </b>{datas.session}</p>
+//                 <p><b>Advoicer status : </b>{datas.advoicerstatus}</p>
+//                </div>
+            
+//               <div className = "yearincharge-request-lines">
+//                 <p><b>Roll Number : </b>{datas.roll}</p>
+//                 <p><b>Section : </b>{datas.section}</p>
+//                 <p><b>Reson : </b>{datas.reason}</p>
+//                 <p><b>To date : </b>{datas.todate}</p>
+//                 <p><b>Total days : </b>{datas.days}</p>
+//                 <p><b>year Incharge status : </b>{datas.inchargestatus}</p>
+//               </div>
+//           </div>
+//           </li>
+//         ))}
+        
+//         </ul>
+
+//       </div>
+//     );
+// }

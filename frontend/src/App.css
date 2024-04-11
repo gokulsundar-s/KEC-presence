@@ -130,6 +130,10 @@ tr:nth-child(odd){
     background-color: #f2f2f2;
 }
 
+tr:nth-child(even){
+    background-color: #fff;
+}
+
 .request-edit-button, .request-delete-button{
     background-color: transparent;
     border-color: transparent;
@@ -138,7 +142,7 @@ tr:nth-child(odd){
 }
 
 .request-edit-button:hover{
-    background-color: rgba(142, 142, 142, 0.500);
+    background-color: rgba(142, 142, 142, 0.125);
 }
 
 .request-delete-button:hover{
@@ -170,7 +174,6 @@ tr:nth-child(odd){
     height: 0.5rem;
     width: auto;
 }
-
 
 .request-edit-container{
     display: flex;
