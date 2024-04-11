@@ -104,12 +104,12 @@ body{
 }
 
 /* ------------------Requests table------------------ */
-.request-history-table-container{
+.request-table-container{
     padding: 3% 2%;
     padding-left: 8.5%;
 }
 
-.request-history-table-container table{
+.request-table-container table{
     margin-left: auto;
     margin-right: auto;
     border-collapse: collapse;
@@ -134,7 +134,7 @@ tr:nth-child(even){
     background-color: #fff;
 }
 
-.request-edit-button, .request-delete-button{
+.request-edit-button, .request-delete-button, .request-accept-button, .request-reject-button{
     background-color: transparent;
     border-color: transparent;
     border-radius: 0.2rem;
@@ -145,11 +145,15 @@ tr:nth-child(even){
     background-color: rgba(142, 142, 142, 0.125);
 }
 
-.request-delete-button:hover{
+.request-delete-button:hover, .request-reject-button:hover{
     background-color: rgba(255, 0, 0, 0.125);
 }
 
-.request-edit-button img, .request-delete-button img{
+.request-accept-button:hover{
+    background-color: #00720f28;
+}
+
+.request-edit-button img, .request-delete-button img, .request-accept-button img, .request-reject-button img{
     height: 0.99rem;
     width: auto;
 }

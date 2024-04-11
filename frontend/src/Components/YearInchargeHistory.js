@@ -55,7 +55,7 @@ export default function YearInchargeHistory() {
       <div className = "studenthistory-container">
           <p className = "components-header">History</p>
 
-          <div className = "request-history-table-container">
+          <div className = "request-table-container">
               <table>
                   <tr>
                       <th>Name</th>

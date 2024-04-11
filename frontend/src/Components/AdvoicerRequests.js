@@ -45,41 +45,37 @@ export default function AdvoicerRequest() {
       <div className="advoicerrequest-container">
         <p className="components-header">Requests</p>
           
-        <ul>
-          {datas.map(datas => (
-          <li key={datas._id} className = "advoicer-request-boxes">
-            <div className = "advoicer-request-main-container">
-
-            <div  className = "advoicer-request-container">
-              
-              <div className = "advoicer-request-lines">  
-                <p><b>Name : </b>{datas.name}</p>
-                <p><b>Type of request : </b>{datas.reqtype}</p>
-                <p><b>From date : </b>{datas.fromdate}</p>
-                <p><b>Session : </b>{datas.session}</p>
-                <p><b>Leave taken already : </b></p><br/><br/>
-      
-                <button className = "advoicer-accept-button" onClick={() => handleUpdate(datas._id,"accepted")}>&#10004; Accept</button>
-
-              </div>
-            
-              <div className = "advoicer-request-lines">
-                <p><b>Roll Number : </b>{datas.roll}</p>
-                <p><b>Reson : </b>{datas.reason}</p>
-                <p><b>To date : </b>{datas.todate}</p>
-                <p><b>No. of days requested : </b>{datas.days}</p>
-                <p><b>OD taken already : </b></p><br/><br/>
-
-                <button className = "advoicer-reject-button" onClick={() => handleUpdate(datas._id,"rejected")}>&#10006; Reject</button>
-
-              </div>
-            </div>
+        <div className = "request-table-container">
+              <table>
+                  <tr>
+                      <th>Name</th>
+                      <th>Roll Number</th>
+                      <th>Type of request</th>
+                      <th>Reson</th>
+                      <th>From date</th>
+                      <th>To date</th>
+                      <th>Session</th>
+                      <th>Total days</th>
+                      <th></th>
+                      <th></th>
+                  </tr>
+                  
+                  {datas.map(datas => (
+                  <tr key={datas._id}>
+                      <td>{datas.name}</td>
+                      <td>{datas.roll}</td>
+                      <td>{datas.reqtype}</td>
+                      <td>{datas.reason}</td>
+                      <td>{datas.fromdate}</td>
+                      <td>{datas.todate}</td>
+                      <td>{datas.session}</td>
+                      <td>{datas.days}</td>
+                      <td><button className = "request-accept-button" onClick={() => handleUpdate(datas._id,"accepted")}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/accept.png")} alt = "icon"></img></button></td>
+                      <td><button className = "request-reject-button" onClick={() => handleUpdate(datas._id,"rejected")}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/reject.png")} alt = "icon"></img></button></td>
+                  </tr>
+                  ))}
+              </table>
           </div>
-        </li>
-        ))}
-        </ul>
-
       </div>
-    );
-  }
-  
+  )
+}
