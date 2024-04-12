@@ -47,6 +47,10 @@ const Request = mongoose.model('request', {
     inchargestatus: String,
   });
 
+  app.post('/userdata', async (req, res) => {
+    const user = await Users.find({ usertype: {$ne: "Admin" }}).sort({ usertype : -1 });
+    res.json(user);
+  });
 
 app.post('/login', async (req, res) => {
     const { mail, password } = req.body;
@@ -99,12 +103,6 @@ app.post('/adminadduser', async (req, res) => {
     }
 });
 
-app.post('/adminsearchuser', async (req, res) => {
-    const { usertype, mail } = req.body;
-    const user = await Users.findOne({ usertype, mail });
-    res.json(user);
-});
-
 app.post('/adminedituser', async (req, res) => {
     const { usertype, department, name, roll, mail, year,section, phone, pphone, pmail } = req.body;
     const user = await Users.findOne({ usertype, mail });
@@ -124,9 +122,9 @@ app.post('/admindeleteuser', async (req, res) => {
     const { mail } = req.body;
     const user = await Users.findOne({ mail });
     
-    if(!user){
-        res.json("not-found")
-    }
+    if(!user)
+    res.json("not-found")
+    
     else{
         const del = await Users.deleteOne({ mail });
         if(del.acknowledged === true){
@@ -187,13 +185,11 @@ app.post('/advoicerupdate', async (req, res) => {
     }
 });
 
-
 app.post('/advoicerhistory', async (req, res) => {
     const { department, year, section } = req.body;
     const items = await Request.find({department, year, section, $or:[{advoicerstatus:"accepted"}, {advoicerstatus:"rejected"} ]}).sort({ _id: -1 });
     res.json(items);
 });
-
 
 app.post('/inchargerequests', async (req, res) => {
     const { department, year, section } = req.body;

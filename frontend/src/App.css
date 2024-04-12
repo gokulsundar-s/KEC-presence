@@ -105,8 +105,8 @@ body{
 
 /* ------------------Requests table------------------ */
 .request-table-container{
-    padding: 3% 2%;
-    padding-left: 8.5%;
+    padding: 3% 1%;
+    padding-left: 7.5%;
 }
 
 .request-table-container table{
@@ -122,8 +122,9 @@ th{
 }
 
 td,th{
+    font-size: 0.9rem;
     text-align: center;
-    padding: 1.2% 0%;
+    padding: 1% 0%;
 }  
 
 tr:nth-child(odd){
@@ -267,4 +268,30 @@ tr:nth-child(even){
     color: #1B9FFE;
     border-color: #1B9FFE;
     border-style: solid;
+}
+
+/* ------------------Users table------------------ */
+.user-table-container{
+    padding: 3% 1%;
+    padding-left: 7.5%;
+}
+
+.user-table-container table{
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.user-table-container th{
+    background-color: #e0e0e0;
+}
+
+tr:nth-child(odd){
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even){
+    background-color: #fff;
 }
