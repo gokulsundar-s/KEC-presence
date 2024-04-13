@@ -120,7 +120,8 @@ export default function AdvoicerHistory() {
                               <div className = "request-edit-save-button-container">
                               <button onClick={() => handleUpdate(datas._id,newstatus)}>Save</button>
                               </div>
-                            </div>);
+                            </div>
+                            );
                             }}
                           </Popup>
                         </div>

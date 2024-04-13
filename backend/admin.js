@@ -47,8 +47,9 @@ const Request = mongoose.model('request', {
     inchargestatus: String,
   });
 
+//   ------------------------------Admin--------------------------------
   app.post('/userdata', async (req, res) => {
-    const user = await Users.find({ usertype: {$ne: "Admin" }}).sort({ usertype : -1 });
+    const user = await Users.find({ usertype: {$ne: "Admin" }}).sort({ usertype : 1 });
     res.json(user);
   });
 
@@ -136,6 +137,7 @@ app.post('/admindeleteuser', async (req, res) => {
     } 
 });
 
+// -------------------------------------Students--------------------------------
 app.post('/studentrequest', async (req, res) => {
     const { name, roll, department, year, section, reqtype, reason, fromdate, todate, session, advoicerstatus, inchargestatus } = req.body;
     const date1 = new Date(fromdate);  
@@ -165,6 +167,7 @@ app.post('/studentshistory', async (req, res) => {
     res.json(items);
 });
 
+// -------------------------------------Advoicer--------------------------------
 app.post('/advoicerrequests', async (req, res) => {
     const { department, year, section } = req.body;
     const items = await Request.find({department, year, section, advoicerstatus:"pending"}).sort({ _id: -1 });
@@ -190,7 +193,7 @@ app.post('/advoicerhistory', async (req, res) => {
     const items = await Request.find({department, year, section, $or:[{advoicerstatus:"accepted"}, {advoicerstatus:"rejected"} ]}).sort({ _id: -1 });
     res.json(items);
 });
-
+// ------------------------------------------Year Incharge--------------------------------
 app.post('/inchargerequests', async (req, res) => {
     const { department, year, section } = req.body;
     const items = await Request.find({department, year, advoicerstatus:"accepted", inchargestatus:"pending"}).sort({ _id: -1 });

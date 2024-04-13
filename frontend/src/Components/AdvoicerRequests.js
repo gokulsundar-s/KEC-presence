@@ -58,6 +58,7 @@ export default function AdvoicerRequest() {
                       <th>Total days</th>
                       <th></th>
                       <th></th>
+                      <th></th>
                   </tr>
                   
                   {datas.map(datas => (
@@ -70,6 +71,7 @@ export default function AdvoicerRequest() {
                       <td>{datas.todate}</td>
                       <td>{datas.session}</td>
                       <td>{datas.days}</td>
+                      <td><button className = "request-edit-button"><img src={require("F:/Projects/kecpresence/frontend/src/Sources/comments.png")} alt = "icon"></img></button></td>
                       <td><button className = "request-accept-button" onClick={() => handleUpdate(datas._id,"accepted")}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/accept.png")} alt = "icon"></img></button></td>
                       <td><button className = "request-reject-button" onClick={() => handleUpdate(datas._id,"rejected")}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/reject.png")} alt = "icon"></img></button></td>
                   </tr>
