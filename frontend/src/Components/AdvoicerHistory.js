@@ -91,7 +91,7 @@ export default function AdvoicerHistory() {
                           <Popup trigger={<button className = "request-edit-button"><img src={require("F:/Projects/kecpresence/frontend/src/Sources/pencil.png")} alt = "icon"></img></button>} modal nested>
                           {close => {
                           return (
-                            <div className='request-edit-popup-container'>
+                            <div classNamer='request-edit-popup-container'>
                               <button className = "request-popup-close-button" onClick={() => close()}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/close.png")} alt = "icon"></img></button>
                               <div  className = "request-edit-container">              
                                   <div className = "request-edit-components">  

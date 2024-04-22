@@ -135,14 +135,14 @@ tr:nth-child(even){
     background-color: #fff;
 }
 
-.request-edit-button, .request-delete-button, .request-accept-button, .request-reject-button{
+.request-edit-button, .request-delete-button, .request-accept-button, .request-reject-button, .request-comments-button{
     background-color: transparent;
     border-color: transparent;
     border-radius: 0.2rem;
     border-style: solid;
 }
 
-.request-edit-button:hover{
+.request-edit-button:hover, .request-comments-button:hover{
     background-color: rgba(142, 142, 142, 0.125);
 }
 
@@ -154,7 +154,7 @@ tr:nth-child(even){
     background-color: #00720f28;
 }
 
-.request-edit-button img, .request-delete-button img, .request-accept-button img, .request-reject-button img{
+.request-edit-button img, .request-delete-button img, .request-accept-button img, .request-reject-button img, .request-comments-button img{
     height: 0.99rem;
     width: auto;
 }
@@ -162,6 +162,7 @@ tr:nth-child(even){
 /* ------------------Requests edit popup------------------ */
 .request-edit-popup-container{
     text-align: right;
+    padding-right: 0.2rem;
 }
 
 .request-popup-close-button{
@@ -169,6 +170,7 @@ tr:nth-child(even){
     border-color: transparent;
     border-radius: 0.2rem;
     border-style: solid;
+    /* text-align: right; */
 }
 
 .request-popup-close-button:hover{

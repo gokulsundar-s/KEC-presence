@@ -3,6 +3,8 @@ import axios from 'axios';
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 import "../Styles/AdvoicerPage.css";
 
 export default function AdvoicerRequest() {
@@ -71,7 +73,22 @@ export default function AdvoicerRequest() {
                       <td>{datas.todate}</td>
                       <td>{datas.session}</td>
                       <td>{datas.days}</td>
-                      <td><button className = "request-edit-button"><img src={require("F:/Projects/kecpresence/frontend/src/Sources/comments.png")} alt = "icon"></img></button></td>
+                      <td>
+                        <div className = "request-comments-container">
+                        <Popup trigger={<button className = "request-comments-button"><img src={require("F:/Projects/kecpresence/frontend/src/Sources/comments.png")} alt = "icon"></img></button>} modal nested>
+                        {close => {
+                          return (
+                            <div className = "abc">
+                              <button className = "request-popup-close-button" onClick={() => close()}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/close.png")} alt = "icon"></img></button>
+                                <div  className = "request-comments-container">              
+                                  
+                                </div>
+                            </div>
+                          );
+                        }}
+                        </Popup>
+                        </div>
+                      </td> 
                       <td><button className = "request-accept-button" onClick={() => handleUpdate(datas._id,"accepted")}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/accept.png")} alt = "icon"></img></button></td>
                       <td><button className = "request-reject-button" onClick={() => handleUpdate(datas._id,"rejected")}><img src={require("F:/Projects/kecpresence/frontend/src/Sources/reject.png")} alt = "icon"></img></button></td>
                   </tr>
