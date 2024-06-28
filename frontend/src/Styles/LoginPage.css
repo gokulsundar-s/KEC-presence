@@ -1,0 +1,84 @@
+.login-box-container{
+    display: flex;
+    justify-content: space-between;
+    background-color: #FFF;
+    margin: 4% 10%;
+    border-radius: 1rem;
+    box-shadow: 0rem 0rem 1.5rem #00000020;
+}
+
+.login-box-container img{
+    width: 50%;
+    padding-right: 6%;
+    border-radius: 1rem 0 0 1rem;
+}
+
+.login-form-container{
+    padding-right: 5%;
+}
+
+.login-form-container img{
+    display: block;
+    margin: auto;
+    width: 15%;
+    height: auto;
+    padding-top: 3rem;
+    padding-bottom: 1rem;
+}
+
+.login-form-container p{
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+.login-form-input-container p{
+    font-size: 1rem;
+    text-align: left;
+    line-height: 0;
+    padding-top: 2rem;
+}
+
+.login-form-input{
+    font-size: 0.95rem;
+    border-radius: 0.12rem;
+    border-color: black;
+    border-style: solid;
+    color: black;
+    padding: 0.4rem 0.5rem;
+    width: 100%;
+    border-width: 0.05rem;
+    height: 1.5rem;
+}
+
+.login-form-forgot-password-container{
+    display: flex;
+    justify-content: space-between;
+    padding-top: 2rem;
+    font-size: 0.9rem;
+}
+
+.login-forget-password a{
+    text-decoration: none;
+}
+
+.login-form-button-container{
+    padding: 2rem 0;
+}
+
+.login-form-button{
+    font-size: 1rem;
+    border-radius: 0.31rem;
+    padding: 0.65rem 1.8rem;
+    border-style: none;
+    background-color: #1B9FFE;
+    color:#ffffff;
+    width: 100%;
+  }
+  
+  .login-form-button:hover{
+    border-color: #1B9FFE;
+    border-style: solid;
+    background-color: transparent;
+    color: rgb(37,145,208);
+    cursor: pointer;
+  }

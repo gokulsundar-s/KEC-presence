@@ -1,25 +1,21 @@
-import logo from './logo.svg';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LoginPage from './Pages/LoginPage';
+import AdminPage from './Pages/AdminPage';
+// import ClassAdvisorPage from './Pages/AdvisorPage';
+// import YearInchargePage from './Pages/YearInchargePage';
+// import StudentPage from './Pages/StudentPage';
 import './App.css';
 
-function App() {
+export default function App() {  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+          {/* <Route path="/student" element={<StudentPage />} /> */}
+          {/* <Route path="/advoicer" element={<ClassAdvisorPage />} /> */}
+          {/* <Route path="/year-incharge" element={<YearInchargePage />} /> */}
+        </Routes>
+      </BrowserRouter>
+    )
 }
-
-export default App;

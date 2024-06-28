@@ -47,10 +47,24 @@ const Request = mongoose.model('request', {
     inchargestatus: String,
   });
 
-//   ------------------------------Admin--------------------------------
   app.post('/userdata', async (req, res) => {
     const user = await Users.find({ usertype: {$ne: "Admin" }}).sort({ usertype : 1 });
     res.json(user);
+  });
+
+  app.post('/searchuserdata', async (req, res) => {
+    const { searchby, searchvalue } = req.body;
+    
+    if(searchby === "Name"){
+        const searchname = searchvalue.toUpperCase();
+        const user = await Users.find({ usertype: {$ne: "Admin" }, name: {$regex : searchname}}).sort({ usertype : 1 });
+        res.json(user);
+    }
+    else if(searchby === "Roll Number"){
+        const searchroll = searchvalue.toUpperCase();
+        const user = await Users.find({ usertype: {$ne: "Admin" }, roll: {$regex : searchroll}}).sort({ usertype : 1 });
+        res.json(user);
+    }
   });
 
 app.post('/login', async (req, res) => {
