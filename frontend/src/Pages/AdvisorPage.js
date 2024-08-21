@@ -5,11 +5,9 @@ import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import Popup from 'reactjs-popup';
-import AdminDashboard from "../Components/AdminDashBoard";
-import AdminAddUser from "../Components/AdminAddUser";
-import AdminUserdata from "../Components/AdminUserdata";
+import AdvisorDashBoard from "../Components/AdvisorDashBoard";
 
-export default function AdminPage() {
+export default function AdvisorPage() {
   const [activeTab, setactiveTab] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [currentpassword, setCurrentPassword] = useState('');
@@ -105,9 +103,9 @@ export default function AdminPage() {
   }
   const handleLogout = async () => {
     Cookies.remove('data');
-    setTimeout(() => {setIsLoading(false);},2000);
     window.location.reload(false);
 
+    setTimeout(() => {setIsLoading(false);},2000);
   }
   const handleCloseLogoutPopup = () => {
     setLogouPopup(false);
@@ -121,24 +119,25 @@ export default function AdminPage() {
       <ul  className = "drawer-container">
         <div className = "drawer-header">
           <img src={require("../Sources/KEC.png")} alt = "logo1"></img>
-          <p>Admin</p>
+          <p>Advisor</p>
         </div>
             
         <button className={activeTab === 1 ? 'active' : ''} onClick={() => handleTabClick(1)}><div><img src={require("../Sources/dashboard.png")} alt = "icon"></img><p>Dashboard</p></div></button>
-        <button className={activeTab === 2 ? 'active' : ''} onClick={() => handleTabClick(2)}><div><img src={require("../Sources/add-user.png")} alt = "icon"></img><p>Add User</p></div></button>
-        <button className={activeTab === 3 ? 'active' : ''} onClick={() => handleTabClick(3)}><div><img src={require("../Sources/user-data.png")} alt = "icon"></img><p>User Data</p></div></button>
+        <button className={activeTab === 2 ? 'active' : ''} onClick={() => handleTabClick(2)}><div><img src={require("../Sources/add-request.png")} alt = "icon"></img><p>New Request</p></div></button>
+        <button className={activeTab === 3 ? 'active' : ''} onClick={() => handleTabClick(3)}><div><img src={require("../Sources/history.png")} alt = "icon"></img><p>History</p></div></button>
         
         <Popup trigger=
           {<button><div><img src={require("../Sources/settings.png")} alt = "icon"></img><p>Settings</p></div></button>} position="right">
             <button className = "drawer-settings-button" onClick = {handleChangePasswordPopup}><img src={require("../Sources/password.png")} alt = "icon"></img>Change Password</button>
+            <button className = "drawer-settings-button"><img src={require("../Sources/user-info.png")} alt = "icon"></img>User Info</button>
             <button className = "drawer-settings-button drawer-logout-button" onClick={handleLogoutPopup}><img src={require("../Sources/logout.png")} alt = "icon"></img>Logout</button>
         </Popup>
       </ul>
       
       <div className = "page-components-container">
-        {activeTab === 1 && <AdminDashboard />}
-        {activeTab === 2 && <AdminAddUser />}
-        {activeTab === 3 && <AdminUserdata />}
+        {activeTab === 1 && <AdvisorDashBoard/>}
+        {activeTab === 2 && <></>}
+        {activeTab === 3 && <></>}
       </div>
     </div>)}
 

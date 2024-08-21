@@ -205,7 +205,7 @@ export default function Adduser() {
                     toast.error("User already exists");
                 }
                 else if(result.data === "error"){
-                    toast("Error in adding a new user",)
+                    toast.error("Error in adding a new user",)
                 }
             }
             catch(error){
@@ -317,6 +317,6 @@ export default function Adduser() {
             </div>
         </form>
       <Toaster toastOptions={{duration: 5000}}/>
-        </>
+    </>
     )
 }

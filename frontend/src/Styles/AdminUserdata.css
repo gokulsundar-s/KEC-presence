@@ -1,83 +1,9 @@
-.adminuser-page-container{
+.admin-Userpage-container {
     text-align: center;
-    padding-top: 1.5rem;
-}
-
-.adminuser-search-container{
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 1.5rem;
-}
-
-.adminuser-search-select{
-    font-size: 0.93rem;
-    border-radius: 0.12rem;
-    border-color: black;
-    border-style: solid;
-    color: black;
-    padding: 0.31rem 0.62rem;
-    width: 19.8rem;
-    border-width: 0.006rem;
-    height: 2.18rem;
-}
-
-.adminuser-search-input {
-    font-size: 0.93rem;
-    border-radius: 0.12rem;
-    border-color: black;
-    border-style: solid;
-    color: black;
-    padding: 0.3125rem 0.62rem;
-    width: 18.5rem;
-    border-width: 0.006rem;
-    height: 1.56rem;
-}
-
-.adminuser-page-container table{
-    border-collapse: collapse;
-    margin-right: 2rem;
-}
-
-.adminuser-page-container th{
-    background-color: #d6d6d6;
-}
-
-th,td{
-    font-size: 0.9rem;
-    padding: 0.8rem 1.5rem;
-}
-
-tr:nth-child(odd){
-    background-color: #f7f7f7;
-}
-
-tr:nth-child(even){
-    background-color: #fff;
-}
-
-.adminuser-table-button{
-    background-color: transparent;
-    border: none;
-    border-radius: 0.3rem;
-    padding: 0.3rem;
-}
-
-.adminuser-table-button:hover{
-    background-color: #e6e6e6;
-}
-
-.adminuser-table-logout-button:hover{
-    background-color: rgb(255, 220, 220);
-}
-
-.adminuser-table-button img{
-    height: 1rem;
-    width: auto;
-}
-
-.adminuser-no-data{
-    font-size: 2rem;
-    margin-top: 5rem;
-    font-weight: bold;
-    color: #999999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+    margin-right: 2.5rem;
+    padding-top: 2rem;
 }

@@ -8,10 +8,13 @@ import "../Styles/LoginPage.css";
 
 export default function LoginPage() {
     const [mail, setMail] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
     const [password, setPassword] = useState('');
     const [showpassword, setShowPassword] = useState(false);
-
+    const [showForgetPasswordPopup, setForgetPasswordPopup] = useState(false);
     const navigate = useNavigate();
+
+    setTimeout(() => {setIsLoading(false);},2000);
     
     const handleMailChange = (event) => {
         setMail(event.target.value);
@@ -24,6 +27,14 @@ export default function LoginPage() {
     const handleCheckboxChange = () => {
         setShowPassword(prevState => !prevState);
     };
+
+    const handleForgetPasswordPopup = () => {
+        setForgetPasswordPopup(true);
+    }
+
+    const handleCloseForgetPasswordPopup = () => {
+        setForgetPasswordPopup(false);
+    }
 
     useEffect(() => {
         if(Cookies.get('data') === undefined){
@@ -65,7 +76,7 @@ export default function LoginPage() {
                         navigate("/admin");
                     }
                     else if(jwt_data.usertype === "Student"){
-                        navigate("/student");
+                        navigate("/admin");
                     }
                     else if(jwt_data.usertype === "Class advoicer"){
                         navigate("/advoicer");
@@ -90,11 +101,12 @@ export default function LoginPage() {
 
     return (
         <>
+        {isLoading ? (<div className = "loading-component"><p>Loading...</p></div>) : (
             <div className = "login-box-container">
-                <img src={require("../../src/Sources/Login-page.png")} alt = "Login Page"></img>
+                <img src={require("../Sources/Login-page.png")} alt = "Login Page"></img>
              
                 <div className = "login-form-container">
-                    <img src={require("../../src/Sources/KEC 2.png")} alt = "KEC Logo"></img>
+                    <img src={require("../Sources/KEC 2.png")} alt = "KEC Logo"></img>
                     
                     <div className = "login-form-container">
                         <p><b>Please login to your account</b></p>
@@ -102,12 +114,12 @@ export default function LoginPage() {
                         <form action = "login" onSubmit={(event) => event.preventDefault()}>
                             <div className = "login-form-input-container">
                                 <p>Kongu Mail ID</p>
-                                <input type = "mail" placeholder = "Kongu Mail ID" className = "login-form-input" value={mail} onChange={(event) => handleMailChange(event)} required></input>
+                                <input type = "mail" placeholder = "Kongu Mail ID" className = "login-form-input" value={mail} onChange={(event) => handleMailChange(event)}></input>
                             </div>
                             
                             <div className = "login-form-input-container">
                                 <p>Password</p>
-                                <input type={showpassword ? 'text' : 'password'} placeholder = "Password" className = "login-form-input"  value={password} onChange={handlePasswordChange} required></input>
+                                <input type={showpassword ? 'text' : 'password'} placeholder = "Password" className = "login-form-input"  value={password} onChange={handlePasswordChange}></input>
                             </div>
                             
                             <div className = "login-form-forgot-password-container">
@@ -117,7 +129,7 @@ export default function LoginPage() {
                                 </div>
 
                                 <div className = "login-forget-password">
-                                    <a href = "/forgot-password">Forgot password?</a>
+                                    <a href="/" onClick = {handleForgetPasswordPopup}>Forgot password?</a>
                                 </div>
                             </div>
                             
@@ -127,8 +139,26 @@ export default function LoginPage() {
                         </form>
                     </div>
                 </div>
-            </div>
+            </div> )}
+
         <Toaster toastOptions={{duration: 5000}}/>
+
+        {showForgetPasswordPopup && 
+            <div className = "popups-container">
+            <div className = "popups-box">
+                <p className = "popups-header">Enter your Kongu mail ID</p>
+
+                <div className = "popups-input-container">
+                    <input placeholder = "Kongu Mail ID"/>
+                </div>
+
+                <div className = "popups-buttons-container">
+                    <button className = "popups-button popups-submit-button">Submit</button>
+                    <button className = "popups-button popups-no-button" onClick = {handleCloseForgetPasswordPopup}>Close</button>
+                </div>
+            </div>
+        </div>
+        }
         </>
     )
 }

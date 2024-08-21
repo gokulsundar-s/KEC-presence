@@ -10,7 +10,6 @@ const { ObjectId } = require('mongodb');
 const bcrypt = require("bcrypt");
 const nodemailer = require('nodemailer');
 
-
 dotenv.config();
 app.use(bodyParser.json());
 app.use(cors());
@@ -47,25 +46,18 @@ const Request = mongoose.model('request', {
     inchargestatus: String,
   });
 
-  app.post('/userdata', async (req, res) => {
+
+
+
+
+// --------------------------------------------------------------------
+//                              Common Utilities
+// --------------------------------------------------------------------
+
+app.post('/userdata', async (req, res) => {
     const user = await Users.find({ usertype: {$ne: "Admin" }}).sort({ usertype : 1 });
     res.json(user);
-  });
-
-  app.post('/searchuserdata', async (req, res) => {
-    const { searchby, searchvalue } = req.body;
-    
-    if(searchby === "Name"){
-        const searchname = searchvalue.toUpperCase();
-        const user = await Users.find({ usertype: {$ne: "Admin" }, name: {$regex : searchname}}).sort({ usertype : 1 });
-        res.json(user);
-    }
-    else if(searchby === "Roll Number"){
-        const searchroll = searchvalue.toUpperCase();
-        const user = await Users.find({ usertype: {$ne: "Admin" }, roll: {$regex : searchroll}}).sort({ usertype : 1 });
-        res.json(user);
-    }
-  });
+});
 
 app.post('/login', async (req, res) => {
     const { mail, password } = req.body;
@@ -85,6 +77,32 @@ app.post('/login', async (req, res) => {
         res.json("nouser")
     }
 });
+
+app.post('/changepassword', async (req, res) => {
+    const { mail, currentpassword, newpassword} = req.body;
+    
+    const user_data = await Users.findOne({ mail: mail, password: currentpassword });
+
+    if(user_data !== null){
+        const update = await Users.updateOne({ mail }, {$set:{ password: newpassword }});
+        
+        if(update.modifiedCount === 1){
+            res.json("202");
+        }
+    }
+
+    else if(user_data === null){
+        res.json("402");
+    }
+});
+
+
+
+
+
+// --------------------------------------------------------------------
+//                              Users Module Utilities
+// --------------------------------------------------------------------
 
 app.post('/adminadduser', async (req, res) => {
     const { usertype, department, name, roll, mail, year,section, phone, pphone, pmail} = req.body;
@@ -110,7 +128,6 @@ app.post('/adminadduser', async (req, res) => {
         
         if(newUser._id){
             res.json("success");
-
         }
         else{
             res.json("error");
@@ -134,22 +151,46 @@ app.post('/adminedituser', async (req, res) => {
 });
 
 app.post('/admindeleteuser', async (req, res) => {
-    const { mail } = req.body;
-    const user = await Users.findOne({ mail });
-    
-    if(!user)
-    res.json("not-found")
-    
-    else{
-        const del = await Users.deleteOne({ mail });
-        if(del.acknowledged === true){
-            res.json("success");
-        }
-        else{
-            res.json("error")
-        }
+    const mail = req.body.deletedata;
+    const del = await Users.deleteOne({ mail });
+
+    if(del.acknowledged === true){
+        res.json("202");
+    } else{
+        res.json("402")
     } 
 });
+
+app.post('/adminsearchuser', async (req, res) => {
+    const { searchby, searchvalue } = req.body;
+    
+    if(searchby === "Name"){
+        const searchname = searchvalue.toUpperCase();
+        const user = await Users.find({ usertype: {$ne: "Admin" }, name: {$regex : searchname}}).sort({ usertype : 1 });
+        res.json(user);
+    }
+    else if(searchby === "Roll Number"){
+        const searchroll = searchvalue.toUpperCase();
+        const user = await Users.find({ usertype: {$ne: "Admin" }, roll: {$regex : searchroll}}).sort({ usertype : 1 });
+        res.json(user);
+    }
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // -------------------------------------Students--------------------------------
 app.post('/studentrequest', async (req, res) => {
@@ -207,6 +248,8 @@ app.post('/advoicerhistory', async (req, res) => {
     const items = await Request.find({department, year, section, $or:[{advoicerstatus:"accepted"}, {advoicerstatus:"rejected"} ]}).sort({ _id: -1 });
     res.json(items);
 });
+
+
 // ------------------------------------------Year Incharge--------------------------------
 app.post('/inchargerequests', async (req, res) => {
     const { department, year, section } = req.body;
