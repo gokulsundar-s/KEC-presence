@@ -10,9 +10,7 @@ export default function Userdata() {
     const [deletedata, setDeleteData] = useState();
     const [showConfirmDeletePopup, setConfirmDeletePopup] = useState(false);
     
-    const handlesetSearchBy = (event) => {
-        setSearchBy(event.target.value);
-    };
+    const handlesetSearchBy = (event) => setSearchBy(event.target.value);
 
     const handlesetSearchValue = async (event) => {
         setSearchValue(event.target.value);

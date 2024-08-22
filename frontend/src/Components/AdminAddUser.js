@@ -52,33 +52,16 @@ export default function Adduser() {
             setDisablepmail(true);
         }
     };
-    const handleDepartmentChange = (event) => {
-        setDepartment(event.target.value);
-    };
-    const handleNameChange = (event) => {
-        setName(event.target.value);
-    };
-    const handleRollNumberChange = (event) => {
-        setRoll(event.target.value);
-    };
-    const handleMailChange = (event) => {
-        setMail(event.target.value);
-    };
-    const handleYearChange = (event) => {
-        setYear(event.target.value);
-    };
-    const handleSectionChange = (event) => {
-        setSection(event.target.value);
-    };
-    const handlePhoneChange = (event) => {
-        setPhone(event.target.value);
-    };
-    const handlePphoneChange = (event) => {
-        setPphone(event.target.value);
-    };
-    const handlePmailChange = (event) => {
-        setPmail(event.target.value);
-    };
+
+    const handleDepartmentChange = (event) => setDepartment(event.target.value);
+    const handleNameChange = (event) => setName(event.target.value.toUpperCase());
+    const handleRollNumberChange = (event) => setRoll(event.target.value.toUpperCase());
+    const handleMailChange = (event) => setMail(event.target.value);
+    const handleYearChange = (event) => setYear(event.target.value);
+    const handleSectionChange = (event) => setSection(event.target.value);
+    const handlePhoneChange = (event) => setPhone(event.target.value);
+    const handlePphoneChange = (event) => setPphone(event.target.value);
+    const handlePmailChange = (event) => setPmail(event.target.value);
 
     const handleAdduser = async () => {
         setName(name.toUpperCase());

@@ -22,26 +22,16 @@ export default function AdminPage() {
 
   setTimeout(() => {setIsLoading(false);},2000);
 
-  const handleTabClick = (id) => {
-    setactiveTab(id);
-  };
+  const handleTabClick = (id) => setactiveTab(id);
+  
 
-  const handleCurrentPasswordChange = (event) => {
-    setCurrentPassword(event.target.value);
-  };
-  const handleNewPasswordChange = (event) => {
-    setNewPassword(event.target.value);
-  };
-  const handleConfirmPasswordChange = (event) => {
-    setConfirmPassword(event.target.value);
-  };
-  const handleCheckboxChange = () => {
-    setShowPassword(prevState => !prevState);
-  }
+  const handleCurrentPasswordChange = (event) => setCurrentPassword(event.target.value);
 
-  const handleChangePasswordPopup = () => {
-    setChangePasswordPopup(true);
-  }
+  const handleNewPasswordChange = (event) => setNewPassword(event.target.value);
+  const handleConfirmPasswordChange = (event) => setConfirmPassword(event.target.value);
+  const handleCheckboxChange = () => setShowPassword(prevState => !prevState);
+
+  const handleChangePasswordPopup = () => setChangePasswordPopup(true);
   const handleChangePassword = async() => {
     if(newpassword === confirmpassword){
       if(newpassword.length < 8){

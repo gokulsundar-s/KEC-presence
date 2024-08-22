@@ -16,25 +16,12 @@ export default function LoginPage() {
 
     setTimeout(() => {setIsLoading(false);},2000);
     
-    const handleMailChange = (event) => {
-        setMail(event.target.value);
-    };
+    const handleMailChange = (event) => setMail(event.target.value);
+    const handlePasswordChange = (event) => setPassword(event.target.value);
+    const handleCheckboxChange = () => setShowPassword(prevState => !prevState);
 
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-    };
-
-    const handleCheckboxChange = () => {
-        setShowPassword(prevState => !prevState);
-    };
-
-    const handleForgetPasswordPopup = () => {
-        setForgetPasswordPopup(true);
-    }
-
-    const handleCloseForgetPasswordPopup = () => {
-        setForgetPasswordPopup(false);
-    }
+    const handleForgetPasswordPopup = () => setForgetPasswordPopup(true);
+    const handleCloseForgetPasswordPopup = () => setForgetPasswordPopup(false);
 
     useEffect(() => {
         if(Cookies.get('data') === undefined){

@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import Popup from 'reactjs-popup';
 import StudentDashBoard from "../Components/StudentDashBoard";
+import StudentRequest from "../Components/StudentsRequest";
 
 export default function StudentPage() {
   const [activeTab, setactiveTab] = useState(1);
@@ -136,7 +137,7 @@ export default function StudentPage() {
       
       <div className = "page-components-container">
         {activeTab === 1 && <StudentDashBoard/>}
-        {activeTab === 2 && <></>}
+        {activeTab === 2 && <StudentRequest/>}
         {activeTab === 3 && <></>}
       </div>
     </div>)}
