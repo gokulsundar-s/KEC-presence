@@ -13,7 +13,9 @@ dotenv.config();
 app.use(bodyParser.json());
 app.use(cors());
 
-mongoose.connect(process.env.mongodb_url);
+mongoose.connect(process.env.mongodb_url, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 const Users = mongoose.model('users', {
     usertype: String,
