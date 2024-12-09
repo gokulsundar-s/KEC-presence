@@ -7,7 +7,6 @@ const dotenv = require('dotenv');
 const PORT = 3003;
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
-const nodemailer = require('nodemailer');
 const serverless = require('serverless-http');
 
 dotenv.config();
@@ -280,4 +279,5 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
+module.exports = app;
 module.exports.handler = serverless(app);
