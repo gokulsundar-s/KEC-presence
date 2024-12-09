@@ -8,6 +8,7 @@ const PORT = 3003;
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 const serverless = require('serverless-http');
+const helmet = require('helmet');
 
 dotenv.config();
 app.use(bodyParser.json());
@@ -52,7 +53,10 @@ const Request = mongoose.model('request', {
     inchargestatus: String,
   });
 
-
+app.use((req, res, next) => {
+    res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self' https://vercel.live;");
+    next();
+});
 
 
 
