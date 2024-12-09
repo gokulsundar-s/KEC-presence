@@ -53,7 +53,7 @@ export default function LoginPage() {
 
             }
             else{
-                const result = await axios.post('http://localhost:3003/login', { mail,password });
+                const result = await axios.post('https://kec-presence-c9dh.vercel.app/login', { mail,password });
             
                 if(result.data !== "failed"){
                     Cookies.set('data',result.data,{ expires: 1 });
