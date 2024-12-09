@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
 const bcrypt = require("bcrypt");
 const nodemailer = require('nodemailer');
+const serverless = require('serverless-http');
 
 dotenv.config();
 app.use(bodyParser.json());
@@ -281,3 +282,5 @@ app.post('/inchargehistory', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports.handler = serverless(app);
