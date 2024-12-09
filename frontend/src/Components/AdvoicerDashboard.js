@@ -1,8 +1,8 @@
 import { React } from "react";
 
-export default function Dashboard() {
+export default function AdvoicerDashboard() {
     return(
-        <div className = "admindashboard-container">
+        <div className = "advoicerdashboard-container">
             <p className = "components-header">Dashboard</p>
         </div>
     )

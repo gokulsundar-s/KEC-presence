@@ -1,44 +1,46 @@
-.login-box-container{
+.loginpage-container{
     display: flex;
-    justify-content: space-between;
-    background-color: #FFF;
-    margin: 4% 13%;
-    border-radius: 1rem;
-    box-shadow: 0rem 0rem 1.5rem #00000020;
+    justify-content: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cg fill='%239C92AC' fill-opacity='0.02'%3E%3Cpath fill-rule='evenodd' d='M0 0h4v4H0V0zm4 4h4v4H4V4z'/%3E%3C/g%3E%3C/svg%3E");
+    border-radius: 1.5rem;;
+    padding: 3rem;
+    box-shadow: 0rem 0rem 1rem #00000010;
 }
 
-.login-box-container img{
-    width: 50%;
-    padding-right: 6%;
-    border-radius: 1rem 0 0 1rem;
+.loginpage-left-container img{
+    height: 30rem;
+    width: auto;
+    padding-right: 5rem;
 }
 
-.login-form-container{
-    padding-right: 5%;
+.loginpage-right-container-header{
+    padding-bottom: 0.1rem;
 }
 
-.login-form-container img{
-    display: block;
-    margin: auto;
-    width: 15%;
-    height: auto;
-    padding-top: 3rem;
+.loginpage-right-container-header img{
+    height: 4rem;
+    width: auto;
+    padding-left: 9.5rem;
     padding-bottom: 1rem;
 }
 
-.login-form-container p{
-    text-align: center;
-    padding: 0.5rem 0;
+.loginpage-right-container-header h4, .loginpage-right-container-header p{
+    line-height: 0.625rem;
 }
 
-.login-form-input-container p{
-    font-size: 1rem;
-    text-align: left;
-    line-height: 0;
-    padding-top: 2rem;
+.loginpage-input-container p{
+    font-size: 0.95rem;
+    line-height: 0rem;
+    padding-top: 1rem;
 }
 
-.login-form-input{
+.loginpage-input-container input{
     font-size: 0.95rem;
     border-radius: 0.12rem;
     border-color: black;
@@ -50,37 +52,38 @@
     height: 1.5rem;
 }
 
-.login-form-forgot-password-container{
+.loginpage-forgetpassword-container{
     display: flex;
     justify-content: space-between;
-    padding-top: 2rem;
+    padding-top: 1rem;
+}
+
+.show-password, .forget-password{
     font-size: 0.9rem;
+    padding-bottom: 1rem;
 }
 
-.login-forget-password a{
+.forget-password a{
     text-decoration: none;
-    color: rgb(0, 0, 180)
 }
 
-.login-form-button-container{
-    padding: 2rem 0;
-    text-align: center;
+.buttons-container{
+    padding-top: 1rem;
 }
 
-.login-form-button{
+.buttons-container button{
     font-size: 1rem;
     border-radius: 0.31rem;
     padding: 0.65rem 1.8rem;
     border-style: none;
     background-color: #1B9FFE;
     color:#ffffff;
-    width: 70%;
-  }
-  
-  .login-form-button:hover{
+    width: 105%;
+}
+
+.buttons-container button:hover{
     border-color: #1B9FFE;
     border-style: solid;
     background-color: transparent;
     color: rgb(37,145,208);
-    cursor: pointer;
-  }
+}

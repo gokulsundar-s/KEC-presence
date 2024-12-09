@@ -1,11 +1,10 @@
-import { React} from "react";
+import { React } from "react";
+import "../Styles/StudentPage.css";
 
-export default function StudentDashBoard() {
-  return (
-    <>
-        <div className = "admin-dashboard">
-            <h1 className = "page-header">Dashboard</h1>
+export default function Dashboard() {
+    return(
+        <div className = "studntdashboard-container">
+            <p className = "components-header">Dashboard</p>
         </div>
-    </>
-  )
+    )
 }
