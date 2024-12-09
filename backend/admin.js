@@ -7,7 +7,6 @@ const dotenv = require('dotenv');
 const PORT = 3003;
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
-const bcrypt = require("bcrypt");
 const nodemailer = require('nodemailer');
 const serverless = require('serverless-http');
 
@@ -64,7 +63,6 @@ app.post('/login', async (req, res) => {
     const { mail, password } = req.body;
     const user = await Users.findOne({ mail: mail, password: password });
     if(user){
-        // const validate = await bcrypt.compare(password, user.password);
         const validate = true;
         if(validate){
             const token = jwt.sign({ usertype: user.usertype, department: user.department, name: user.name, roll: user.roll, mail: user.mail, year: user.year, section: user.section, phone: user.phone, pphone: user.pphone, pmail: user.pmail }, process.env.secretKey, { expiresIn: '1d' });
@@ -122,9 +120,8 @@ app.post('/adminadduser', async (req, res) => {
             password += charset.charAt(randomIndex);
         }
         
-        const salt = await bcrypt.genSalt(1); 
     
-        const newUser = new Users({ usertype, department, name, roll, mail, year,section, phone, pphone, pmail, password /*: await bcrypt.hash(password, salt)*/});
+        const newUser = new Users({ usertype, department, name, roll, mail, year,section, phone, pphone, pmail, password});
         await newUser.save();
         
         if(newUser._id){
