@@ -114,12 +114,12 @@ export default function StudentRequest() {
                         </select>
                     </div>
 
-                    <div className="students-request-form-inputs">
+                    {/* <div className="students-request-form-inputs">
                         <p>Upload the Proof in PDF (if available) :</p>
                         <div className="students-request-form-upload-container"> 
                             <input className="proof-button" type="file" accept=".pdf" required />
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                     
                 <div className="students-request-form-buttons-container">

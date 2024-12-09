@@ -122,7 +122,7 @@ export default function AdvisorPage() {
           <p>Advisor</p>
         </div>
             
-        <button className={activeTab === 1 ? 'active' : ''} onClick={() => handleTabClick(1)}><div><img src={require("../Sources/dashboard.png")} alt = "icon"></img><p>Dashboard</p></div></button>
+        {/* <button className={activeTab === 1 ? 'active' : ''} onClick={() => handleTabClick(1)}><div><img src={require("../Sources/dashboard.png")} alt = "icon"></img><p>Dashboard</p></div></button> */}
         <button className={activeTab === 2 ? 'active' : ''} onClick={() => handleTabClick(2)}><div><img src={require("../Sources/add-request.png")} alt = "icon"></img><p>New Request</p></div></button>
         <button className={activeTab === 3 ? 'active' : ''} onClick={() => handleTabClick(3)}><div><img src={require("../Sources/history.png")} alt = "icon"></img><p>History</p></div></button>
         

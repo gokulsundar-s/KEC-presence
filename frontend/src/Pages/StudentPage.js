@@ -130,7 +130,7 @@ export default function StudentPage() {
         <Popup trigger=
           {<button><div><img src={require("../Sources/settings.png")} alt = "icon"></img><p>Settings</p></div></button>} position="right">
             <button className = "drawer-settings-button" onClick = {handleChangePasswordPopup}><img src={require("../Sources/password.png")} alt = "icon"></img>Change Password</button>
-            <button className = "drawer-settings-button"><img src={require("../Sources/user-info.png")} alt = "icon"></img>User Info</button>
+            {/* <button className = "drawer-settings-button"><img src={require("../Sources/user-info.png")} alt = "icon"></img>User Info</button> */}
             <button className = "drawer-settings-button drawer-logout-button" onClick={handleLogoutPopup}><img src={require("../Sources/logout.png")} alt = "icon"></img>Logout</button>
         </Popup>
       </ul>

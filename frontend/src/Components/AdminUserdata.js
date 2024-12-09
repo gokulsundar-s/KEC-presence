@@ -88,6 +88,7 @@ export default function Userdata() {
                     <tbody>
                     <tr>
                         <th>User type</th>
+                        <th>Department</th>
                         <th>Name</th>
                         <th>Roll Number</th>
                         <th>Year</th>
@@ -95,13 +96,14 @@ export default function Userdata() {
                         <th>Mail ID</th>
                         <th>Student Mobile</th>
                         <th>Parent Mobile</th>
-                        <th></th>
+                        {/* <th></th> */}
                         <th></th>
                     </tr>
                   
                     {datas.map(datas => (
                     <tr key={datas._id}>
                         <td>{datas.usertype}</td>
+                        <td>{datas.department}</td>
                         <td>{datas.name}</td>
                         <td>{datas.roll.length === 0 ? "-" : datas.roll}</td>
                         <td>{datas.year.length === 0 ? "-" : datas.year}</td>
@@ -109,7 +111,7 @@ export default function Userdata() {
                         <td>{datas.mail}</td>
                         <td>{datas.phone}</td>
                         <td>{datas.pphone.length === 0 ? "-" : datas.pphone}</td>
-                        <td><button className = "data-tables-button"><img src={require("../Sources/info.png")} alt = "icon"></img></button></td>
+                        {/* <td><button className = "data-tables-button"><img src={require("../Sources/info.png")} alt = "icon"></img></button></td> */}
                         <td><button className = "data-tables-button data-tables-red-button" onClick = {() => handleConfirmDeletePopup(datas.mail)}><img src={require("../Sources/delete.png")} alt = "icon"></img></button></td>
                     </tr>
                     ))}
