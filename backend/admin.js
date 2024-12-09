@@ -1,27 +1,47 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const app = express();
-const dotenv = require('dotenv');
-const PORT = 3003;
 const jwt = require('jsonwebtoken');
 const { ObjectId } = require('mongodb');
+const nodemailer = require('nodemailer');
 const serverless = require('serverless-http');
 const helmet = require('helmet');
 
-dotenv.config();
-app.use(bodyParser.json());
+const app = express();
+const PORT = process.env.PORT || 3003;
 
+app.use(bodyParser.json());
 app.use(cors({
     origin: ['https://kec-presence.vercel.app/'],
     methods: ['GET', 'POST'], // Allowed HTTP methods
     credentials: true,
 }));
 
-mongoose.connect(process.env.mongodb_url, { useNewUrlParser: true, useUnifiedTopology: true })
+// Configure Helmet to set CSP
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "https://vercel.live"],
+            scriptSrcElem: ["'self'", "https://vercel.live"]
+        }
+    }
+}));
+
+if (!process.env.mongodb_url) {
+    throw new Error('The mongodb_url environment variable is not defined');
+}
+
+console.log('MongoDB URL:', process.env.mongodb_url); // Add this line to verify the URL
+
+mongoose.connect(process.env.mongodb_url)
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('MongoDB connection error:', err));
+
 
 const Users = mongoose.model('users', {
     usertype: String,
@@ -52,13 +72,6 @@ const Request = mongoose.model('request', {
     advoicerstatus: String,
     inchargestatus: String,
   });
-
-app.use((req, res, next) => {
-    res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self' https://vercel.live;");
-    next();
-});
-
-
 
 // --------------------------------------------------------------------
 //                              Common Utilities
