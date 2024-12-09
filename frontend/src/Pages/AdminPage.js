@@ -42,7 +42,7 @@ export default function AdminPage() {
         const jwt_data = jwtDecode(Cookies.get('data'));
         const mail = jwt_data.mail;
   
-        const response = await axios.post('http://localhost:3003/changepassword',{mail, currentpassword, newpassword});
+        const response = await axios.post('https://kec-presence-c9dh.vercel.app/changepassword',{mail, currentpassword, newpassword});
   
         if( response.data === "202"){
           toast.success("Password changed");
