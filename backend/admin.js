@@ -11,7 +11,12 @@ const serverless = require('serverless-http');
 
 dotenv.config();
 app.use(bodyParser.json());
-app.use(cors());
+
+app.use(cors({
+    origin: ['https://kec-presence.vercel.app/'],
+    methods: ['GET', 'POST'], // Allowed HTTP methods
+    credentials: true,
+}));
 
 mongoose.connect(process.env.mongodb_url, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
