@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AdminDashboard from "../Components/AdminDashboard";
-import AdminAdduser from "../Components/AdminAdduser";
+import AdminDashboard from "../Components/AdminDashBoard";
+import AdminAdduser from "../Components/AdminAddUser";
 import AdminEdituser from "../Components/AdminEdituser";
 import AdminDeleteuser from "../Components/AdminDeleteuser";
 import AdminUseractivity from "../Components/AdminUseractivity";
