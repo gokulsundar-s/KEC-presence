@@ -27,7 +27,7 @@ export default function LoginPage() {
 
     const handleLogin = async () => {
         try{
-            const result = await axios.post('https://kec-presence-47gq.vercel.app/login', { mail,password });
+            const result = await axios.post('http://localhost:3003/login', { mail,password });
             
             if(result.data !== "failed"){
                 Cookies.set('data',result.data,{ expires: 1 });
