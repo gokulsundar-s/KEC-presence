@@ -1,0 +1,11 @@
+.student-report-container {
+    margin: 1rem;
+}
+
+.student-report-welcome {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #888;
+    padding-bottom: 3rem;
+}

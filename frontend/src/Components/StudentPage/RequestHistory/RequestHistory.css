@@ -1,0 +1,52 @@
+.student-history-container {
+    margin: 1rem;
+}
+
+.student-history-welcome {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #888;
+    margin: 0;
+    padding-bottom: 3rem;
+}
+
+.student-history-table-container {
+    display: flex;
+    justify-content: center;
+}
+
+.student-history-table {
+    border-collapse: collapse;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.student-history-table th, .student-history-table td {
+    text-align: center;
+    padding: 0.5rem 0.25rem;
+    font-size: 0.9rem;
+  }
+  
+.student-history-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.student-history-table img {
+    width: 1rem;
+}
+
+.student-history-table button {
+    background-color: transparent;
+    border: none;
+}
+
+.student-history-table button:hover {
+    cursor: pointer;
+}
+
+.student-history-table-container-no-data {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #999;
+    padding-top: 3rem;
+}

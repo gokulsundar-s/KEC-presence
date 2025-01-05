@@ -1,0 +1,37 @@
+.admin-configurations-container {
+    margin: 1rem;
+}
+
+.admin-configurations-welcome {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #888;
+    padding-bottom: 3rem;
+}
+
+
+.admin-configurations-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.admin-configurations-buttons img {
+    height: 2rem;
+}
+
+.admin-configurations-buttons button {
+    padding: 2rem;
+    background-color: #1B9FFE;
+    border: 0.1rem solid #1B9FFE;
+    border-radius: 0.25rem;
+    color: #fff;
+    font-size: 1rem;
+    transition: 0.2s ease-in-out;
+    width: 25%;
+}
+
+.admin-configurations-buttons button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}

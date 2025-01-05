@@ -1,0 +1,10 @@
+.admin-dashboard-container {
+    margin: 1rem;
+}
+
+.admin-dashboard-welcome {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #888;
+    margin: 0;
+}

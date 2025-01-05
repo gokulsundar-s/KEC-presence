@@ -1,0 +1,79 @@
+.admin-userinfo-container {
+    margin: 1rem;
+}
+
+.admin-userinfo-welcome {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #888;
+    margin: 0;
+    padding-bottom: 3rem;
+}
+
+.admin-userinfo-search-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.admin-userinfo-search-input p {
+    margin: 0;
+    padding-bottom: 0.5rem;
+    font-weight: 900;
+    color: #333;
+}
+
+.admin-userinfo-search-input input {
+    width: 24.5rem;
+    height: 2rem;  
+    font-size: 0.9rem;
+    padding: 0 0.25rem; 
+}
+
+.admin-userinfo-search-input select {
+    width: 25rem;
+    height: 2.25rem;
+    font-size: 0.9rem;
+    padding: 0 0.25rem; 
+}
+
+.admin-userinfo-table-container {
+    display: flex;
+    justify-content: center;
+    padding-top: 3rem;
+}
+
+.admin-userinfo-table {
+    border-collapse: collapse;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.admin-userinfo-table th, .admin-userinfo-table td {
+    text-align: center;
+    padding: 0.5rem 0.25rem;
+    font-size: 0.9rem;
+  }
+  
+.admin-userinfo-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.admin-userinfo-table img {
+    width: 1rem;
+}
+
+.admin-userinfo-table button {
+    background-color: transparent;
+    border: none;
+}
+
+.admin-userinfo-table button:hover {
+    cursor: pointer;
+}
+
+.admin-userinfo-table-container-no-data {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #999;
+    padding-top: 3rem;
+}

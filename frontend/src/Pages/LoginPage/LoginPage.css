@@ -1,0 +1,86 @@
+.loginpage-container {
+    background-image: url("../../Sources/login-bg.jpg");
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form-container {
+    background-color: rgb(255,255,255,0.95);
+    border-radius: 1rem;
+    padding: 2rem 4rem;
+}
+
+.login-welcome-header {
+    font-weight: 900;
+    color: #333;
+    text-align: center;
+}
+
+.login-form-icon {
+    display: flex;
+    justify-content: center;
+}
+
+.login-form-icon img{
+    height: 3.5rem;
+}
+
+.login-inputs {
+    padding: 1rem 0;
+}
+
+.login-inputs p {
+    margin: 0;
+    font-weight: 900;
+    color: #333;
+    padding-bottom: 0.5rem;
+}
+
+.login-inputs input {
+    width: 100%;
+    height: 2.25rem;
+    padding: 0 0.25rem;
+    font-size: 0.9rem;
+}
+
+.login-bottom-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.show-password-container {
+    display: flex;
+}
+
+.show-password-container p {
+    font-size: 0.9rem;
+}
+
+.login-bottom-container a {
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.login-button {
+    text-align: center;
+    padding-top: 1rem;
+}
+
+.login-button button {
+    width: 100%;
+    height: 2.25rem;
+    background-color: #1B9FFE;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.25rem;
+    transition: 0.2s ease-in-out;
+}
+
+.login-button button:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}

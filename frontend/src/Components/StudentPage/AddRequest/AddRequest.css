@@ -1,0 +1,58 @@
+.student-add-request-container {
+    margin: 1rem;
+}
+
+.student-add-request-welcome {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #888;
+    padding-bottom: 3rem;
+}
+
+.student-add-request-form-inputs-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.student-add-request-form-inputs {
+    padding: 0.75rem 0;
+} 
+
+.student-add-request-form-inputs input {
+    width: 24.5rem;
+    height: 2rem;  
+    font-size: 0.9rem;
+    padding: 0 0.25rem; 
+}
+
+.student-add-request-form-inputs select {
+    width: 25rem;
+    height: 2.25rem;
+    font-size: 0.9rem;
+    padding: 0 0.25rem; 
+}
+
+.student-add-request-form-inputs p {
+    margin: 0;
+    padding-bottom: 0.5rem;
+    font-weight: 900;
+    color: #333;
+}
+
+.student-adduser-form-buttons {
+    display: flex;
+    justify-content: center;
+    padding-top: 3rem;
+}
+
+.student-adduser-form-buttons button {
+    width: 8rem;
+    height: 2.5rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #1B9FFE;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}

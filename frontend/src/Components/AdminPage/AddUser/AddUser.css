@@ -1,0 +1,58 @@
+.admin-adduser-container {
+    margin: 1rem;
+}
+
+.admin-adduser-welcome {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #888;
+    padding-bottom: 3rem;
+}
+
+.admin-adduser-form-inputs-container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.admin-adduser-form-inputs {
+    padding: 0.75rem 0;
+} 
+
+.admin-adduser-form-inputs input {
+    width: 24.5rem;
+    height: 2rem;  
+    font-size: 0.9rem;
+    padding: 0 0.25rem; 
+}
+
+.admin-adduser-form-inputs select {
+    width: 25rem;
+    height: 2.25rem;
+    font-size: 0.9rem;
+    padding: 0 0.25rem; 
+}
+
+.admin-adduser-form-inputs p {
+    margin: 0;
+    padding-bottom: 0.5rem;
+    font-weight: 900;
+    color: #333;
+}
+
+.admin-adduser-form-buttons {
+    display: flex;
+    justify-content: center;
+    padding-top: 3rem;
+}
+
+.admin-adduser-form-buttons button {
+    width: 8rem;
+    height: 2.5rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #1B9FFE;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}

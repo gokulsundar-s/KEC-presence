@@ -1,0 +1,95 @@
+.admin-adddropdown-popup-container {
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.500);
+    z-index: 100%; 
+}
+  
+.admin-adddropdown-popup-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    height: auto;
+    background-color: #ffffff;
+    padding: 2%;
+    border-radius: 0.5rem;
+}
+
+.admin-adddropdown-popup-close {
+    position: fixed;
+    top: 0.75rem;
+    right: 0.5rem;
+}
+
+.admin-adddropdown-popup-close button {
+    background-color: transparent;
+    border: none;
+}
+
+.admin-adddropdown-popup-close button:hover {
+    cursor: pointer;
+}
+
+.admin-adddropdown-popup-close img {
+    height: 1.25rem;
+}
+
+.admin-adddropdown-popup-header {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: #555;
+    margin: 0;
+    padding-bottom: 1.5rem;
+}
+
+.admin-adddropdown-popup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.admin-adddropdown-popup-inputs {
+    padding: 0.75rem 0;
+}
+
+.admin-adddropdown-popup-inputs p {
+    margin: 0;
+    color: #555;
+    padding-bottom: 0.5rem;
+}
+
+.admin-adddropdown-popup-inputs select {
+    width: 20.75rem;
+    height: 2.5rem;
+    padding: 0 0.25rem;
+    font-size: 0.9rem;
+}
+
+.admin-adddropdown-popup-inputs input {
+    width: 20rem;
+    height: 2.25rem;
+    padding: 0 0.25rem;
+    font-size: 0.9rem;
+}
+
+.admin-adddropdown-popup-button {
+    padding-top: 2rem;
+}
+
+.admin-adddropdown-popup-button button {
+    padding: 0.5rem 1.5rem;
+    background-color: #1B9FFE;
+    border: 0.1rem solid #1B9FFE;
+    border-radius: 0.2rem;
+    color: #fff;
+}
+
+.admin-adddropdown-popup-button button:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}
