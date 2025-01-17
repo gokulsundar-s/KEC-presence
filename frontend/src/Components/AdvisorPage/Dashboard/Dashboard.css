@@ -1,0 +1,10 @@
+.advisor-dashboard-container {
+    margin: 1rem;
+}
+
+.advisor-dashboard-welcome {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #888;
+    margin: 0;
+}

@@ -1,0 +1,84 @@
+.advisor-sidebar-container {
+    background-color: #1B9FFE;
+    width: 7rem;
+    height: 100vh;;
+}
+
+.advisor-sidebar-logo-container {
+    display: flex;
+    justify-content: center;
+    padding-top: 1rem;
+}
+
+.advisor-sidebar-user {
+    color: #fff;
+    text-align: center;
+}
+
+.advisor-sidebar-logo-container img {
+    height: 4rem;
+}
+
+.advisor-sidebar-buttons-container {
+    padding-top: 0.5rem;
+}
+
+.advisor-sidebar-buttons-container button {
+    background-color: #1B9FFE;
+    border: none;
+    width: 100%;
+    padding: 1.5rem 0;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.advisor-sidebar-buttons-container button:hover, .advisor-sidebar-buttons-container button.active {
+    background-color: #0363a8;
+}
+
+.advisor-sidebar-buttons-container img {
+    height: 1.5rem;
+    margin: 0;
+}
+
+.advisor-sidebar-buttons-container p {
+    margin: 0;
+    padding-top: 0.5rem;
+}
+
+.advisor-sidebar-popup-button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.advisor-sidebar-popup-button-container button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border: none;
+    padding: 1rem 0;
+    width: 100%;
+}
+
+.advisor-sidebar-popup-button-container button:hover {
+    background-color: #eee;
+}
+
+.advisor-sidebar-popup-button-container-logout button {
+    color: red;
+}
+
+.advisor-sidebar-popup-button-container-logout button:hover {
+    background-color: rgba(255, 0, 0, 0.100);
+}
+
+.advisor-sidebar-popup-button-container img {
+    height: 1rem;
+    padding-right: 0.25rem;
+}
+
+.advisor-sidebar-popup-button-container p {
+    margin: 0;
+}

@@ -25,6 +25,8 @@ export default function LoginPage() {
                 navigate("/admin");
             } else if(user === "STU"){
                 navigate("/student");
+            } else if(user === "CA"){
+                navigate("/advisor");
             }
         } else {
             navigate("/");
@@ -49,6 +51,8 @@ export default function LoginPage() {
                     navigate("/admin");
                 } else if(user === "STU"){
                     navigate("/student");
+                } else if(user === "CA"){
+                    navigate("/advisor");
                 }
             } else {
                 toast.error(response.data.message,{

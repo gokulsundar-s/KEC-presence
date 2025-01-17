@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const { ObjectId } = require('mongodb');
 
 dotenv.config();
 app.use(bodyParser.json());
@@ -45,6 +46,8 @@ const Request = mongoose.model('request', {
     prooflink: String,
     advoicerstatus: String,
     inchargestatus: String,
+    advoicernotes: String,
+    inchargenotes: String,
 });
 
 const DropDown = mongoose.model('dropdown', {
@@ -112,7 +115,7 @@ app.post('/login', async (req, res) => {
         if (!match) {
             res.json({status: 400, message: "Invalid Password"});
         } else {
-            const token = jwt.sign({usertype: auth.usertype, mail: auth.mail, name: auth.name, roll: auth.roll, year: auth.department, section: auth.section, departyment: auth.department}, process.env.secretKey, { expiresIn: '1d' });
+            const token = jwt.sign({usertype: auth.usertype, mail: auth.mail, name: auth.name, roll: auth.roll, year: auth.year, section: auth.section, departyment: auth.department}, process.env.secretKey, { expiresIn: '1d' });
             res.json({status: 200, token: token});
         }
     }
@@ -173,6 +176,8 @@ app.post('/date-config', async (req, res) => {
 app.post('/adminadduser', async (req, res) => {
     const { usertype, department, name, roll, mail, year, section, phone, pphone, pmail } = req.body;
     const user = await Users.findOne({ mail: mail });
+
+
     
     if(user) {
         res.json({status: 400, message: "User already exists"});
@@ -216,12 +221,14 @@ app.post('/adminadduser', async (req, res) => {
                 password += charset.charAt(randomIndex);
             }
             
+            console.log(password);
+            
             const hashedPassword = await bcrypt.hash(password, saltRounds);
             const newUser = new Users({ usertype, department, name, roll, mail, year,section, phone, pphone, pmail, password: hashedPassword });
             await newUser.save();
             
             if(newUser._id){
-                sendMail(mail, 'Login credentials for KEC Presence Portal', `Hello ${name},\nYour account for accessing KEC Presence Portal is activated successfully!!\n\nUse the following login credentials to login to your account:\nMail ID: ${mail}\nPassword: ${password} (Kindly change your password at your first login)\n\nFor queries: kecpresence.server@gmail.com\n\nHave a happy journey with us!!\n\nThanks and Regards,\nKEC Presence Team.`);
+                // sendMail(mail, 'Login credentials for KEC Presence Portal', `Hello ${name},\nYour account for accessing KEC Presence Portal is activated successfully!!\n\nUse the following login credentials to login to your account:\nMail ID: ${mail}\nPassword: ${password} (Kindly change your password at your first login)\n\nFor queries: kecpresence.server@gmail.com\n\nHave a happy journey with us!!\n\nThanks and Regards,\nKEC Presence Team.`);
                 res.json({status: 200, message: "User created successfully"});
             }  else{
                 res.json({status: 400, message: "Server error. Try again later"});
@@ -281,6 +288,10 @@ app.post('/add-request', async (req, res) => {
         res.json({status: 400, message: "Please select the To Date"});
     } else if(session === "") {
         res.json({status: 400, message: "Please select the Session"});
+    } else if (new Date(fromdate).getFullYear() === new Date().getFullYear() && new Date(fromdate).getMonth() === new Date().getMonth() && new Date(fromdate).getDate() < new Date().getDate()) {
+        res.json({status: 400, message: "From date cannot be lesser that todays"});
+    } else if (new Date(todate).getFullYear() === new Date().getFullYear() && new Date(todate).getMonth() === new Date().getMonth() && new Date(todate).getDate() < new Date().getDate()) {
+        res.json({status: 400, message: "To date cannot be lesser that todays"});
     } else {
         const date1 = new Date(fromdate);
         const date2 = new Date(todate);
@@ -331,14 +342,28 @@ app.post('/delete-request', async (req, res) => {
     }
 });
 
+// --------------------------------------------------------------------------------
+//                                 Advisor Routes
+// --------------------------------------------------------------------------------
 
+app.post('/advisor-requests', async (req, res) => {
+    const { year, section } = req.body;
+    const requests = await Request.find({ advoicerstatus: 'pending' }).sort({ _id: -1 });
+        
+    res.json(requests);
+});
 
-
-
-
-
-
-
+app.post('/advisor-req-update', async (req, res) => {
+    const { id, status } = req.body;
+    const objID = new ObjectId(id);
+    const update = await Request.updateOne({ _id: objID }, {$set:{ advoicerstatus: status }});
+     
+    if(update.modifiedCount === 0) {
+        res.json({status: 400, message: "Request update failed"});
+    } else {
+        res.json({status: 200, message: "Request updated successfully"});
+    }
+});
 
 
 
