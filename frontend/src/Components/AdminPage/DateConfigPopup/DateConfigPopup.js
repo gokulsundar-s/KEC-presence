@@ -68,7 +68,6 @@ export default function DateConfigPopup({handleAddDateConfig}) {
                             <option>Public Holiday</option>
                             <option>Saturday Holiday</option>
                             <option>Sunday Holiday</option>
-                            <option>Semester Holiday</option>
                         </select>
                     </div>
                     <div className = "admin-date-config-popup-button">

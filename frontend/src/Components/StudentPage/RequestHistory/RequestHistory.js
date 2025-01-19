@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 import toast, { Toaster } from 'react-hot-toast';
 import DeletePopup from '../../DeletePopup/DeletePopup';
+import NotesPopup from '../NotesPopup/NotesPopup';
 import "./RequestHistory.css";
 
 export default function RequestHistory() {
@@ -13,6 +14,9 @@ export default function RequestHistory() {
     const [requestHistory, setRequestHistory] = useState([]);
     const [deletePopup, setDeletePopup] = useState(false);
     const [deleteID, setDeleteID] = useState("");
+    const [notesID, setNotesID] = useState("");
+
+    const [openNotesPopup, setNotesPopup] = useState(false);
 
     const handleRequestTypeDropDown = async() => {
         const type = "Request Type";
@@ -70,6 +74,17 @@ export default function RequestHistory() {
         }
     }
 
+    const handleOpenNotesPopup = async(id) => {
+        setNotesID(id);
+        if(notesID){
+            setNotesPopup(true);
+        }
+    }
+
+    const handleCloseNotesPopup = (value) => {
+        setNotesPopup(value);
+    }
+
     const getRequesttypeDescription = (reqtype) => {
         const usertypeItem = requestTypeDD.find(item => item.value === reqtype);
         return usertypeItem ? usertypeItem.description : reqtype;
@@ -111,7 +126,8 @@ export default function RequestHistory() {
                             <th>Session</th>
                             <th>No. of Day(s)</th>
                             <th>Advoicer Status</th>
-                            <th>Year-incharge Status</th>
+                            <th>Incharge Status</th>
+                            <th></th>
                             <th></th>
                         </tr>
                   
@@ -123,8 +139,10 @@ export default function RequestHistory() {
                             <td>{datas.todate}</td>
                             <td>{getSessionDescription(datas.session)}</td>
                             <td>{datas.days}</td>
-                            <td>{datas.advoicerstatus}</td>
-                            <td>{datas.inchargestatus}</td>
+                            <td className = {datas.advoicerstatus === "accepted" ? "green-string" : (datas.advoicerstatus === "rejected" ? "red-string" : "")}>{datas.advoicerstatus.charAt(0).toUpperCase() + datas.advoicerstatus.slice(1)}</td>
+                            <td className = {datas.inchargestatus === "accepted" ? "green-string" : (datas.inchargestatus === "rejected" ? "red-string" : "")}>{datas.inchargestatus.charAt(0).toUpperCase() + datas.inchargestatus.slice(1)}</td>
+                            <td><button onClick={() => handleOpenNotesPopup(datas._id)}><img src={require("../../../Sources/notes.png")} alt="notes-image"/></button></td>
+                            <td><button onClick={() => datas.prooflink && window.open(datas.prooflink, "_blank")}><img src={require("../../../Sources/proof.png")} alt="notes-image" className={!datas.prooflink ? "disable-image" : ""} /></button></td>
                             <td><button onClick={() => handleDeletePopup(datas._id)}><img src={require("../../../Sources/delete.png")} alt="icon"/></button></td>
                         </tr>
                         ))}
@@ -133,6 +151,7 @@ export default function RequestHistory() {
             </div>
         </div>
         {deletePopup && <DeletePopup handleDelete={handleDelete} deleteType={"user"}/>}
+        {openNotesPopup && <NotesPopup handleCloseNotesPopup={handleCloseNotesPopup} notesID={notesID}/>}
         <Toaster toastOptions={{duration: 5000}}/> 
         </>
     )

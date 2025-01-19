@@ -50,3 +50,19 @@
     color: #999;
     padding-top: 3rem;
 }
+
+.disable-image {
+    opacity: 0.5;
+}
+
+.disable-image:hover {
+    cursor: not-allowed;
+}
+
+.green-string {
+    color: green;
+}
+
+.red-string {
+    color: red;
+}

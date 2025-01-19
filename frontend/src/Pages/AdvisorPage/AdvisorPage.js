@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import SideBar from "../../Components/AdvisorPage/SideBar/SideBar";
 import Dashboard from "../../Components/AdvisorPage/Dashboard/Dashboard";
 import Requests from "../../Components/AdvisorPage/Requests/Requests";
+import History from "../../Components/AdvisorPage/History/History";
+import AddEntry from "../../Components/AdvisorPage/AddEntry/AddEntry";
 import "./AdvisorPage.css";
 
 export default function AdvisorPage() {
@@ -36,8 +38,8 @@ export default function AdvisorPage() {
             <div className = "advisorpage-menus-container">
                 {activeMenu === 1 && <Dashboard/>}
                 {activeMenu === 2 && <Requests/>}
-                {activeMenu === 3 && <></>}
-                {activeMenu === 4 && <></>}
+                {activeMenu === 3 && <History/>}
+                {activeMenu === 4 && <AddEntry/>}
             </div>
         </div>
         </>

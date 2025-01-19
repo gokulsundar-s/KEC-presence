@@ -44,20 +44,29 @@ export default function Requests() {
     };
 
     const handleUpdateRequest = async (id, status) => {
-        console.log(id, status);
-        const response = await axios.post('http://localhost:3003/advisor-req-update', {id, status});
-        
-        if(response.data.status === 200){
-            toast.success(response.data.message);
-            handleFetchData();
-        } else {
-            toast.error(response.data.message);
+        try{
+            const response = await axios.post('http://localhost:3003/advisor-req-update', {id, status});
+            
+            if(response.data.status === 200){
+                toast.success(response.data.message);
+                handleFetchData();
+            } else {
+                toast.error(response.data.message);
+            }
+        } catch {
+            toast.error("Server error. Try again after sometimes.");
         }
     }
 
-    const handleOpenNotesPopup = (id) => {
+    const handleOpenNotesPopup = async(id) => {
         setNotesID(id);
-        setNotesPopup(true);
+        if(notesID){
+            setNotesPopup(true);
+        }
+    }
+
+    const handleCloseNotesPopup = (value) => {
+        setNotesPopup(value);
     }
     
     useEffect(() => {
@@ -115,6 +124,7 @@ export default function Requests() {
                             <td>{getSessionDescription(datas.session)}</td>
                             <td>{datas.days}</td>
                             <td><button onClick={() => handleOpenNotesPopup(datas._id)}><img src={require("../../../Sources/notes.png")} alt="notes-image"/></button></td>
+                            <td><button onClick={() => datas.prooflink && window.open(datas.prooflink, "_blank")}><img src={require("../../../Sources/proof.png")} alt="notes-image" className={!datas.prooflink ? "disable-image" : ""} /></button></td>
                             <td><button onClick={() => handleUpdateRequest(datas._id, acceptedStatus)}><img src={require("../../../Sources/accept.png")} alt="accept-image"/></button></td>
                             <td><button onClick={() => handleUpdateRequest(datas._id, rejectedStatus)}><img src={require("../../../Sources/reject.png")} alt="reject-image"/></button></td>
                         </tr>
@@ -124,7 +134,7 @@ export default function Requests() {
             </div>
         </div>
         <Toaster toastOptions={{duration: 5000}}/>
-        {openNotesPopup && <NotesPopup/>}
+        {openNotesPopup && <NotesPopup handleCloseNotesPopup={handleCloseNotesPopup} notesID={notesID}/>}
         </>
     )
 }

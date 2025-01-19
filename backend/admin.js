@@ -221,8 +221,6 @@ app.post('/adminadduser', async (req, res) => {
                 password += charset.charAt(randomIndex);
             }
             
-            console.log(password);
-            
             const hashedPassword = await bcrypt.hash(password, saltRounds);
             const newUser = new Users({ usertype, department, name, roll, mail, year,section, phone, pphone, pmail, password: hashedPassword });
             await newUser.save();
@@ -307,7 +305,7 @@ app.post('/add-request', async (req, res) => {
         } else if(days === 1 && !date2.getDay()) {
             res.json({status: 400, message: "Request selected date is a Sunday"});
         } else {
-            const newReq = new Request({ name, roll, mail, reqtype, reason, fromdate, todate, days, session, prooflink, advoicerstatus, inchargestatus });
+            const newReq = new Request({ name, roll, mail, reqtype, reason, fromdate, todate, days, session, prooflink, advoicerstatus, inchargestatus, advoicernotes: "", inchargenotes: "" });
             await newReq.save();
             
             if(newReq._id){
@@ -342,22 +340,38 @@ app.post('/delete-request', async (req, res) => {
     }
 });
 
+app.post('/get-notes', async (req, res) => {
+    const { notesID } = req.body;
+    const objID = new ObjectId(notesID);
+    const find = await Request.findOne({ _id: objID });
+
+    if(find) {
+        res.json({status: 200, advisorNotes: find.advoicernotes, inchargeNotes: find.inchargenotes})
+    } else {
+        res.json({status: 400});
+    }
+});
+
 // --------------------------------------------------------------------------------
 //                                 Advisor Routes
 // --------------------------------------------------------------------------------
 
 app.post('/advisor-requests', async (req, res) => {
     const { year, section } = req.body;
-    const requests = await Request.find({ advoicerstatus: 'pending' }).sort({ _id: -1 });
-        
+
+    const users = await Users.find({ year, section });
+    const rollNumbers = users.map(user => user.roll);
+
+    const requests = await Request.find({ advoicerstatus: 'pending', roll: { $in: rollNumbers }}).sort({ _id: -1 });
     res.json(requests);
 });
 
 app.post('/advisor-req-update', async (req, res) => {
     const { id, status } = req.body;
+        
     const objID = new ObjectId(id);
     const update = await Request.updateOne({ _id: objID }, {$set:{ advoicerstatus: status }});
-     
+        
     if(update.modifiedCount === 0) {
         res.json({status: 400, message: "Request update failed"});
     } else {
@@ -365,6 +379,47 @@ app.post('/advisor-req-update', async (req, res) => {
     }
 });
 
+app.post('/advisor-old-notes', async (req, res) => {
+    const { notesID } = req.body;
+    const objID = new ObjectId(notesID);
+    const find = await Request.findOne({ _id: objID });
+
+    if(find) {
+        res.json({status: 200, message: find.advoicernotes})
+    } else {
+        res.json({status: 400});
+    }
+});
+
+app.post('/advisor-add-notes', async (req, res) => {
+    const { notesID, notes } = req.body;
+    const objID = new ObjectId(notesID);
+
+    const update = await Request.updateOne({ _id: objID }, {$set:{ advoicernotes: notes }});
+    
+    if(update.modifiedCount === 0) {
+        res.json({status: 400, message: "Notes update failed"});
+    } else {
+        res.json({status: 200, message: "Notes updated successfully"});
+    }
+});
+
+app.post('/advisor-history', async (req, res) => {
+    const { year, section } = req.body;
+    const users = await Users.find({ year, section });
+    const rollNumbers = users.map(user => user.roll).filter(roll => roll);
+    
+    const requests = await Request.find({ advoicerstatus: { $in: ['accepted', 'rejected'] }, roll: { $in: rollNumbers }}).sort({ _id: -1 });
+    res.json(requests);
+});
+
+app.post('/get-roll', async (req, res) => {
+    const { year, section } = req.body;
+    const users = await Users.find({ year, section });
+    const rollNumbers = users.map(user => user.roll).filter(roll => roll);
+
+    res.json(rollNumbers);
+})
 
 
 

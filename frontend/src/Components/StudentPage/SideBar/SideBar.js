@@ -52,6 +52,9 @@ export default function SideBar({handleMenuChange, activeMenu}) {
                 <Popup trigger=
                     {<button><img src={require("../../../Sources/setting.png")} alt="logo1"></img><p>Settings</p></button>} position="right">
                     <div className = "student-sidebar-popup-button-container">
+                        <button><img src={require("../../../Sources/edit.png")} alt="logo1"></img><p>Edit Profile</p></button>
+                    </div>  
+                    <div className = "student-sidebar-popup-button-container">
                         <button onClick={() => handleChangePasswordPopup(true)}><img src={require("../../../Sources/change-password.png")} alt="logo1"></img><p>Change Password</p></button>
                     </div>  
                     <div className = "student-sidebar-popup-button-container student-sidebar-popup-button-container-logout">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import DeletePopup from '../../DeletePopup/DeletePopup';
+import UserInfoPopup from '../UserInfoPopup/UserInfoPopup';
 import "./UserInfo.css";
 
 export default function UserInfo() {
@@ -9,8 +10,11 @@ export default function UserInfo() {
     const [searchby, setSearchby] = useState("Name");
     const [searchValue, setSearchValue] = useState("");
     const [userData, setUserData] = useState([]);
-    const [deletePopup, setDeletePopup] = useState(false);
     const [deletemail, setDeleteMail] = useState("");
+    const [userinfodata, setUserInfoData] = useState([]);
+    
+    const [deletePopup, setDeletePopup] = useState(false);
+    const [userInfoPopup, setUserInfoPopup] = useState(false);
 
     const handleSearchBy = (event) => setSearchby(event.target.value);
     const handleSearchValue = async(event) => setSearchValue(event.target.value);
@@ -71,6 +75,15 @@ export default function UserInfo() {
         setDeleteMail(mail);
     }
     
+    const handleUserInfoPopup = async(data) => {
+        setUserInfoPopup(true);
+        setUserInfoData(data);
+    }
+
+    const handleCloseUserInfoPopup = () => {
+        setUserInfoPopup(false);
+    }
+    
     useEffect(() => {   
         handleUserTypeDropDown();
         handleFetchUserData();
@@ -118,7 +131,6 @@ export default function UserInfo() {
                             <th>Phone Number</th>
                             <th></th>
                             <th></th>
-                            <th></th>
                         </tr>
                   
                         {userData.map(datas => (
@@ -130,8 +142,7 @@ export default function UserInfo() {
                             <td>{datas.section.length === 0 ? "-" : datas.section}</td>
                             <td>{datas.mail}</td>
                             <td>{datas.phone}</td>
-                            <td><button><img src={require("../../../Sources/info.png")} alt="icon"/></button></td>
-                            <td><button><img src={require("../../../Sources/edit.png")} alt="icon"/></button></td>
+                            <td><button onClick={() => handleUserInfoPopup(datas)}><img src={require("../../../Sources/info.png")} alt="icon"/></button></td>
                             <td><button onClick={() => handleDeletePopup(datas.mail)}><img src={require("../../../Sources/delete.png")} alt="icon"/></button></td>
                         </tr>
                         ))}
@@ -141,6 +152,7 @@ export default function UserInfo() {
         </div>
 
         {deletePopup && <DeletePopup handleDelete={handleDelete} deleteType={"user"}/>}
+        {userInfoPopup && <UserInfoPopup handleCloseUserInfoPopup={handleCloseUserInfoPopup} userinfodata={userinfodata}/>}
         <Toaster toastOptions={{duration: 5000}}/> 
         </>
     )

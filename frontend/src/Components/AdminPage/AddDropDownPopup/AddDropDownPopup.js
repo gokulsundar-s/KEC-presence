@@ -60,7 +60,6 @@ export default function AddDropDownPopup({handleAddDropDown}) {
                             <option>Sections</option>
                             <option>Session</option>
                             <option>Request Type</option>
-                            <option>Holiday Type</option>
                         </select>
                     </div>
                     <div className = "admin-adddropdown-popup-inputs">

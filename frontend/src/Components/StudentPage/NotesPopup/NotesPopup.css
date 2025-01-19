@@ -1,0 +1,66 @@
+.student-notes-popup-container {
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.500);
+    z-index: 100%; 
+}
+  
+.student-notes-popup-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    height: auto;
+    background-color: #ffffff;
+    padding: 2%;
+    border-radius: 0.5rem;
+}
+  
+.student-notes-popup-header {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: #555;
+    margin: 0;
+    padding-bottom: 1.5rem;
+}
+
+.student-notes-popup-close {
+    position: fixed;
+    top: 0.75rem;
+    right: 0.5rem;
+}
+
+.student-notes-popup-close button {
+    background-color: transparent;
+    border: none;
+}
+
+.student-notes-popup-close button:hover {
+    cursor: pointer;
+}
+
+.student-notes-popup-close img {
+    height: 1.25rem;
+}
+  
+.student-notes-popup-input-container {
+    padding: 1% 0;
+    text-align: center;
+}
+  
+.student-notes-popup-input-container-inputs {
+    font-size: 1rem;
+    border-radius: 0.12rem;
+    border-color: black;
+    border-style: solid;
+    color: black;
+    padding: 0.4rem 0.5rem;
+    width: 80%;
+    border-width: 0.05rem;
+    height: 5rem;
+    resize: none;
+}
