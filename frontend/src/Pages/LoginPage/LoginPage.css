@@ -65,9 +65,15 @@
     text-decoration: none;
 }
 
+.login-botton-container {
+    display: flex;
+    justify-content: center;
+}
+
 .login-button {
     text-align: center;
     padding-top: 1rem;
+    width: 100%;
 }
 
 .login-button button {
@@ -84,3 +90,34 @@
     cursor: pointer;
     opacity: 0.9;
 }
+
+.login-load-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    height: 2.25rem;
+    width: 100%;
+    border-radius: 0.25rem;
+    background-color: #1B9FFE;
+    margin-top: 1rem;
+}
+
+.loader {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 0.15rem solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} 

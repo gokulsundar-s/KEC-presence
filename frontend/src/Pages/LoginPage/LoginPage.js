@@ -11,7 +11,8 @@ export default function LoginPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
     const [mail, setMail] = useState("");
-    const[password, setPassword] = useState("");
+    const [password, setPassword] = useState("");
+    const [loadButton, setLoadButton] = useState(false);
 
     const handleMailIDChange = (event) => setMail(event.target.value);
     const handleShowPassword = () => setShowPassword(!showPassword);
@@ -41,12 +42,17 @@ export default function LoginPage() {
 
     const handleLogin = async() => {
         try{
+            setLoadButton(true);
             const response = await axios.post("http://localhost:3003/login", {mail, password});
-        
+
+            if(response){
+                setLoadButton(false);
+            }
+            
             if(response.data.status === 200) {
                 Cookies.set("authToken", response.data.token);  
                 const user = jwtDecode(response.data.token).usertype;
-
+                
                 if(user === "ADMIN"){
                     navigate("/admin");
                 } else if(user === "STU"){
@@ -62,6 +68,7 @@ export default function LoginPage() {
                 });
             }
         } catch(error) {
+            setLoadButton(false);
             toast.error("Server error. Try again after sometimes.",{
                 position: "top-center",
                 style: {color: "#004aad", fontSize: "1rem"},
@@ -95,9 +102,17 @@ export default function LoginPage() {
                         </div>
                         <a href="/">Forget Password?</a>
                     </div>
-                    <div className = "login-button">
-                        <button onClick={handleLogin}>Login</button>
+                    <div className = "login-botton-container">
+                        {loadButton ? 
+                            <div className = "login-load-button">
+                                <span class="loader"></span>
+                            </div> : 
+                            <div className = "login-button">
+                                <button onClick={handleLogin}>Login</button>
+                            </div>
+                        }
                     </div>
+                    
                 </div>
             </div>
         </div>
