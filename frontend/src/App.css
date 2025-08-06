@@ -3,3 +3,16 @@
   margin: 0;
   padding: 0;
 }
+
+.page-container {
+  width: 100%;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.page-header {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #555;
+  padding-bottom: 2rem;
+}

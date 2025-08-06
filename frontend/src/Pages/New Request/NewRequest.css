@@ -1,0 +1,66 @@
+.request-form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.request-form-row {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.request-form-input {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1.5rem;
+}
+
+.request-form-input p {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.request-form-input select,
+.request-form-input input,
+.request-form-input textarea {
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+  resize: none;
+}
+
+.request-form-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+.request-form-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+}
+
+.request-form-bottom p {
+  color: red;
+}
+
+.request-form-bottom button {
+  padding: 0.5rem 2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.request-form-bottom button:hover {
+  background-color: #0056b3;
+}
