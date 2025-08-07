@@ -17,6 +17,7 @@ export default function Sidebar() {
     <div className="sidebar-container">
       <div className="sidebar-logo">
         <img src={Logo} alt="logo" />
+        <p>Student</p>
       </div>
 
       <div className="sidebar-buttons">

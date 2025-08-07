@@ -7,8 +7,9 @@
 
 .sidebar-logo {
   display: flex;
-  justify-content: center;
   align-items: center;
+  flex-direction: column;
+  justify-content: center;
   padding-top: 1rem;
 }
 
@@ -17,6 +18,12 @@
   background-color: #fff;
   padding: 0.5rem;
   border-radius: 0.25rem;
+}
+
+.sidebar-logo p {
+  color: #fff;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
 }
 
 .sidebar-buttons {
@@ -29,7 +36,7 @@
 .sidebar-buttons button {
   width: 100%;
   font-size: 0.75rem;
-  margin: 1rem 0;
+  margin: 1.5rem 0;
   color: #fff;
   background-color: transparent;
   border: none;

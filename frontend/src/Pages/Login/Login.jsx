@@ -1,17 +1,28 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Logo from "../../Assets/kec-logo.png";
 import LoginImage from "../../Assets/login-image.jpg";
 import "./Login.css";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
-  const [loadButton, setLoadButton] = useState(false);
+  const [loader, setLoader] = useState(false);
 
   const handleLogin = async () => {
-    setLoadButton(true);
-    setLoadButton(false);
+    setLoader(true);
+    const response = await axios.post("http://localhost:3003/login", {
+      mail,
+      password,
+    });
+
+    if (response) {
+      navigate("/dashboard");
+      setLoader(false);
+    }
   };
 
   return (
@@ -57,8 +68,12 @@ export default function Login() {
               </div>
             </div>
 
-            <button className="login-button" onClick={handleLogin}>
-              {loadButton ? "Loading..." : "Login"}
+            <button
+              className="login-button"
+              onClick={handleLogin}
+              disabled={loader}
+            >
+              {loader ? <span className="loader"></span> : "Login"}
             </button>
           </div>
         </div>
