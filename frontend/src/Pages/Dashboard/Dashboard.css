@@ -1,0 +1,109 @@
+.dashboard-counts {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.dashboard-counts-box {
+  flex: 1;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s;
+}
+
+.gray-box {
+  background: #f6f6f6;
+}
+
+.green-box {
+  background: #e8faef;
+}
+
+.red-box {
+  background: #feecec;
+}
+
+.orange-box {
+  background: #fff6eb;
+}
+
+.gray-count {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #777;
+  margin-bottom: 0.5rem;
+}
+
+.green-count {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #22944c;
+  margin-bottom: 0.5rem;
+}
+
+.red-count {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #d93025;
+  margin-bottom: 0.5rem;
+}
+
+.orange-count {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #ff8800;
+  margin-bottom: 0.5rem;
+}
+
+.gray-label {
+  color: #888;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+
+.green-label {
+  color: #22944c;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+
+.red-label {
+  color: #d93025;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+
+.orange-label {
+  color: #ff8800;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+
+.dashboard-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  white-space: nowrap;
+}
+
+.dashboard-table tbody tr:hover {
+  background-color: #f5f7ff;
+}

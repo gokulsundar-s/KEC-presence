@@ -1,7 +1,12 @@
 const express = require("express");
 const loginRoute = express.Router();
-const { UserDetails, Auth } = require("../schemas/Users");
+const {
+  Auth,
+  UserDetails,
+  UserDepartmentDetails,
+} = require("../schemas/Users");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 loginRoute.post("/login", async (req, res) => {
   try {
@@ -28,7 +33,28 @@ loginRoute.post("/login", async (req, res) => {
     if (userPassword.password !== password) {
       return res.status(401).json({ message: "Invalid password" });
     } else {
-      return res.status(200).json({ message: "Login successful" });
+      const userDetails = await UserDetails.findOne({
+        userID: userInfo.userID,
+      });
+
+      const userDepartmentDetails = await UserDepartmentDetails.findOne({
+        userID: userInfo.userID,
+      });
+
+      console.log(userDetails);
+      console.log(userDepartmentDetails);
+
+      const authToken = jwt.sign(
+        { userID: userInfo.userID },
+        process.env.JWT_KEY,
+        {
+          expiresIn: "1h",
+        }
+      );
+
+      return res
+        .status(200)
+        .json({ message: "Login successful", authToken: authToken });
     }
   } catch (error) {
     return res.status(500).json({ message: "Server Error" });

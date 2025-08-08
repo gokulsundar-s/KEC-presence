@@ -5,6 +5,8 @@ import {
   NewRequestIcon,
   HistoryIcon,
   SettingsIcon,
+  AddUserIcon,
+  UsersInfoIcon,
 } from "../../../../Assets/Icons";
 import "./Sidebar.css";
 import { useNavigate } from "react-router-dom";
@@ -30,31 +32,54 @@ export default function Sidebar() {
           <DashboardIcon filled={activeTab === 0} />
           <p>Dashboard</p>
         </button>
+
         <button
           onClick={() => {
-            navigate("/new-request");
+            navigate("/add-user");
             setActiveTab(1);
           }}
         >
-          <NewRequestIcon filled={activeTab === 1} />
-          <p>New Request</p>
+          <AddUserIcon filled={activeTab === 1} />
+          <p>Add User</p>
         </button>
+
         <button
           onClick={() => {
-            navigate("/history");
+            navigate("/users");
             setActiveTab(2);
           }}
         >
-          <HistoryIcon filled={activeTab === 2} />
-          <p>History</p>
+          <UsersInfoIcon filled={activeTab === 2} />
+          <p>User Info</p>
         </button>
+
         <button
           onClick={() => {
-            navigate("/settings");
+            navigate("/requests");
             setActiveTab(3);
           }}
         >
-          <SettingsIcon filled={activeTab === 3} />
+          <NewRequestIcon filled={activeTab === 3} />
+          <p>New Request</p>
+        </button>
+
+        <button
+          onClick={() => {
+            navigate("/history");
+            setActiveTab(4);
+          }}
+        >
+          <HistoryIcon filled={activeTab === 4} />
+          <p>History</p>
+        </button>
+
+        <button
+          onClick={() => {
+            navigate("/settings");
+            setActiveTab(5);
+          }}
+        >
+          <SettingsIcon filled={activeTab === 5} />
           <p>Settings</p>
         </button>
       </div>

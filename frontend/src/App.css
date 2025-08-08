@@ -16,3 +16,70 @@
   color: #555;
   padding-bottom: 2rem;
 }
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.form-input {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1.5rem;
+}
+
+.form-input p {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.form-input select,
+.form-input input,
+.form-input textarea {
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+  resize: none;
+}
+
+.form-select:focus {
+  border-color: #4061f2;
+  box-shadow: 0 0 4px rgba(64, 97, 242, 0.5);
+}
+
+.form-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+}
+
+.form-bottom p {
+  color: red;
+}
+
+.form-bottom button {
+  padding: 0.5rem 3rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #4061f2;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-bottom button:hover {
+  background-color: #2646e2;
+}

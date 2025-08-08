@@ -23,7 +23,6 @@ const userDetailsSchema = new mongoose.Schema({
 const userDepartmentDetailsSchema = new mongoose.Schema({
   userID: String,
   rollNumber: String,
-  batch: Number,
   year: Number,
   section: String,
   department: String,
