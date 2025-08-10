@@ -4,6 +4,7 @@ const {
   Auth,
   UserDetails,
   UserDepartmentDetails,
+  UserContacts,
 } = require("../schemas/Users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -36,25 +37,40 @@ loginRoute.post("/login", async (req, res) => {
       const userDetails = await UserDetails.findOne({
         userID: userInfo.userID,
       });
-
       const userDepartmentDetails = await UserDepartmentDetails.findOne({
         userID: userInfo.userID,
       });
+      const userContacts = await UserContacts.findOne({
+        userID: userInfo.userID,
+      });
 
-      console.log(userDetails);
-      console.log(userDepartmentDetails);
+      const userDetailsObject = {
+        ...userDetails.toObject(),
+        ...userDepartmentDetails.toObject(),
+        ...userContacts.toObject(),
+      };
 
       const authToken = jwt.sign(
         { userID: userInfo.userID },
         process.env.JWT_KEY,
         {
-          expiresIn: "1h",
+          expiresIn: "24h",
         }
       );
 
-      return res
-        .status(200)
-        .json({ message: "Login successful", authToken: authToken });
+      const userDetailsToken = jwt.sign(
+        userDetailsObject,
+        process.env.JWT_KEY,
+        {
+          expiresIn: "24h",
+        }
+      );
+
+      return res.status(200).json({
+        message: "Login successful",
+        authToken: authToken,
+        userDetailsToken: userDetailsToken,
+      });
     }
   } catch (error) {
     return res.status(500).json({ message: "Server Error" });

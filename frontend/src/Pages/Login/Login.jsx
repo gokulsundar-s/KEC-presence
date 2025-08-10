@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import Logo from "../../Assets/kec-logo.png";
 import LoginImage from "../../Assets/login-image.jpg";
@@ -8,6 +10,7 @@ import "./Login.css";
 
 export default function Login() {
   const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,9 +24,11 @@ export default function Login() {
     });
 
     if (response) {
+      Cookies.set("authToken", response.data.authToken);
+      Cookies.set("userDetailsToken", response.data.userDetailsToken);
       navigate("/dashboard");
-      setLoader(false);
     }
+    setLoader(false);
   };
 
   return (

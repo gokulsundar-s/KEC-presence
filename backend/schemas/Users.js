@@ -22,6 +22,7 @@ const userDetailsSchema = new mongoose.Schema({
 
 const userDepartmentDetailsSchema = new mongoose.Schema({
   userID: String,
+  name: String,
   rollNumber: String,
   year: Number,
   section: String,

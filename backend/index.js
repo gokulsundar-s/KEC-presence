@@ -16,7 +16,8 @@ const usersRoute = require("./routes/Users");
 mongoose.connect(process.env.MONGODB_URL);
 
 app.use("/", loginRoute);
-app.use("/", usersRoute);
+// app.use("/", usersRoute);
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

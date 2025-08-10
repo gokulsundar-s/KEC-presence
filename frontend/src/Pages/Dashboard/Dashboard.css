@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   gap: 2rem;
-  margin-bottom: 2rem;
+  padding-bottom: 2rem;
 }
 
 .dashboard-counts-box {
@@ -81,11 +81,6 @@
   color: #ff8800;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
-}
-
-.dashboard-table-container {
-  width: 100%;
-  overflow-x: auto;
 }
 
 .dashboard-table {

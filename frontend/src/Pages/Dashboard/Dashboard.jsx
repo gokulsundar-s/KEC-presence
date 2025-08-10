@@ -5,7 +5,6 @@ export default function Dashboard() {
   return (
     <div className="page-container">
       <p className="page-header">Welcome Gokulsundar🎉</p>
-
       <div className="dashboard-counts">
         <div className="dashboard-counts-box gray-box">
           <p className="gray-count">200</p>
