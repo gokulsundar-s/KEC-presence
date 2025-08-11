@@ -8,12 +8,22 @@ import {
   AddUserIcon,
   UsersInfoIcon,
 } from "../../../../Assets/Icons";
-import "./Sidebar.css";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+import "./Sidebar.css";
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = React.useState(0);
+
+  var userType = "";
+
+  try {
+    userType = jwtDecode(Cookies.get("userDetailsToken")).userType;
+  } catch (error) {
+    navigate("/login");
+  }
 
   return (
     <div className="sidebar-container">
@@ -25,7 +35,7 @@ export default function Sidebar() {
       <div className="sidebar-buttons">
         <button
           onClick={() => {
-            navigate("/dashboard");
+            navigate("/");
             setActiveTab(0);
           }}
         >
@@ -33,35 +43,40 @@ export default function Sidebar() {
           <p>Dashboard</p>
         </button>
 
-        <button
-          onClick={() => {
-            navigate("/add-user");
-            setActiveTab(1);
-          }}
-        >
-          <AddUserIcon filled={activeTab === 1} />
-          <p>Add User</p>
-        </button>
+        {userType === "Admin" && (
+          <button
+            onClick={() => {
+              navigate("/add-user");
+              setActiveTab(1);
+            }}
+          >
+            <AddUserIcon filled={activeTab === 1} />
+            <p>Add User</p>
+          </button>
+        )}
+        {userType === "Admin" && (
+          <button
+            onClick={() => {
+              navigate("/users");
+              setActiveTab(2);
+            }}
+          >
+            <UsersInfoIcon filled={activeTab === 2} />
+            <p>User Info</p>
+          </button>
+        )}
 
-        <button
-          onClick={() => {
-            navigate("/users");
-            setActiveTab(2);
-          }}
-        >
-          <UsersInfoIcon filled={activeTab === 2} />
-          <p>User Info</p>
-        </button>
-
-        <button
-          onClick={() => {
-            navigate("/requests");
-            setActiveTab(3);
-          }}
-        >
-          <NewRequestIcon filled={activeTab === 3} />
-          <p>New Request</p>
-        </button>
+        {userType === "Student" && (
+          <button
+            onClick={() => {
+              navigate("/requests");
+              setActiveTab(3);
+            }}
+          >
+            <NewRequestIcon filled={activeTab === 3} />
+            <p>New Request</p>
+          </button>
+        )}
 
         <button
           onClick={() => {

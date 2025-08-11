@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
+import { ConfirmIcon } from "../../Assets/Icons";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import ConfirmModal from "../../Components/ConfirmModal/ConfirmModal";
 import "./Settings.css";
 
 export default function Settings() {
+  const navigate = useNavigate();
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const handleLogout = () => {
+    Cookies.remove("authToken");
+    Cookies.remove("userDetailsToken");
+    navigate("/login");
+  };
+
   return (
     <div className="page-container">
       <p className="page-header">User Settings</p>
@@ -29,6 +42,22 @@ export default function Settings() {
           </div>
         </div>
       </div>
+
+      <div className="logout-container">
+        <button onClick={() => setShowConfirmModal(true)}>Logout</button>
+      </div>
+
+      {showConfirmModal && (
+        <ConfirmModal
+          icon={<ConfirmIcon />}
+          title="Confirm Logout"
+          message="Are you sure you want to logout?"
+          onClose={() => {
+            setShowConfirmModal(false);
+          }}
+          onConfirm={handleLogout}
+        />
+      )}
     </div>
   );
 }

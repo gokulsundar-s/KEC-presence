@@ -26,7 +26,7 @@ export default function Login() {
     if (response) {
       Cookies.set("authToken", response.data.authToken);
       Cookies.set("userDetailsToken", response.data.userDetailsToken);
-      navigate("/dashboard");
+      navigate("/");
     }
     setLoader(false);
   };

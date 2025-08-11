@@ -1,7 +1,13 @@
 import React from "react";
 import "./ConfirmModal.css";
 
-export default function ConfirmModal({ icon, title, message, onClose }) {
+export default function ConfirmModal({
+  icon,
+  title,
+  message,
+  onClose,
+  onConfirm,
+}) {
   return (
     <div className="confirm-modal-container">
       <div className="confirm-modal-box">
@@ -11,7 +17,7 @@ export default function ConfirmModal({ icon, title, message, onClose }) {
         </div>
         <p className="confirm-modal-content">{message}</p>
         <div className="confirm-modal-button">
-          <button onClick={onClose} className="confirm-modal-red-button">
+          <button onClick={onConfirm} className="confirm-modal-red-button">
             Yes
           </button>
           <button onClick={onClose} className="confirm-modal-blue-button">
