@@ -10,17 +10,17 @@ export default function NewRequest() {
           <div className="form-input">
             <p>Request Type</p>
             <select placeholder="Request Type">
-              <option value="leave">Leave</option>
-              <option value="od">On Duty</option>
+              <option value="LEA">Leave</option>
+              <option value="OD">On Duty</option>
             </select>
           </div>
 
           <div className="form-input">
             <p>Session</p>
             <select>
-              <option value="fd">Full Day</option>
-              <option value="fn">Fore Noon</option>
-              <option value="an">After Noon</option>
+              <option value="FD">Full Day</option>
+              <option value="FN">Fore Noon</option>
+              <option value="AN">After Noon</option>
             </select>
           </div>
         </div>

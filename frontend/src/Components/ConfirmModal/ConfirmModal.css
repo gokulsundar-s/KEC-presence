@@ -1,70 +1,94 @@
 .confirm-modal-container {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease-out;
 }
 
 .confirm-modal-box {
-  width: 25rem;
-  padding: 1rem;
+  width: 90%;
+  max-width: 25rem;
+  padding: 1.5rem;
   background-color: #fff;
-  border: none;
   border-radius: 0.5rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.25s ease-out;
 }
 
 .confirm-modal-title {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .confirm-modal-title p {
-  padding-left: 0.5rem;
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #4061f2;
 }
 
 .confirm-modal-content {
-  font-size: 0.9rem;
-  line-height: 1.75rem;
+  line-height: 1.6;
   margin-top: 1rem;
   text-align: left;
+  color: #333;
 }
 
 .confirm-modal-button {
   display: flex;
   justify-content: flex-end;
+  gap: 1rem;
   margin-top: 1.5rem;
 }
 
 .confirm-modal-button button {
-  background: transparent;
   border: none;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 0.95rem;
   cursor: pointer;
-  padding: 0.25rem 1rem;
+  padding: 0.4rem 1.5rem;
+  transition: background-color 0.2s ease;
+  font-weight: 500;
 }
-
 .confirm-modal-red-button {
   color: #df0000;
-}
-
-.confirm-modal-red-button:hover {
   background-color: #df000015;
 }
 
-.confirm-modal-blue-button {
-  color: #4061f2;
+.confirm-modal-red-button:hover {
+  background-color: #df000030;
 }
 
 .confirm-modal-blue-button {
   color: #4061f2;
+  background-color: #4061f215;
 }
 
 .confirm-modal-blue-button:hover {
-  background-color: #4061f215;
+  background-color: #4061f230;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

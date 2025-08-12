@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import LoadingWrapper from "../../Components/LoadingWrapper/LoadingWrapper";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Dashboard from "../Dashboard/Dashboard";
@@ -13,6 +13,7 @@ import { jwtDecode } from "jwt-decode";
 import "./Home.css";
 
 export default function Home() {
+  const navigate = useNavigate();
   var userType = "";
 
   try {
@@ -28,15 +29,15 @@ export default function Home() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
 
-          {userType === "Admin" && (
+          {userType === "STU" && (
             <Route path="add-user" element={<AddUser />} />
           )}
 
-          {userType === "Student" && (
-            <Route path="requests" element={<NewRequest />} />
+          {userType === "STU" && (
+            <Route path="new-request" element={<NewRequest />} />
           )}
 
-          {userType === "Admin" && (
+          {userType === "Student" && (
             <Route path="users" element={<UsersInfo />} />
           )}
 

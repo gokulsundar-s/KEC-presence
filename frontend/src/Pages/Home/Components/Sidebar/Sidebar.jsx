@@ -29,7 +29,7 @@ export default function Sidebar() {
     <div className="sidebar-container">
       <div className="sidebar-logo">
         <img src={Logo} alt="logo" />
-        <p>Student</p>
+        <p>{userType}</p>
       </div>
 
       <div className="sidebar-buttons">
@@ -43,7 +43,7 @@ export default function Sidebar() {
           <p>Dashboard</p>
         </button>
 
-        {userType === "Admin" && (
+        {userType === "STU" && (
           <button
             onClick={() => {
               navigate("/add-user");
@@ -54,7 +54,7 @@ export default function Sidebar() {
             <p>Add User</p>
           </button>
         )}
-        {userType === "Admin" && (
+        {userType === "Student" && (
           <button
             onClick={() => {
               navigate("/users");
@@ -69,7 +69,7 @@ export default function Sidebar() {
         {userType === "Student" && (
           <button
             onClick={() => {
-              navigate("/requests");
+              navigate("/new-request");
               setActiveTab(3);
             }}
           >

@@ -8,20 +8,21 @@ export default function AddUser() {
   const [rollNumber, setRollNumber] = useState("");
   const [year, setYear] = useState("");
   const [section, setSection] = useState("");
-  const [konguMail, setKonguMail] = useState("");
+  const [mail, setMail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [parentMail, setParentMail] = useState("");
   const [parentPhone, setParentPhone] = useState("");
 
   const onSubmit = async () => {
-    const response = await axios.post("http://localhost:3003/adduser", {
+    console.log("Submitting user data");
+    const response = await axios.post("http://localhost:3003/users/adduser", {
       userType,
       department,
       name,
       rollNumber,
       year,
       section,
-      konguMail,
+      mail,
       phoneNumber,
       parentMail,
       parentPhone,
@@ -40,8 +41,8 @@ export default function AddUser() {
               placeholder="User Type"
               onChange={(e) => setUserType(e.target.value)}
             >
-              <option value="admin">Admin</option>
-              <option value="student">Student</option>
+              <option value="ADM">Admin</option>
+              <option value="STU">Student</option>
             </select>
           </div>
 
@@ -105,7 +106,7 @@ export default function AddUser() {
             <input
               type="text"
               placeholder="Enter Kongu Mail ID"
-              onChange={(e) => setKonguMail(e.target.value)}
+              onChange={(e) => setMail(e.target.value)}
             />
           </div>
 
