@@ -29,21 +29,11 @@ export default function Home() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
 
-          {userType === "STU" && (
-            <Route path="add-user" element={<AddUser />} />
-          )}
+          {userType === "ADM" && <Route path="add-user" element={<AddUser />} />}
+          {userType === "ADM" && <Route path="users" element={<UsersInfo />} />}
 
-          {userType === "STU" && (
-            <Route path="new-request" element={<NewRequest />} />
-          )}
-
-          {userType === "Student" && (
-            <Route path="users" element={<UsersInfo />} />
-          )}
-
-          {userType === "Student" && (
-            <Route path="history" element={<History />} />
-          )}
+          {userType === "STU" && <Route path="new-request" element={<NewRequest />} />}
+          {userType === "STU" && <Route path="history" element={<History />} />}
 
           <Route path="settings" element={<Settings />} />
         </Routes>

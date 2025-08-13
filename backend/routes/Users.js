@@ -6,7 +6,7 @@ const {
   UserDepartmentDetails,
   UserContacts,
 } = require("../schemas/Users");
-const bcrypt = require("bcrypt");
+const { sendMail } = require("../utiles/SendMail");
 
 const saltRounds = 10;
 
@@ -26,29 +26,30 @@ usersRoute.post("/adduser", async (req, res) => {
     } = req.body;
 
     if (!userType) {
-      return res.status(400).json({ message: "User Type is required" });
+      return res.json({ status: 400, message: "User Type is required" });
     } else if (!department) {
-      return res.status(400).json({ message: "Department is required" });
+      return res.json({ status: 400, message: "Department is required" });
     } else if (!name) {
-      return res.status(400).json({ message: "Name is required" });
+      return res.json({ status: 400, message: "Name is required" });
     } else if (userType === "STU" && !rollNumber) {
-      return res.status(400).json({ message: "Roll Number is required" });
+      return res.json({ status: 400, message: "Roll Number is required" });
     } else if (userType !== "ADM" && userType !== "HOD" && !year) {
-      return res.status(400).json({ message: "Year is required" });
+      return res.json({ status: 400, message: "Year is required" });
     } else if (userType === "CA" && userType === "STU" && !section) {
-      return res.status(400).json({ message: "Section is required" });
+      return res.json({ status: 400, message: "Section is required" });
     } else if (!mail) {
-      return res.status(400).json({ message: "Kongu Mail ID is required" });
+      return res.json({ status: 400, message: "Kongu Mail ID is required" });
     } else if (!mail.includes("@kongu.")) {
-      return res.status(400).json({ message: "Give a valid Kongu Mail ID" });
+      return res.json({ status: 400, message: "Give a valid Kongu Mail ID" });
     } else if (!phoneNumber) {
-      return res.status(400).json({ message: "Phone Number is required" });
+      return res.json({ status: 400, message: "Phone Number is required" });
     } else if (userType === "STU" && !parentMail) {
-      return res.status(400).json({ message: "Parent Mail ID is required" });
+      return res.json({ status: 400, message: "Parent Mail ID is required" });
     } else if (userType === "STU" && !parentPhone) {
-      return res
-        .status(400)
-        .json({ message: "Parent Phone Number is required" });
+      return res.json({
+        status: 400,
+        message: "Parent Phone Number is required",
+      });
     } else {
       const charset =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
@@ -58,7 +59,6 @@ usersRoute.post("/adduser", async (req, res) => {
         const randomIndex = Math.floor(Math.random() * charset.length);
         password += charset.charAt(randomIndex);
       }
-      password = "presence@123";
       const hashedPassword = await bcrypt.hash(password, saltRounds);
 
       const userCount = await UserDetails.find({ userType: userType });
@@ -97,12 +97,10 @@ usersRoute.post("/adduser", async (req, res) => {
       await userDepartmentDetails.save();
       await userContacts.save();
 
-      return res.status(201).json({ message: "User added successfully" });
+      return res.json({ status: 200, message: "User added successfully" });
     }
   } catch (error) {
-    console.log(error);
-
-    return res.status(500).json({ message: "Server Error" });
+    return res.json({ status: 500, message: "Server Error" });
   }
 });
 

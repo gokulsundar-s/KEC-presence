@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import "./Sidebar.css";
+import { use } from "react";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -29,7 +30,13 @@ export default function Sidebar() {
     <div className="sidebar-container">
       <div className="sidebar-logo">
         <img src={Logo} alt="logo" />
-        <p>{userType}</p>
+        <p>
+          {userType === "ADM"
+            ? "Admin"
+            : userType === "STU"
+            ? "Student"
+            : "Unknown"}
+        </p>
       </div>
 
       <div className="sidebar-buttons">
@@ -43,7 +50,7 @@ export default function Sidebar() {
           <p>Dashboard</p>
         </button>
 
-        {userType === "STU" && (
+        {userType === "ADM" && (
           <button
             onClick={() => {
               navigate("/add-user");
@@ -54,7 +61,8 @@ export default function Sidebar() {
             <p>Add User</p>
           </button>
         )}
-        {userType === "Student" && (
+
+        {userType === "ADM" && (
           <button
             onClick={() => {
               navigate("/users");
@@ -78,15 +86,17 @@ export default function Sidebar() {
           </button>
         )}
 
-        <button
-          onClick={() => {
-            navigate("/history");
-            setActiveTab(4);
-          }}
-        >
-          <HistoryIcon filled={activeTab === 4} />
-          <p>History</p>
-        </button>
+        {userType === "STU" && (
+          <button
+            onClick={() => {
+              navigate("/history");
+              setActiveTab(4);
+            }}
+          >
+            <HistoryIcon filled={activeTab === 4} />
+            <p>History</p>
+          </button>
+        )}
 
         <button
           onClick={() => {

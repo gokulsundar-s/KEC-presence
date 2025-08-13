@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import Logo from "../../Assets/kec-logo.png";
 import LoginImage from "../../Assets/login-image.jpg";
 import LoadingWrapper from "../../Components/LoadingWrapper/LoadingWrapper";
+import { showErrorToast } from "../../Components/Alerts/Alert";
 import "./Login.css";
 
 export default function Login() {
@@ -17,18 +17,29 @@ export default function Login() {
   const [loader, setLoader] = useState(false);
 
   const handleLogin = async () => {
-    setLoader(true);
-    const response = await axios.post("http://localhost:3003/login", {
-      mail,
-      password,
-    });
+    try {
+      setLoader(true);
+      const response = await axios.post("http://localhost:3003/login", {
+        mail,
+        password,
+      });
 
-    if (response) {
-      Cookies.set("authToken", response.data.authToken);
-      Cookies.set("userDetailsToken", response.data.userDetailsToken);
-      navigate("/");
+      if (response.data.status === 200) {
+        Cookies.set("authToken", response.data.authToken);
+        Cookies.set("userDetailsToken", response.data.userDetailsToken);
+        navigate("/");
+        setLoader(false);
+      } else if (response.data.status === 500) {
+        setLoader(false);
+        showErrorToast("An error occurred. Please contact administrator.");
+      } else {
+        setLoader(false);
+        showErrorToast(response.data.message);
+      }
+    } catch (error) {
+      setLoader(false);
+      showErrorToast("An error occurred. Please contact administrator.");
     }
-    setLoader(false);
   };
 
   return (
@@ -80,7 +91,7 @@ export default function Login() {
                 onClick={handleLogin}
                 disabled={loader}
               >
-                {loader ? <span className="loader"></span> : "Login"}
+                {loader ? <span className="button-loader"></span> : "Login"}
               </button>
             </div>
           </div>

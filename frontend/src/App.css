@@ -70,6 +70,7 @@
 }
 
 .form-bottom button {
+  height: 2.5rem;
   padding: 0.5rem 3rem;
   font-size: 1rem;
   border: none;
@@ -78,8 +79,44 @@
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .form-bottom button:hover {
   background-color: #2646e2;
+}
+
+.disabled-form-input {
+  background-color: #f0f0f0;
+  border-color: #ccc;
+}
+
+.disabled-form-input:hover {
+  cursor: not-allowed;
+}
+
+.button-loader {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #fff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.Toastify__toast-icon {
+  padding-right: 0.5rem;
 }
