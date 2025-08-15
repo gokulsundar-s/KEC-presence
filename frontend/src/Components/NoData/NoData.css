@@ -1,0 +1,20 @@
+.no-data-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.no-data-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-data-text {
+  font-size: 1.25rem;
+  padding-top: 1rem;
+  text-align: center;
+  color: #ccc;
+}

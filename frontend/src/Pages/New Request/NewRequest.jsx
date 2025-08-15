@@ -56,7 +56,11 @@ export default function NewRequest() {
             Note: Please make sure your proof link is accessible to the
             reviewers
           </p>
-          <button type="submit">Submit</button>
+          <div className="form-buttons-container">
+            <button className="primary-button" type="submit">
+              Submit
+            </button>
+          </div>
         </div>
       </div>
     </div>

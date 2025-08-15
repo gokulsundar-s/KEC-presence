@@ -10,12 +10,12 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const PORT = 3003;
-const loginRoute = require("./routes/Login");
+const authRoute = require("./routes/Auth");
 const usersRoute = require("./routes/Users");
 
 mongoose.connect(process.env.MONGODB_URL);
 
-app.use("/", loginRoute);
+app.use("/", authRoute);
 app.use("/users", usersRoute);
 
 app.listen(PORT, () => {

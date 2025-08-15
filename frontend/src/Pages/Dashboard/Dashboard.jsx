@@ -1,11 +1,20 @@
 import React from "react";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
 import "./Dashboard.css";
 
 export default function Dashboard() {
+  var name = "";
+
+  try {
+    name = jwtDecode(Cookies.get("userDetailsToken")).name;
+  } catch (error) {
+    navigate("/login");
+  }
   return (
     <div className="page-container">
-      <p className="page-header">Welcome Gokulsundar🎉</p>
-      
+      <p className="page-header">Welcome {name}🎉</p>
+
       <div className="dashboard-counts">
         <div className="dashboard-counts-box gray-box">
           <p className="gray-count">200</p>

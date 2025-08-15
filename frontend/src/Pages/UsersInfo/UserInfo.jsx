@@ -1,14 +1,35 @@
-import React from "react";
-import "./UserInfo.css";
+import React, { useState, useEffect, use } from "react";
+import axios from "axios";
+import NoData from "../../Components/NoData/NoData";
+import Loaders from "../../Components/Loaders/Loaders";
 
 export default function UserInfo() {
+  const [usersData, setUsersData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get("http://localhost:3003/users");
+        setUsersData(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+        setLoading(false);
+      }
+    };
+
+    getUserData();
+  }, []);
+
   return (
     <div className="page-container">
       <p className="page-header">Users Information</p>
 
-      <div className="users-container">
-        <div className="users-inputs-container">
-          <div className="users-input">
+      <div className="view-info-container">
+        <div className="view-info-inputs-container">
+          <div className="view-info-input">
             <p>User Type</p>
             <select>
               <option value="all">All</option>
@@ -18,7 +39,7 @@ export default function UserInfo() {
             </select>
           </div>
 
-          <div className="users-input">
+          <div className="view-info-input">
             <p>Department</p>
             <select>
               <option value="all">All</option>
@@ -30,57 +51,43 @@ export default function UserInfo() {
             </select>
           </div>
 
-          <div className="users-input">
+          <div className="view-info-input">
             <p>Search</p>
             <input type="text" placeholder="Search" />
           </div>
         </div>
 
-        <div className="users-table-container">
-          <table className="users-table">
-            <thead>
-              <tr>
-                <th>User ID</th>
-                <th>User Type</th>
-                <th>Department</th>
-                <th>Name</th>
-                <th>Roll Number</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>2023-10-01</td>
-                <td>REQ123456</td>
-                <td>Completed</td>
-                <td>2023-10-01</td>
-                <td>Completed</td>
-                <td>
-                  <button className="details-button">View</button>
-                </td>
-              </tr>
-              <tr>
-                <td>2023-10-01</td>
-                <td>REQ123456</td>
-                <td>Completed</td>
-                <td>2023-10-01</td>
-                <td>Completed</td>
-                <td>
-                  <button className="details-button">View</button>
-                </td>
-              </tr>
-              <tr>
-                <td>2023-10-01</td>
-                <td>REQ123456</td>
-                <td>Completed</td>
-                <td>2023-10-01</td>
-                <td>Completed</td>
-                <td>
-                  <button className="details-button">View</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="view-info-table-container">
+          {loading && <Loaders /> ? (
+            <Loaders />
+          ) : usersData.length === 0 ? (
+            <NoData />
+          ) : (
+            <table className="view-info-table">
+              <thead>
+                <tr>
+                  <td>User ID</td>
+                  <td>User Type</td>
+                  <td>Department</td>
+                  <td>Name</td>
+                  <td>Actions</td>
+                </tr>
+              </thead>
+              <tbody>
+                {usersData.map((user) => (
+                  <tr key={user.id}>
+                    <td>{user.userID}</td>
+                    <td>{user.userType}</td>
+                    <td>{user.department}</td>
+                    <td>{user.name}</td>
+                    <td>
+                      <button className="details-button">View</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>

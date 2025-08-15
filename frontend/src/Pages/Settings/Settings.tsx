@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ConfirmIcon } from "../../Assets/Icons";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import ConfirmModal from "../../Components/ConfirmModal/ConfirmModal";
+import { ConfirmModal } from "../../Components/Modals/Modals";
 import "./Settings.css";
 
 export default function Settings() {

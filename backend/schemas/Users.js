@@ -17,12 +17,12 @@ const authSchema = new mongoose.Schema(
 const userDetailsSchema = new mongoose.Schema({
   userID: String,
   userType: String,
+  name: String,
   mail: String,
 });
 
 const userDepartmentDetailsSchema = new mongoose.Schema({
   userID: String,
-  name: String,
   rollNumber: String,
   year: Number,
   section: String,
@@ -31,9 +31,9 @@ const userDepartmentDetailsSchema = new mongoose.Schema({
 
 const userContactsSchema = new mongoose.Schema({
   userID: String,
-  phone: String,
-  pphone: String,
-  pmail: String,
+  phoneNumber: String,
+  parentPhone: String,
+  parentMail: String,
 });
 
 const Auth = users.model("auth", authSchema);

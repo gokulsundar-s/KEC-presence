@@ -7,6 +7,7 @@ import {
   SettingsIcon,
   AddUserIcon,
   UsersInfoIcon,
+  ConfigIcon
 } from "../../../../Assets/Icons";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -73,15 +74,27 @@ export default function Sidebar() {
             <p>User Info</p>
           </button>
         )}
-
-        {userType === "Student" && (
+        
+        {userType === "ADM" && (
           <button
             onClick={() => {
-              navigate("/new-request");
+              navigate("/users");
               setActiveTab(3);
             }}
           >
-            <NewRequestIcon filled={activeTab === 3} />
+            <ConfigIcon filled={activeTab === 3} />
+            <p>Configs</p>
+          </button>
+        )}
+
+        {userType === "STU" && (
+          <button
+            onClick={() => {
+              navigate("/new-request");
+              setActiveTab(4);
+            }}
+          >
+            <NewRequestIcon filled={activeTab === 4} />
             <p>New Request</p>
           </button>
         )}
@@ -90,10 +103,10 @@ export default function Sidebar() {
           <button
             onClick={() => {
               navigate("/history");
-              setActiveTab(4);
+              setActiveTab(5);
             }}
           >
-            <HistoryIcon filled={activeTab === 4} />
+            <HistoryIcon filled={activeTab === 5} />
             <p>History</p>
           </button>
         )}
@@ -101,10 +114,10 @@ export default function Sidebar() {
         <button
           onClick={() => {
             navigate("/settings");
-            setActiveTab(5);
+            setActiveTab(6);
           }}
         >
-          <SettingsIcon filled={activeTab === 5} />
+          <SettingsIcon filled={activeTab === 6} />
           <p>Settings</p>
         </button>
       </div>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { showErrorToast } from "../../Components/Alerts/Alert";
+import { SuccessModal } from "../../Components/Modals/Modals";
 
 export default function AddUser() {
   const [userType, setUserType] = useState("");
@@ -33,7 +34,7 @@ export default function AddUser() {
   const onSubmit = async () => {
     try {
       setLoading(true);
-      const response = await axios.post("http://localhost:3003/users/adduser", {
+      const response = await axios.post("http://localhost:3003/users/", {
         userType,
         department,
         name,
@@ -49,16 +50,16 @@ export default function AddUser() {
       if (response.data.status === 200) {
         setLoading(false);
         setOpenSuccessModal(true);
-        // setUserType("");
-        // setDepartment("");
-        // setName("");
-        // setRollNumber("");
-        // setYear("");
-        // setSection("");
-        // setMail("");
-        // setPhoneNumber("");
-        // setParentMail("");
-        // setParentPhone("");
+        setUserType("");
+        setDepartment("");
+        setName("");
+        setRollNumber("");
+        setYear("");
+        setSection("");
+        setMail("");
+        setPhoneNumber("");
+        setParentMail("");
+        setParentPhone("");
       } else if (response.data.status === 400) {
         setLoading(false);
         showErrorToast(response.data.message);
@@ -75,7 +76,6 @@ export default function AddUser() {
   return (
     <div className="page-container">
       <p className="page-header">Add New User</p>
-
       <div className="form-container">
         <div className="form-row">
           <div className="form-input">
@@ -242,11 +242,29 @@ export default function AddUser() {
 
         <div className="form-bottom">
           <p></p>
-          <button onClick={onSubmit} disabled={loading}>
-            {loading ? <span className="button-loader"></span> : "Submit"}
-          </button>
+          <div className="form-buttons-container">
+            <button className="secondary-button" disabled={loading}>
+              Add Bulk Users
+            </button>
+            <button
+              className="primary-button"
+              onClick={onSubmit}
+              disabled={loading}
+            >
+              {loading ? <span className="button-loader"></span> : "Submit"}
+            </button>
+          </div>
         </div>
       </div>
+
+      {openSuccessModal && (
+        <SuccessModal
+          message={"Your new user has been added successfully."}
+          onClose={() => {
+            setOpenSuccessModal(false);
+          }}
+        />
+      )}
     </div>
   );
 }

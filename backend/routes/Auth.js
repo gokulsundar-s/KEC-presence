@@ -1,15 +1,20 @@
 const express = require("express");
-const loginRoute = express.Router();
+const dotenv = require("dotenv");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { sendMail } = require("../utiles/SendMail");
 const {
   Auth,
   UserDetails,
   UserDepartmentDetails,
   UserContacts,
 } = require("../schemas/Users");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const authRoute = express.Router();
 
-loginRoute.post("/login", async (req, res) => {
+dotenv.config();
+const saltRounds = 10;
+
+authRoute.post("/login", async (req, res) => {
   try {
     const { mail, password } = req.body;
 
@@ -75,4 +80,41 @@ loginRoute.post("/login", async (req, res) => {
   }
 });
 
-module.exports = loginRoute;
+authRoute.put("/reset-password", async (req, res) => {
+  try {
+    const userID = req.body.userID;
+
+    const userCheck = await Auth.findOne({ userID: userID });
+    if (!userCheck) {
+      return res.status(404).send("User not found");
+    }
+
+    const userInfo = await UserDetails.findOne({ userID: userID });
+
+    const charset =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+    let password = "";
+
+    for (let i = 0; i < 8; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      password += charset.charAt(randomIndex);
+    }
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    await Auth.updateOne({ userID: userID }, { password: hashedPassword });
+
+    // sendMail(
+    //   userInfo.mail,
+    //   "KEC Presence Portal – Password Reset Successful",
+    //   `Dear ${userInfo.name},\nYour password for the KEC Presence Portal has been successfully reset. Use the following credentials to log in:\n\nEmail: ${userInfo.mail}\nPassword: ${password}\n\nNote: Please change your password after your first login.\n\nFor any queries, contact us at ${process.env.MAIL}\n\nThanks & regards,\nKEC Presence Team.`
+    // );
+
+    res.send({ status: 200, message: "Password reset successfully" });
+  } catch (error) {
+    console.log(error);
+
+    res.send({ status: 500, message: "Server Error" });
+  }
+});
+
+module.exports = authRoute;
