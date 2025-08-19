@@ -1,21 +1,27 @@
-import React, { useState, useEffect, use } from "react";
+import { useState, useEffect, use } from "react";
 import axios from "axios";
+import { showErrorToast } from "../../Components/Alerts/Alert";
 import NoData from "../../Components/NoData/NoData";
 import Loaders from "../../Components/Loaders/Loaders";
 
 export default function UserInfo() {
   const [usersData, setUsersData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [openSider, setOpenSider] = useState(false);
 
   useEffect(() => {
     const getUserData = async () => {
       try {
         setLoading(true);
         const response = await axios.get("http://localhost:3003/users");
-        setUsersData(response.data.data);
+        if (response.data.status === 200) {
+          setUsersData(response.data.data);
+        } else {
+          showErrorToast(response.data.message);
+        }
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching user info:", error);
+        showErrorToast("An error occurred. Please contact administrator.");
         setLoading(false);
       }
     };
@@ -77,11 +83,20 @@ export default function UserInfo() {
                 {usersData.map((user) => (
                   <tr key={user.id}>
                     <td>{user.userID}</td>
-                    <td>{user.userType}</td>
-                    <td>{user.department}</td>
+                    <td>{user.userType === "STU" ? "Student" : "Admin"}</td>
+                    <td>
+                      {user.department === "CSE"
+                        ? "Computer Science and Engineering"
+                        : "Information Technology"}
+                    </td>
                     <td>{user.name}</td>
                     <td>
-                      <button className="details-button">View</button>
+                      <button
+                        className="details-button"
+                        onClick={() => setOpenSider(true)}
+                      >
+                        View
+                      </button>
                     </td>
                   </tr>
                 ))}

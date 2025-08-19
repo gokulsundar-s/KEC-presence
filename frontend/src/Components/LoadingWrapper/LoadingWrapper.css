@@ -1,0 +1,20 @@
+.loading-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fade-image {
+  animation: fade 1.5s ease-in-out infinite;
+}
+
+@keyframes fade {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+}
