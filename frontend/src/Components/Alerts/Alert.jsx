@@ -20,8 +20,8 @@ export const showSuccessToast = (message) => {
     style: {
       fontFamily: "Poppins",
       color: "#fff",
-      backgroundColor: "#00593f",
-      border: "1px solid #00593f",
+      backgroundColor: "#00855f",
+      border: "1px solid #00855f",
       lineHeight: "1.5",
     },
     icon: <SuccessAlertIcon />,

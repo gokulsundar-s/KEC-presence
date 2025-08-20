@@ -1,0 +1,9 @@
+.edit-userinfo-container {
+  height: 80vh;
+  overflow-y: auto;
+  scrollbar-color: #ddd #f5f5f5;
+}
+
+.edit-userinfo-form {
+  margin: 0 1rem;
+}

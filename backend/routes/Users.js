@@ -34,7 +34,7 @@ usersRoute.post("/", async (req, res) => {
       return res.json({ status: 400, message: "User already exists" });
     } else if (!userType) {
       return res.json({ status: 400, message: "User Type is required" });
-    } else if (!department) {
+    } else if (userType !== "ADM" && !department) {
       return res.json({ status: 400, message: "Department is required" });
     } else if (!name) {
       return res.json({ status: 400, message: "Name is required" });

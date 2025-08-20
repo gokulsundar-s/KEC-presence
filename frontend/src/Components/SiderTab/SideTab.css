@@ -1,0 +1,65 @@
+.sidetab-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.sidetab-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 500px;
+  height: 100%;
+  background: #f5f5f5;
+  box-shadow: -3px 0 5px rgba(0, 0, 0, 0.2);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+  padding: 0 1.5rem;
+}
+
+.sidetab-sidebar-open {
+  transform: translateX(0);
+}
+
+.sidetab-header {
+  display: flex;
+  align-items: center;
+}
+.sidetab-header button {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+}
+.sidetab-header button:hover {
+  background-color: rgba(255, 0, 0, 0.1);
+}
+
+.sidetab-title {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  margin-left: 1rem;
+  color: #555;
+}
+
+.sidetab-footer-buttons {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.sidetab-footer-buttons button {
+  height: 2.25rem;
+  width: 1.75rem;
+}

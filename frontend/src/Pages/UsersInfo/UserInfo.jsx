@@ -1,31 +1,54 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { showErrorToast } from "../../Components/Alerts/Alert";
+import { baseUrl } from "../../Utils/Constants";
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "../../Components/Alerts/Alert";
+import SideTab from "../../Components/SiderTab/SideTab";
 import NoData from "../../Components/NoData/NoData";
 import Loaders from "../../Components/Loaders/Loaders";
+import ViewUserInfo from "./Components/ViewUserInfo/ViewUserInfo";
+import EditUserInfo from "./Components/EditUserInfo/EditUserInfo";
 
 export default function UserInfo() {
   const [usersData, setUsersData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openSider, setOpenSider] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [editUserInfo, setEditUserInfo] = useState(false);
+
+  const getUserData = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`${baseUrl}/users`);
+      if (response.data.status === 200) {
+        setUsersData(response.data.data);
+      } else {
+        showErrorToast(response.data.message);
+      }
+      setLoading(false);
+    } catch (error) {
+      showErrorToast("An error occurred. Please contact administrator.");
+      setLoading(false);
+    }
+  };
+
+  const deleteUser = async () => {
+    try {
+      const response = await axios.delete(`${baseUrl}/users/${selectedUser}`);
+      if (response.data.status === 200) {
+        showSuccessToast(response.data.message);
+        getUserData();
+      } else {
+        showErrorToast(response.data.message);
+      }
+    } catch (error) {
+      showErrorToast("An error occurred. Please contact administrator.");
+    }
+  };
 
   useEffect(() => {
-    const getUserData = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get("http://localhost:3003/users");
-        if (response.data.status === 200) {
-          setUsersData(response.data.data);
-        } else {
-          showErrorToast(response.data.message);
-        }
-        setLoading(false);
-      } catch (error) {
-        showErrorToast("An error occurred. Please contact administrator.");
-        setLoading(false);
-      }
-    };
-
     getUserData();
   }, []);
 
@@ -81,7 +104,7 @@ export default function UserInfo() {
               </thead>
               <tbody>
                 {usersData.map((user) => (
-                  <tr key={user.id}>
+                  <tr key={user.userID}>
                     <td>{user.userID}</td>
                     <td>{user.userType === "STU" ? "Student" : "Admin"}</td>
                     <td>
@@ -93,7 +116,10 @@ export default function UserInfo() {
                     <td>
                       <button
                         className="details-button"
-                        onClick={() => setOpenSider(true)}
+                        onClick={() => {
+                          setOpenSider(true);
+                          setSelectedUser(user.userID);
+                        }}
                       >
                         View
                       </button>
@@ -105,6 +131,21 @@ export default function UserInfo() {
           )}
         </div>
       </div>
+
+      <SideTab
+        open={openSider}
+        setOpen={setOpenSider}
+        edit={editUserInfo}
+        setEditData={setEditUserInfo}
+        deleteData={deleteUser}
+        title={editUserInfo ? "Edit User Information" : "User Information"}
+      >
+        {editUserInfo ? (
+          <EditUserInfo userID={selectedUser} />
+        ) : (
+          <ViewUserInfo userID={selectedUser} />
+        )}
+      </SideTab>
     </div>
   );
 }
