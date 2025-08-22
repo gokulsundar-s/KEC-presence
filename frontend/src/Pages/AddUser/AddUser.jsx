@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { showErrorToast } from "../../Components/Alerts/Alert";
-import { SuccessModal } from "../../Components/Modals/Modals";
+import { SuccessModal, ContentModal } from "../../Components/Modals/Modals";
+import AddBulkUser from "./AddBulkUser/AddBulkUser";
 
 export default function AddUser() {
   const [userType, setUserType] = useState("");
@@ -17,6 +18,7 @@ export default function AddUser() {
 
   const [loading, setLoading] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
+  const [openBulkAddModal, setOpenBulkAddModal] = useState(false);
 
   const onUserTypeChange = (e) => {
     setUserType(e.target.value);
@@ -243,7 +245,11 @@ export default function AddUser() {
         <div className="form-bottom">
           <p></p>
           <div className="form-buttons-container">
-            <button className="secondary-button" disabled={loading}>
+            <button
+              className="secondary-button"
+              disabled={loading}
+              onClick={() => setOpenBulkAddModal(true)}
+            >
               Add Bulk Users
             </button>
             <button
@@ -264,6 +270,17 @@ export default function AddUser() {
             setOpenSuccessModal(false);
           }}
         />
+      )}
+
+      {openBulkAddModal && (
+        <ContentModal
+          title={"Add Bulk Users"}
+          onClose={() => {
+            setOpenBulkAddModal(false);
+          }}
+        >
+          <AddBulkUser />
+        </ContentModal>
       )}
     </div>
   );

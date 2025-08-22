@@ -12,11 +12,13 @@ app.use(cors());
 const PORT = 3003;
 const authRoute = require("./routes/Auth");
 const usersRoute = require("./routes/Users");
+const requestRoute = require("./routes/Requests");
 
 mongoose.connect(process.env.MONGODB_URL);
 
 app.use("/", authRoute);
 app.use("/users", usersRoute);
+app.use("/requests", requestRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

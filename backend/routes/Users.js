@@ -50,12 +50,28 @@ usersRoute.post("/", async (req, res) => {
       return res.json({ status: 400, message: "Give a valid Kongu Mail ID" });
     } else if (!phoneNumber) {
       return res.json({ status: 400, message: "Phone Number is required" });
+    } else if (phoneNumber.length !== 10) {
+      return res.json({
+        status: 400,
+        message: "Phone Number must be 10 digits",
+      });
     } else if (userType === "STU" && !parentMail) {
       return res.json({ status: 400, message: "Parent Mail ID is required" });
+    } else if (
+      userType === "STU" &&
+      !parentMail.includes("@") &&
+      !parentMail.includes(".")
+    ) {
+      return res.json({ status: 400, message: "Give a valid Parent Mail ID" });
     } else if (userType === "STU" && !parentPhone) {
       return res.json({
         status: 400,
         message: "Parent Phone Number is required",
+      });
+    } else if (userType === "STU" && parentPhone.length !== 10) {
+      return res.json({
+        status: 400,
+        message: "Parent Phone Number must be 10 digits",
       });
     } else if (userType === "STU" && mail === parentMail) {
       return res.json({
@@ -220,9 +236,58 @@ usersRoute.put("/:userID", async (req, res) => {
 
     if (!userDetails || !userDepartmentDetails || !userContactDetails) {
       return res.status(404).send("User not found");
+    } else if (userType !== "ADM" && !department) {
+      return res.json({ status: 400, message: "Department is required" });
+    } else if (!name) {
+      return res.json({ status: 400, message: "Name is required" });
+    } else if (userType === "STU" && !rollNumber) {
+      return res.json({ status: 400, message: "Roll Number is required" });
+    } else if (userType !== "ADM" && userType !== "HOD" && !year) {
+      return res.json({ status: 400, message: "Year is required" });
+    } else if (userType === "CA" && userType === "STU" && !section) {
+      return res.json({ status: 400, message: "Section is required" });
+    } else if (!mail) {
+      return res.json({ status: 400, message: "Kongu Mail ID is required" });
+    } else if (!mail.includes("@kongu.")) {
+      return res.json({ status: 400, message: "Give a valid Kongu Mail ID" });
+    } else if (!phoneNumber) {
+      return res.json({ status: 400, message: "Phone Number is required" });
+    } else if (phoneNumber.length !== 10) {
+      return res.json({
+        status: 400,
+        message: "Phone Number must be 10 digits",
+      });
+    } else if (userType === "STU" && !parentMail) {
+      return res.json({ status: 400, message: "Parent Mail ID is required" });
+    } else if (
+      userType === "STU" &&
+      !parentMail.includes("@") &&
+      !parentMail.includes(".")
+    ) {
+      return res.json({ status: 400, message: "Give a valid Parent Mail ID" });
+    } else if (userType === "STU" && !parentPhone) {
+      return res.json({
+        status: 400,
+        message: "Parent Phone Number is required",
+      });
+    } else if (userType === "STU" && parentPhone.length !== 10) {
+      return res.json({
+        status: 400,
+        message: "Parent Phone Number must be 10 digits",
+      });
+    } else if (userType === "STU" && mail === parentMail) {
+      return res.json({
+        status: 400,
+        message: "Parent Mail ID cannot be same as Student Mail ID",
+      });
+    } else if (userType === "STU" && phoneNumber === parentPhone) {
+      return res.json({
+        status: 400,
+        message: "Parent Phone Number cannot be same as Student Phone Number",
+      });
     }
 
-    await UserDetails.updateOne({ userID: userID }, { userType, name, mail });
+    await UserDetails.updateOne({ userID: userID }, { name, mail });
     await UserDepartmentDetails.updateOne(
       { userID: userID },
       { department, rollNumber, year, section }

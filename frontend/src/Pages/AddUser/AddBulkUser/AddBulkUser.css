@@ -1,0 +1,6 @@
+.add-bulk-user-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  padding-top: 1rem;
+}
