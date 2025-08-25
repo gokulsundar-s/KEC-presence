@@ -1,7 +1,14 @@
 import { SuccessIcon } from "../../Assets/Icons";
 import "./Modals.css";
 
-export const ConfirmModal = ({ icon, title, message, onClose, onConfirm }) => {
+export const ConfirmModal = ({
+  icon,
+  title,
+  message,
+  onClose,
+  onConfirm,
+  loading,
+}) => {
   return (
     <div className="modal-container">
       <div className="modal-box">
@@ -11,8 +18,12 @@ export const ConfirmModal = ({ icon, title, message, onClose, onConfirm }) => {
         </div>
         <p className="modal-content">{message}</p>
         <div className="modal-button">
-          <button onClick={onConfirm} className="modal-red-button">
-            Yes
+          <button
+            onClick={onConfirm}
+            disabled={loading}
+            className="modal-red-button"
+          >
+            {loading ? <span className="modal-button-loader"></span> : "Yes"}
           </button>
           <button onClick={onClose} className="modal-blue-button">
             No

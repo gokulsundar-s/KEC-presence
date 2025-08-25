@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { showErrorToast } from "../../Components/Alerts/Alert";
-import { SuccessModal, ContentModal } from "../../Components/Modals/Modals";
+import { SuccessModal } from "../../Components/Modals/Modals";
+import SideTab from "../../Components/SiderTab/SideTab";
 import AddBulkUser from "./AddBulkUser/AddBulkUser";
 
 export default function AddUser() {
@@ -18,7 +19,7 @@ export default function AddUser() {
 
   const [loading, setLoading] = useState(false);
   const [openSuccessModal, setOpenSuccessModal] = useState(false);
-  const [openBulkAddModal, setOpenBulkAddModal] = useState(false);
+  const [openBulkAdd, setOpenBulkAdd] = useState(false);
 
   const onUserTypeChange = (e) => {
     setUserType(e.target.value);
@@ -248,7 +249,7 @@ export default function AddUser() {
             <button
               className="secondary-button"
               disabled={loading}
-              onClick={() => setOpenBulkAddModal(true)}
+              onClick={() => setOpenBulkAdd(true)}
             >
               Add Bulk Users
             </button>
@@ -272,16 +273,14 @@ export default function AddUser() {
         />
       )}
 
-      {openBulkAddModal && (
-        <ContentModal
-          title={"Add Bulk Users"}
-          onClose={() => {
-            setOpenBulkAddModal(false);
-          }}
-        >
-          <AddBulkUser />
-        </ContentModal>
-      )}
+      <SideTab
+        title={"Add Bulk Users"}
+        open={openBulkAdd}
+        setOpen={setOpenBulkAdd}
+        footer={<button className="primary-button">Submit</button>}
+      >
+        <AddBulkUser />
+      </SideTab>
     </div>
   );
 }

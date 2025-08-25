@@ -5,6 +5,7 @@ import {
   showErrorToast,
   showSuccessToast,
 } from "../../Components/Alerts/Alert";
+import { ConfirmModal } from "../../Components/Modals/Modals";
 import SideTab from "../../Components/SiderTab/SideTab";
 import NoData from "../../Components/NoData/NoData";
 import Loaders from "../../Components/Loaders/Loaders";
@@ -14,9 +15,11 @@ import EditUserInfo from "./Components/EditUserInfo/EditUserInfo";
 export default function UserInfo() {
   const [usersData, setUsersData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [openSider, setOpenSider] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [editUserInfo, setEditUserInfo] = useState(false);
+  const [deleteUser, setDeleteUser] = useState(false);
 
   const getUserData = async () => {
     try {
@@ -34,23 +37,30 @@ export default function UserInfo() {
     }
   };
 
-  const deleteUser = async () => {
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  const handleDeleteUser = async () => {
     try {
+      setDeleteLoading(true);
       const response = await axios.delete(`${baseUrl}/users/${selectedUser}`);
       if (response.data.status === 200) {
         showSuccessToast(response.data.message);
         getUserData();
+        setDeleteUser(false);
+        setOpenSider(false);
+        setSelectedUser(null);
+        setDeleteLoading(false);
       } else {
+        setDeleteLoading(false);
         showErrorToast(response.data.message);
       }
     } catch (error) {
+      setDeleteLoading(false);
       showErrorToast("An error occurred. Please contact administrator.");
     }
   };
-
-  useEffect(() => {
-    getUserData();
-  }, []);
 
   return (
     <div className="page-container">
@@ -135,10 +145,37 @@ export default function UserInfo() {
       <SideTab
         open={openSider}
         setOpen={setOpenSider}
-        edit={editUserInfo}
-        setEditData={setEditUserInfo}
-        deleteData={deleteUser}
         title={editUserInfo ? "Edit User Information" : "User Information"}
+        footer={
+          <>
+            {!editUserInfo ? (
+              <div>
+                <button
+                  className="secondary-button"
+                  onClick={() => setDeleteUser(true)}
+                >
+                  Delete
+                </button>
+                <button
+                  className="primary-button"
+                  onClick={() => setEditUserInfo(true)}
+                >
+                  Edit
+                </button>
+              </div>
+            ) : (
+              <div>
+                <button
+                  className="secondary-button"
+                  onClick={() => setEditUserInfo(false)}
+                >
+                  Back
+                </button>
+                <button className="primary-button">Update</button>
+              </div>
+            )}
+          </>
+        }
       >
         {editUserInfo ? (
           <EditUserInfo userID={selectedUser} />
@@ -146,6 +183,16 @@ export default function UserInfo() {
           <ViewUserInfo userID={selectedUser} />
         )}
       </SideTab>
+
+      {deleteUser && (
+        <ConfirmModal
+          title="Confirm Deletion"
+          message="Are you sure you want to delete this user?"
+          onConfirm={handleDeleteUser}
+          onClose={() => setDeleteUser(false)}
+          loading={deleteLoading}
+        />
+      )}
     </div>
   );
 }

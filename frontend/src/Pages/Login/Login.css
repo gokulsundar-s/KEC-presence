@@ -116,10 +116,29 @@
   font-size: 1rem;
   margin-top: 1rem;
   cursor: pointer;
-  transition: background 0.16s;
   box-shadow: 0 0.125rem 0.75rem rgba(88, 137, 255, 0.05);
 }
 
 .login-button:hover {
   background-color: #2646e2;
+}
+
+.login-button-loader {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #fff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

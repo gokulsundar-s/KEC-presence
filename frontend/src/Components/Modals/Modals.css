@@ -72,6 +72,9 @@
 .modal-red-button {
   color: #df0000;
   background-color: #df000015;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-red-button:hover {
@@ -85,6 +88,26 @@
 
 .modal-blue-button:hover {
   background-color: #4061f230;
+}
+
+.modal-button-loader {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #ff5252;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes fadeIn {
