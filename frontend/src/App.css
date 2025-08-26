@@ -130,7 +130,7 @@
 .view-info-inputs-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   gap: 1rem;
 }
 
@@ -156,6 +156,10 @@
   outline: none;
   transition: border-color 0.3s ease;
   cursor: pointer;
+}
+
+.view-info-input button {
+  margin-bottom: 0.15rem;
 }
 
 .view-info-table-container {

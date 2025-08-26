@@ -97,7 +97,7 @@ export default function UserInfo() {
         </div>
 
         <div className="view-info-table-container">
-          {loading && <Loaders /> ? (
+          {loading ? (
             <Loaders />
           ) : usersData.length === 0 ? (
             <NoData />

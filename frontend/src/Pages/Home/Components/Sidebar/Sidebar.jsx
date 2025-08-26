@@ -92,7 +92,7 @@ export default function Sidebar() {
         {userType === "ADM" && (
           <button
             onClick={() => {
-              navigate("/users");
+              navigate("/configs");
               setActiveTab(3);
             }}
           >

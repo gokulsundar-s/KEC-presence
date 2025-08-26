@@ -56,6 +56,7 @@ export default function Settings() {
             setShowConfirmModal(false);
           }}
           onConfirm={handleLogout}
+          loading={false}
         />
       )}
     </div>
