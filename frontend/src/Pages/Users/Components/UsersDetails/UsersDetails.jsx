@@ -3,10 +3,9 @@ import axios from "axios";
 import { baseUrl } from "../../../../Utils/Constants";
 import Loaders from "../../../../Components/Loaders/Loaders";
 import { showErrorToast } from "../../../../Components/Alerts/Alert";
-import "./ViewUserInfo.css";
+import "./UsersDetails.css";
 
-export default function ViewUserInfo({ userID }) {
-  const [usersData, setUsersData] = useState([]);
+export default function ViewUserInfo({ userID, userData, setUserData }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -17,7 +16,7 @@ export default function ViewUserInfo({ userID }) {
           const response = await axios.get(`${baseUrl}/users/${userID}`);
 
           if (response.data.status === 200) {
-            setUsersData(response.data.data);
+            setUserData(response.data.data);
           } else {
             showErrorToast(response.data.message);
           }
@@ -46,39 +45,39 @@ export default function ViewUserInfo({ userID }) {
               </tr>
               <tr>
                 <th>User Type</th>
-                <td>{usersData.userType ?? "-"}</td>
+                <td>{userData.userType ?? "-"}</td>
               </tr>
               <tr>
                 <th>Department</th>
-                <td>{usersData.department ?? "-"}</td>
+                <td>{userData.department ?? "-"}</td>
               </tr>
               <tr>
                 <th>Name</th>
-                <td>{usersData.name ?? "-"}</td>
+                <td>{userData.name ?? "-"}</td>
               </tr>
               <tr>
                 <th>Year</th>
-                <td>{usersData.year ?? "-"}</td>
+                <td>{userData.year ?? "-"}</td>
               </tr>
               <tr>
                 <th>Section</th>
-                <td>{usersData.section ?? "-"}</td>
+                <td>{userData.section ?? "-"}</td>
               </tr>
               <tr>
                 <th>Kongu Mail ID</th>
-                <td>{usersData.mail ?? "-"}</td>
+                <td>{userData.mail ?? "-"}</td>
               </tr>
               <tr>
                 <th>Phone Number</th>
-                <td>{usersData.phoneNumber ?? "-"}</td>
+                <td>{userData.phoneNumber ?? "-"}</td>
               </tr>
               <tr>
                 <th>Parent Mail ID</th>
-                <td>{usersData.parentMail ?? "-"}</td>
+                <td>{userData.parentMail ?? "-"}</td>
               </tr>
               <tr>
                 <th>Parent Phone Number</th>
-                <td>{usersData.parentPhone ?? "-"}</td>
+                <td>{userData.parentPhone ?? "-"}</td>
               </tr>
             </tbody>
           </table>

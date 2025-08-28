@@ -9,17 +9,21 @@ import { ConfirmModal } from "../../Components/Modals/Modals";
 import SideTab from "../../Components/SiderTab/SideTab";
 import NoData from "../../Components/NoData/NoData";
 import Loaders from "../../Components/Loaders/Loaders";
-import ViewUserInfo from "./Components/ViewUserInfo/ViewUserInfo";
-import EditUserInfo from "./Components/EditUserInfo/EditUserInfo";
+import UsersDetails from "./Components/UsersDetails/UsersDetails";
+import UsersForm from "./Components/UsersForm/UsersForm";
 
 export default function UserInfo() {
   const [usersData, setUsersData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
-  const [openSider, setOpenSider] = useState(false);
+  const [userData, setUserData] = useState({});
   const [selectedUser, setSelectedUser] = useState(null);
+  const [openInfoSider, setOpenInfoSider] = useState(false);
+  const [openAddUserSider, setOpenAddUserSider] = useState(false);
   const [editUserInfo, setEditUserInfo] = useState(false);
   const [deleteUser, setDeleteUser] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [addLoading, setAddLoading] = useState(false);
+  const [editLoading, setEditLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const getUserData = async () => {
     try {
@@ -31,15 +35,54 @@ export default function UserInfo() {
         showErrorToast(response.data.message);
       }
       setLoading(false);
-    } catch (error) {
+    } catch {
       showErrorToast("An error occurred. Please contact administrator.");
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    getUserData();
-  }, []);
+  const handleAddUser = async () => {
+    try {
+      setAddLoading(true);
+      const response = await axios.post(`${baseUrl}/users`, userData);
+      if (response.data.status === 200) {
+        getUserData();
+        setOpenAddUserSider(false);
+        setAddLoading(false);
+        setUserData({});
+      } else {
+        showErrorToast(response.data.message);
+        setAddLoading(false);
+      }
+    } catch {
+      setAddLoading(false);
+      showErrorToast("An error occurred. Please contact administrator.");
+    }
+  };
+
+  const handleEditUser = async () => {
+    try {
+      setEditLoading(true);
+      const response = await axios.put(
+        `${baseUrl}/users/${selectedUser}`,
+        userData
+      );
+      if (response.data.status === 200) {
+        getUserData();
+        setOpenInfoSider(false);
+        setEditUserInfo(false);
+        setSelectedUser(null);
+        setEditLoading(false);
+        setUserData({});
+      } else {
+        showErrorToast(response.data.message);
+        setEditLoading(false);
+      }
+    } catch (error) {
+      setEditLoading(false);
+      showErrorToast("An error occurred. Please contact administrator.");
+    }
+  };
 
   const handleDeleteUser = async () => {
     try {
@@ -49,7 +92,7 @@ export default function UserInfo() {
         showSuccessToast(response.data.message);
         getUserData();
         setDeleteUser(false);
-        setOpenSider(false);
+        setOpenInfoSider(false);
         setSelectedUser(null);
         setDeleteLoading(false);
       } else {
@@ -61,6 +104,21 @@ export default function UserInfo() {
       showErrorToast("An error occurred. Please contact administrator.");
     }
   };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  useEffect(() => {
+    setEditUserInfo(!openInfoSider);
+    if (!openInfoSider) {
+      setUserData({});
+      setSelectedUser(null);
+    }
+    if (openAddUserSider) {
+      setUserData({});
+    }
+  }, [openInfoSider, openAddUserSider]);
 
   return (
     <div className="page-container">
@@ -79,20 +137,17 @@ export default function UserInfo() {
           </div>
 
           <div className="view-info-input">
-            <p>Department</p>
-            <select>
-              <option value="all">All</option>
-              <option value="cse">Computer Science and Engineering</option>
-              <option value="eee">
-                Electrical and Electronics Engineering
-              </option>
-              <option value="me">Mechanical Engineering</option>
-            </select>
+            <p>Search</p>
+            <input type="text" placeholder="Search" />
           </div>
 
           <div className="view-info-input">
-            <p>Search</p>
-            <input type="text" placeholder="Search" />
+            <button
+              className="primary-button"
+              onClick={() => setOpenAddUserSider(true)}
+            >
+              Add User
+            </button>
           </div>
         </div>
 
@@ -127,7 +182,7 @@ export default function UserInfo() {
                       <button
                         className="details-button"
                         onClick={() => {
-                          setOpenSider(true);
+                          setOpenInfoSider(true);
                           setSelectedUser(user.userID);
                         }}
                       >
@@ -143,8 +198,8 @@ export default function UserInfo() {
       </div>
 
       <SideTab
-        open={openSider}
-        setOpen={setOpenSider}
+        open={openInfoSider}
+        setOpen={setOpenInfoSider}
         title={editUserInfo ? "Edit User Information" : "User Information"}
         footer={
           <>
@@ -171,17 +226,55 @@ export default function UserInfo() {
                 >
                   Back
                 </button>
-                <button className="primary-button">Update</button>
+                <button
+                  className="primary-button"
+                  onClick={handleEditUser}
+                  disabled={editLoading}
+                >
+                  {editLoading ? (
+                    <span className="login-button-loader"></span>
+                  ) : (
+                    "Update"
+                  )}
+                </button>
               </div>
             )}
           </>
         }
       >
         {editUserInfo ? (
-          <EditUserInfo userID={selectedUser} />
+          <UsersForm userData={userData} setUserData={setUserData} />
         ) : (
-          <ViewUserInfo userID={selectedUser} />
+          <UsersDetails
+            userID={selectedUser}
+            userData={userData}
+            setUserData={setUserData}
+          />
         )}
+      </SideTab>
+
+      <SideTab
+        open={openAddUserSider}
+        setOpen={setOpenAddUserSider}
+        title={"Add New User"}
+        footer={
+          <div>
+            <button className="secondary-button">Add Bulk Users</button>
+            <button
+              className="primary-button"
+              onClick={handleAddUser}
+              disabled={addLoading}
+            >
+              {addLoading ? (
+                <span className="login-button-loader"></span>
+              ) : (
+                "Submit"
+              )}
+            </button>
+          </div>
+        }
+      >
+        <UsersForm setUserData={setUserData} />
       </SideTab>
 
       {deleteUser && (

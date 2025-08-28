@@ -4,7 +4,7 @@ import Sidebar from "./Components/Sidebar/Sidebar";
 import Dashboard from "../Dashboard/Dashboard";
 import AddUser from "../AddUser/AddUser";
 import NewRequest from "../New Request/NewRequest";
-import UsersInfo from "../UsersInfo/UserInfo";
+import Users from "../Users/Users";
 import History from "../History/History";
 import Configs from "../Configs/Configs";
 import Settings from "../Settings/Settings";
@@ -32,7 +32,7 @@ export default function Home() {
           {userType === "ADM" && (
             <Route path="add-user" element={<AddUser />} />
           )}
-          {userType === "ADM" && <Route path="users" element={<UsersInfo />} />}
+          {userType === "ADM" && <Route path="users" element={<Users />} />}
           {userType === "ADM" && <Route path="configs" element={<Configs />} />}
 
           {userType === "STU" && (
