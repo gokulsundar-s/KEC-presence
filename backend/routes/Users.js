@@ -173,8 +173,6 @@ usersRoute.get("/", async (req, res) => {
       data: usersData,
     });
   } catch (error) {
-    console.log(error);
-
     return res.json({ status: 500, message: "Server Error" });
   }
 });
@@ -335,8 +333,190 @@ usersRoute.delete("/:userID", async (req, res) => {
     await UserContacts.deleteOne({ userID: userID });
 
     res.send({ status: 200, message: "User deleted successfully" });
-  } catch (error) {
+  } catch {
     res.status(500).send("Server Error");
+  }
+});
+
+usersRoute.post("/bulk-users", async (req, res) => {
+  try {
+    const usersList = req.body;
+    const resultData = [];
+
+    for (const userData of usersList) {
+      const {
+        userType,
+        department,
+        name,
+        rollNumber,
+        year,
+        section,
+        mail,
+        phoneNumber,
+        parentMail,
+        parentPhone,
+      } = userData;
+
+      const result = { mail };
+
+      const userCheck = await UserDetails.findOne({ mail });
+
+      if (userCheck) {
+        result.status = 400;
+        result.message = "User already exists";
+        resultData.push(result);
+        continue;
+      } else if (!userType) {
+        result.status = 400;
+        result.message = "User Type is required";
+        resultData.push(result);
+        continue;
+      } else if (userType !== "ADM" && !department) {
+        result.status = 400;
+        result.message = "Department is required";
+        resultData.push(result);
+        continue;
+      } else if (!name) {
+        result.status = 400;
+        result.message = "Name is required";
+        resultData.push(result);
+        continue;
+      } else if (userType === "STU" && !rollNumber) {
+        result.status = 400;
+        result.message = "Roll Number is required";
+        resultData.push(result);
+        continue;
+      } else if (userType !== "ADM" && userType !== "HOD" && !year) {
+        result.status = 400;
+        result.message = "Year is required";
+        resultData.push(result);
+        continue;
+      } else if ((userType === "CA" || userType === "STU") && !section) {
+        result.status = 400;
+        result.message = "Section is required";
+        resultData.push(result);
+        continue;
+      } else if (!mail) {
+        result.status = 400;
+        result.message = "Kongu Mail ID is required";
+        resultData.push(result);
+        continue;
+      } else if (!mail.includes("@kongu.")) {
+        result.status = 400;
+        result.message = "Give a valid Kongu Mail ID";
+        resultData.push(result);
+        continue;
+      } else if (!phoneNumber.toString()) {
+        result.status = 400;
+        result.message = "Phone Number is required";
+        resultData.push(result);
+        continue;
+      } else if (phoneNumber.toString().length !== 10) {
+        result.status = 400;
+        result.message = "Phone Number must be 10 digits";
+        resultData.push(result);
+        continue;
+      } else if (userType === "STU" && !parentMail) {
+        result.status = 400;
+        result.message = "Parent Mail ID is required";
+        resultData.push(result);
+        continue;
+      } else if (
+        userType === "STU" &&
+        (!parentMail.includes("@") || !parentMail.includes("."))
+      ) {
+        result.status = 400;
+        result.message = "Give a valid Parent Mail ID";
+        resultData.push(result);
+        continue;
+      } else if (userType === "STU" && !parentPhone.toString()) {
+        result.status = 400;
+        result.message = "Parent Phone Number is required";
+        resultData.push(result);
+        continue;
+      } else if (userType === "STU" && parentPhone.toString().length !== 10) {
+        result.status = 400;
+        result.message = "Parent Phone Number must be 10 digits";
+        resultData.push(result);
+        continue;
+      } else if (userType === "STU" && mail === parentMail) {
+        result.status = 400;
+        result.message = "Parent Mail ID cannot be same as Student Mail ID";
+        resultData.push(result);
+        continue;
+      } else if (userType === "STU" && phoneNumber === parentPhone) {
+        result.status = 400;
+        result.message =
+          "Parent Phone Number cannot be same as Student Phone Number";
+        resultData.push(result);
+        continue;
+      }
+
+      const charset =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+      let password = "";
+
+      for (let i = 0; i < 8; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset.charAt(randomIndex);
+      }
+
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+      const userCount = await UserDetails.find({ userType });
+      const userID =
+        userType.charAt(0) + (userCount.length + 1).toString().padStart(5, "0");
+
+      const auth = new Auth({
+        userID,
+        password: hashedPassword,
+      });
+
+      const userDetails = new UserDetails({
+        userID,
+        userType,
+        name,
+        mail,
+      });
+
+      const userDepartmentDetails = new UserDepartmentDetails({
+        userID,
+        department,
+        rollNumber,
+        year,
+        section,
+      });
+
+      const userContacts = new UserContacts({
+        userID,
+        phoneNumber,
+        parentMail,
+        parentPhone,
+      });
+
+      await auth.save();
+      await userDetails.save();
+      await userDepartmentDetails.save();
+      await userContacts.save();
+
+      // sendMail(
+      //   mail,
+      //   "KEC Presence Portal – Registration Successful",
+      //   `Dear ${name},\nYour account for the KEC Presence Portal has been successfully created. Use the following credentials to log in:\n\nEmail: ${mail}\nPassword: ${password}\n\nNote: Please change your password after your first login.\n\nFor any queries, contact us at ${process.env.MAIL}\n\nThanks & regards,\nKEC Presence Team.`
+      // );
+
+      result.status = 200;
+      result.message = "User added successfully";
+      resultData.push(result);
+    }
+
+    return res.json({ status: 200, data: resultData });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      status: 500,
+      message: "Server error. Please contact administrator.",
+    });
   }
 });
 

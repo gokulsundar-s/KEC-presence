@@ -11,19 +11,37 @@ import NoData from "../../Components/NoData/NoData";
 import Loaders from "../../Components/Loaders/Loaders";
 import UsersDetails from "./Components/UsersDetails/UsersDetails";
 import UsersForm from "./Components/UsersForm/UsersForm";
+import AddBulkUser from "./Components/AddBulkUser/AddBulkUser";
+import { SuccessModal, BulkAddModal } from "../../Components/Modals/Modals";
 
 export default function UserInfo() {
   const [usersData, setUsersData] = useState([]);
-  const [userData, setUserData] = useState({});
   const [selectedUser, setSelectedUser] = useState(null);
   const [openInfoSider, setOpenInfoSider] = useState(false);
   const [openAddUserSider, setOpenAddUserSider] = useState(false);
+  const [openBulkAddUser, setOpenBulkAddUser] = useState(false);
   const [editUserInfo, setEditUserInfo] = useState(false);
   const [deleteUser, setDeleteUser] = useState(false);
   const [loading, setLoading] = useState(false);
   const [addLoading, setAddLoading] = useState(false);
   const [editLoading, setEditLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [addUserModal, setAddUserModal] = useState(false);
+  const [bulkAddUserModal, setBulkAddUserModal] = useState(false);
+  const [bulkUserData, setBulkUserData] = useState([]);
+  const [bulkUserDataRes, setBulkUserDataRes] = useState();
+  const [userData, setUserData] = useState({
+    userType: "",
+    department: "",
+    name: "",
+    rollNumber: "",
+    year: "",
+    section: "",
+    mail: "",
+    phoneNumber: "",
+    parentMail: "",
+    parentPhone: "",
+  });
 
   const getUserData = async () => {
     try {
@@ -49,7 +67,19 @@ export default function UserInfo() {
         getUserData();
         setOpenAddUserSider(false);
         setAddLoading(false);
-        setUserData({});
+        setAddUserModal(true);
+        setUserData({
+          userType: "",
+          department: "",
+          name: "",
+          rollNumber: "",
+          year: "",
+          section: "",
+          mail: "",
+          phoneNumber: "",
+          parentMail: "",
+          parentPhone: "",
+        });
       } else {
         showErrorToast(response.data.message);
         setAddLoading(false);
@@ -73,7 +103,18 @@ export default function UserInfo() {
         setEditUserInfo(false);
         setSelectedUser(null);
         setEditLoading(false);
-        setUserData({});
+        setUserData({
+          userType: "",
+          department: "",
+          name: "",
+          rollNumber: "",
+          year: "",
+          section: "",
+          mail: "",
+          phoneNumber: "",
+          parentMail: "",
+          parentPhone: "",
+        });
       } else {
         showErrorToast(response.data.message);
         setEditLoading(false);
@@ -105,18 +146,63 @@ export default function UserInfo() {
     }
   };
 
+  const handleAddBulkUser = async () => {
+    try {
+      if (bulkUserData.length === 0) {
+        showErrorToast("Please upload a file to continue.");
+        return;
+      }
+      setAddLoading(true);
+      const response = await axios.post(
+        `${baseUrl}/users/bulk-users`,
+        bulkUserData
+      );
+      setBulkUserDataRes(response.data.data);
+      setAddLoading(false);
+      setOpenAddUserSider(false);
+      setBulkAddUserModal(true);
+    } catch {
+      setAddLoading(false);
+      showErrorToast("An error occurred. Please contact administrator.");
+    }
+  };
+
   useEffect(() => {
     getUserData();
   }, []);
 
   useEffect(() => {
     setEditUserInfo(!openInfoSider);
+    setOpenBulkAddUser(!openAddUserSider);
     if (!openInfoSider) {
-      setUserData({});
+      setUserData({
+        userType: "",
+        department: "",
+        name: "",
+        rollNumber: "",
+        year: "",
+        section: "",
+        mail: "",
+        phoneNumber: "",
+        parentMail: "",
+        parentPhone: "",
+      });
       setSelectedUser(null);
     }
     if (openAddUserSider) {
-      setUserData({});
+      setUserData({
+        userType: "",
+        department: "",
+        name: "",
+        rollNumber: "",
+        year: "",
+        section: "",
+        mail: "",
+        phoneNumber: "",
+        parentMail: "",
+        parentPhone: "",
+      });
+      setBulkUserDataRes(null);
     }
   }, [openInfoSider, openAddUserSider]);
 
@@ -256,25 +342,60 @@ export default function UserInfo() {
       <SideTab
         open={openAddUserSider}
         setOpen={setOpenAddUserSider}
-        title={"Add New User"}
+        title={openBulkAddUser ? "Add Bulk Users" : "Add New User"}
         footer={
-          <div>
-            <button className="secondary-button">Add Bulk Users</button>
-            <button
-              className="primary-button"
-              onClick={handleAddUser}
-              disabled={addLoading}
-            >
-              {addLoading ? (
-                <span className="login-button-loader"></span>
-              ) : (
-                "Submit"
-              )}
-            </button>
-          </div>
+          <>
+            {openBulkAddUser ? (
+              <div>
+                <button
+                  className="secondary-button"
+                  onClick={() => setOpenBulkAddUser(false)}
+                >
+                  Back
+                </button>
+
+                <button
+                  className="primary-button"
+                  onClick={handleAddBulkUser}
+                  disabled={addLoading}
+                >
+                  {addLoading ? (
+                    <span className="login-button-loader"></span>
+                  ) : (
+                    "Submit"
+                  )}
+                </button>
+              </div>
+            ) : (
+              <div>
+                <button
+                  className="secondary-button"
+                  onClick={() => setOpenBulkAddUser(true)}
+                >
+                  Add Bulk Users
+                </button>
+
+                <button
+                  className="primary-button"
+                  onClick={handleAddUser}
+                  disabled={addLoading}
+                >
+                  {addLoading ? (
+                    <span className="login-button-loader"></span>
+                  ) : (
+                    "Submit"
+                  )}
+                </button>
+              </div>
+            )}
+          </>
         }
       >
-        <UsersForm setUserData={setUserData} />
+        {openBulkAddUser ? (
+          <AddBulkUser setBulkUserData={setBulkUserData} />
+        ) : (
+          <UsersForm userData={userData} setUserData={setUserData} />
+        )}
       </SideTab>
 
       {deleteUser && (
@@ -284,6 +405,24 @@ export default function UserInfo() {
           onConfirm={handleDeleteUser}
           onClose={() => setDeleteUser(false)}
           loading={deleteLoading}
+        />
+      )}
+
+      {addUserModal && (
+        <SuccessModal
+          message={"Your new user has been added successfully."}
+          onClose={() => {
+            setAddUserModal(false);
+          }}
+        />
+      )}
+
+      {bulkAddUserModal && (
+        <BulkAddModal
+          data={bulkUserDataRes}
+          onClose={() => {
+            setBulkAddUserModal(false);
+          }}
         />
       )}
     </div>

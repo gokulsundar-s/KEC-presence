@@ -101,6 +101,50 @@
   animation: rotation 1s linear infinite;
 }
 
+.modal-content-count-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.modal-success-counts {
+  text-align: center;
+  color: #28a745;
+}
+
+.modal-failed-counts {
+  text-align: center;
+  color: #ff0000;
+}
+
+.modal-table-container {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.modal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.modal-table th,
+.modal-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.row-success {
+  background-color: #e6ffed;
+  color: #1a7f37;
+}
+
+.row-failed {
+  background-color: #ffe6e6;
+  color: #d32f2f;
+}
+
 @keyframes rotation {
   0% {
     transform: rotate(0deg);

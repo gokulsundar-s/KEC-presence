@@ -5,9 +5,9 @@ import {
   NewRequestIcon,
   HistoryIcon,
   SettingsIcon,
-  AddUserIcon,
   UsersInfoIcon,
   ConfigIcon,
+  CalendarIcon,
 } from "../../../../Assets/Icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -21,11 +21,11 @@ export default function Sidebar() {
 
   useEffect(() => {
     const currentPath = location.pathname;
-    if (currentPath.includes("add-user")) {
+    if (currentPath.includes("users")) {
       setActiveTab(1);
-    } else if (currentPath.includes("users")) {
-      setActiveTab(2);
     } else if (currentPath.includes("configs")) {
+      setActiveTab(2);
+    } else if (currentPath.includes("calendar")) {
       setActiveTab(3);
     } else if (currentPath.includes("settings")) {
       setActiveTab(6);
@@ -68,23 +68,11 @@ export default function Sidebar() {
         {userType === "ADM" && (
           <button
             onClick={() => {
-              navigate("/add-user");
+              navigate("/users");
               setActiveTab(1);
             }}
           >
-            <AddUserIcon filled={activeTab === 1} />
-            <p>Add User</p>
-          </button>
-        )}
-
-        {userType === "ADM" && (
-          <button
-            onClick={() => {
-              navigate("/users");
-              setActiveTab(2);
-            }}
-          >
-            <UsersInfoIcon filled={activeTab === 2} />
+            <UsersInfoIcon filled={activeTab === 1} />
             <p>User Info</p>
           </button>
         )}
@@ -93,11 +81,23 @@ export default function Sidebar() {
           <button
             onClick={() => {
               navigate("/configs");
+              setActiveTab(2);
+            }}
+          >
+            <ConfigIcon filled={activeTab === 2} />
+            <p>Configs</p>
+          </button>
+        )}
+
+        {userType === "ADM" && (
+          <button
+            onClick={() => {
+              navigate("/calendar");
               setActiveTab(3);
             }}
           >
-            <ConfigIcon filled={activeTab === 3} />
-            <p>Configs</p>
+            <CalendarIcon filled={activeTab === 3} />
+            <p>Calendar</p>
           </button>
         )}
 
