@@ -54,7 +54,7 @@ export const SuccessModal = ({ message, onClose }) => {
 
 export const BulkAddModal = ({ data, onClose }) => {
   const successTotal = data.reduce((acc, item) => {
-    return item.status === 200 ? acc + (item.successCount || 0) : acc;
+    return item.status === 200 ? acc + 1 : acc;
   }, 0);
 
   const failedTotal = data.reduce((acc, item) => {

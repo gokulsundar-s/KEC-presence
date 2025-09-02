@@ -11,12 +11,15 @@
 
 .modal-box {
   width: 90%;
+  max-height: 30rem;
   max-width: 25rem;
   padding: 1.5rem;
   background-color: #fff;
   border-radius: 0.5rem;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
   animation: slideUp 0.25s ease-out;
+  overflow-y: auto;
+  scrollbar-color: #ccc transparent;
 }
 
 .modal-title {
@@ -136,13 +139,11 @@
 }
 
 .row-success {
-  background-color: #e6ffed;
-  color: #1a7f37;
+  color: #28a745;
 }
 
 .row-failed {
-  background-color: #ffe6e6;
-  color: #d32f2f;
+  color: #ff0000;
 }
 
 @keyframes rotation {

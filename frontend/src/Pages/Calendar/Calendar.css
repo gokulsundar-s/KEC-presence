@@ -1,0 +1,22 @@
+.calendar-container {
+  height: 35rem;
+}
+.rbc-event {
+  background-color: transparent;
+  color: red;
+  text-align: center;
+  padding: 0.8rem;
+}
+.rbc-toolbar-label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.rbc-header {
+  background-color: #f8f9fa;
+  padding: 0.5rem;
+  font-weight: 500;
+  color: #495057;
+  border-bottom: 1px solid #dee2e6;
+}
