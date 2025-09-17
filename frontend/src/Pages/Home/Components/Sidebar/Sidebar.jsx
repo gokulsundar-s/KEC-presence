@@ -7,7 +7,7 @@ import {
   SettingsIcon,
   UsersInfoIcon,
   ConfigIcon,
-  CalendarIcon,
+  SessionIcon,
 } from "../../../../Assets/Icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -92,12 +92,12 @@ export default function Sidebar() {
         {userType === "ADM" && (
           <button
             onClick={() => {
-              navigate("/calendar");
+              navigate("/sessions");
               setActiveTab(3);
             }}
           >
-            <CalendarIcon filled={activeTab === 3} />
-            <p>Calendar</p>
+            <SessionIcon filled={activeTab === 3} />
+            <p>Sessions</p>
           </button>
         )}
 

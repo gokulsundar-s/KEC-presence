@@ -7,8 +7,10 @@ const conn = mongoose.createConnection(process.env.MONGODB_URL);
 const configs = conn.useDb("configs");
 
 const configsSchema = mongoose.Schema({
-  requestID: String,
-  userID: String,
+  configID: String,
+  codeType: String,
+  code: String,
+  description: String,
 });
 
 const Configs = configs.model("configs", configsSchema);

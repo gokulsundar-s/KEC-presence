@@ -8,6 +8,7 @@ const {
   UserDetails,
   UserDepartmentDetails,
   UserContacts,
+  UserSessions,
 } = require("../schemas/Users");
 const authRoute = express.Router();
 
@@ -77,6 +78,25 @@ authRoute.post("/login", async (req, res) => {
     if (!isAuthUser) {
       return res.json({ status: 400, message: "Wrong Password" });
     } else {
+      const sessionData = await UserSessions.find();
+      const sessionID =
+        "SES" + (sessionData.length + 1).toString().padStart(5, "0");
+
+      const userSession = new UserSessions({
+        sessionID: sessionID,
+        userID: userInfo.userID,
+        device: req.headers["user-agent"]
+          .split(" ")[1]
+          .split(" ")[0]
+          .replace(/[\(\)]/g, ""),
+        browser: req.headers["user-agent"].split(" ")[0],
+        ipAddress: req.ip,
+        loginTime: new Date().toLocaleString(),
+        logoutTime: null,
+        isActive: true,
+      });
+      await userSession.save();
+
       const userDetails = await UserDetails.findOne({
         userID: userInfo.userID,
       });
@@ -94,10 +114,10 @@ authRoute.post("/login", async (req, res) => {
       };
 
       const authToken = jwt.sign(
-        { userID: userInfo.userID },
+        { userID: userInfo.userID, sessionID: sessionID },
         process.env.JWT_KEY,
         {
-          expiresIn: "24h",
+          expiresIn: process.env.JWT_TOKEN_EXPIRY,
         }
       );
 
@@ -105,7 +125,7 @@ authRoute.post("/login", async (req, res) => {
         userDetailsObject,
         process.env.JWT_KEY,
         {
-          expiresIn: "24h",
+          expiresIn: process.env.JWT_TOKEN_EXPIRY,
         }
       );
 
@@ -116,6 +136,33 @@ authRoute.post("/login", async (req, res) => {
         userDetailsToken: userDetailsToken,
       });
     }
+  } catch (error) {
+    return res.json({ status: 500, message: "Server Error" });
+  }
+});
+
+authRoute.post("/logout", async (req, res) => {
+  try {
+    const { sessionID } = req.body;
+    if (!sessionID) {
+      return res.json({ status: 400, message: "Session ID is required" });
+    }
+
+    const sessionInfo = await UserSessions.findOne({ sessionID: sessionID });
+    if (!sessionInfo) {
+      return res.json({ status: 404, message: "Session not found" });
+    }
+
+    if (!sessionInfo.isActive) {
+      return res.json({ status: 400, message: "Session already logged out" });
+    }
+
+    await UserSessions.updateOne(
+      { sessionID: sessionID },
+      { isActive: false, logoutTime: new Date().toLocaleString() }
+    );
+
+    return res.json({ status: 200, message: "Logout successful" });
   } catch (error) {
     return res.json({ status: 500, message: "Server Error" });
   }
@@ -225,6 +272,15 @@ authRoute.put("/change-password", async (req, res) => {
     // );
   } catch {
     res.send({ status: 500, message: "Server Error" });
+  }
+});
+
+authRoute.get("/session", async (req, res) => {
+  try {
+    const sessions = await UserSessions.find();
+    return res.json({ status: 200, data: sessions });
+  } catch {
+    return res.json({ status: 500, message: "Server Error" });
   }
 });
 

@@ -31,6 +31,10 @@
   background: #fff6eb;
 }
 
+.blue-box {
+  background: #e7ebff;
+}
+
 .gray-count {
   font-size: 3.5rem;
   font-weight: 700;
@@ -59,10 +63,18 @@
   margin-bottom: 0.5rem;
 }
 
+.blue-count {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #4061f2;
+  margin-bottom: 0.5rem;
+}
+
 .gray-label {
-  color: #888;
+  color: #777;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
+  font-weight: 900;
 }
 
 .green-label {
@@ -83,22 +95,52 @@
   letter-spacing: 0.5px;
 }
 
+.blue-label {
+  color: #4061f2;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+
 .dashboard-table {
   width: 100%;
   border-collapse: collapse;
-  overflow: hidden;
-  border: 2px solid #ccc;
   border-radius: 6px;
+  overflow: hidden;
+  flex: 1;
+  border-radius: 12px;
+  padding: 1rem 0;
+  text-align: center;
+  background: #f7f7f7;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s;
+}
+
+.dashboard-table table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .dashboard-table th,
 .dashboard-table td {
-  padding: 0.75rem 1rem;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+  padding: 0.75rem 0.25rem;
+  text-align: center;
   white-space: nowrap;
+  color: #777;
+}
+
+.dashboard-table th {
+  font-weight: 900;
+  color: #777;
+  background-color: #f6f6f6;
 }
 
 .dashboard-table tbody tr:hover {
   background-color: #f5f7ff;
+}
+
+.dashboard-sessions-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
 }

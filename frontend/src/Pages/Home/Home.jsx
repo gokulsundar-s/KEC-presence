@@ -6,7 +6,7 @@ import NewRequest from "../New Request/NewRequest";
 import Users from "../Users/Users";
 import History from "../History/History";
 import Configs from "../Configs/Configs";
-import Calendar from "../Calendar/Calendar";
+import Sessions from "../Sessions/Sessions";
 import Settings from "../Settings/Settings";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
@@ -32,7 +32,7 @@ export default function Home() {
           {userType === "ADM" && <Route path="users" element={<Users />} />}
           {userType === "ADM" && <Route path="configs" element={<Configs />} />}
           {userType === "ADM" && (
-            <Route path="calendar" element={<Calendar />} />
+            <Route path="sessions" element={<Sessions />} />
           )}
 
           {userType === "STU" && (

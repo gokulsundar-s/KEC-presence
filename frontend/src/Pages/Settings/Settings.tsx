@@ -1,18 +1,52 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+import { baseUrl } from "../../Utils/Constants";
 import { ConfirmIcon } from "../../Assets/Icons";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import { ConfirmModal } from "../../Components/Modals/Modals";
+import { showErrorToast } from "../../Components/Alerts/Alert";
 import "./Settings.css";
+
+interface DecodedToken {
+  sessionID: string;
+}
 
 export default function Settings() {
   const navigate = useNavigate();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  const handleLogout = () => {
-    Cookies.remove("authToken");
-    Cookies.remove("userDetailsToken");
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      const tokenString = Cookies.get("authToken");
+
+      if (!tokenString) {
+        navigate("/login");
+        return;
+      }
+
+      const sessionID = jwtDecode<DecodedToken>(tokenString).sessionID;
+
+      if (!sessionID) {
+        Cookies.remove("authToken");
+        Cookies.remove("userDetailsToken");
+        navigate("/login");
+        return;
+      }
+
+      const response = await axios.post(`${baseUrl}/logout`, {
+        sessionID: sessionID,
+      });
+
+      if (response.status === 200) {
+        Cookies.remove("authToken");
+        Cookies.remove("userDetailsToken");
+        navigate("/login");
+      }
+    } catch (error) {
+      showErrorToast("An error occurred while logging out.");
+    }
   };
 
   return (

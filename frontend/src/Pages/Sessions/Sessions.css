@@ -1,0 +1,24 @@
+.status-dot-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-dot {
+  display: inline-block;
+  border-radius: 50%;
+  border-style: solid;
+  height: 0.15rem;
+  width: 0.15rem;
+  margin-right: 0.5rem;
+}
+
+.active {
+  background-color: green;
+  border-color: green;
+}
+
+.inactive {
+  background-color: red;
+  border-color: red;
+}

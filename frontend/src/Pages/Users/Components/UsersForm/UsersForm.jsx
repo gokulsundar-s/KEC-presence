@@ -1,9 +1,7 @@
-import "./UsersForm.css";
-
 export default function UsersForm({ userData = {}, setUserData }) {
   return (
-    <div className="usersform-container">
-      <div className="usersform-form">
+    <div className="sidebar-form-container">
+      <div className="sidebar-form-form">
         <div className="form-input">
           <p>User Type</p>
           <select

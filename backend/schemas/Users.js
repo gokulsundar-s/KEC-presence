@@ -36,6 +36,17 @@ const userContactsSchema = new mongoose.Schema({
   parentMail: String,
 });
 
+const userSessionsSchema = new mongoose.Schema({
+  sessionID: String,
+  userID: String,
+  device: String,
+  browser: String,
+  ipAddress: String,
+  loginTime: String,
+  logoutTime: String,
+  isActive: Boolean,
+});
+
 const Auth = users.model("auth", authSchema);
 const UserDetails = users.model("userdetails", userDetailsSchema);
 const UserDepartmentDetails = users.model(
@@ -43,10 +54,12 @@ const UserDepartmentDetails = users.model(
   userDepartmentDetailsSchema
 );
 const UserContacts = users.model("usercontacts", userContactsSchema);
+const UserSessions = users.model("usersessions", userSessionsSchema);
 
 module.exports = {
   Auth,
   UserDetails,
   UserDepartmentDetails,
   UserContacts,
+  UserSessions,
 };

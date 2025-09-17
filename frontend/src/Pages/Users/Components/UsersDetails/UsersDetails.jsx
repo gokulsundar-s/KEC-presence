@@ -3,9 +3,8 @@ import axios from "axios";
 import { baseUrl } from "../../../../Utils/Constants";
 import Loaders from "../../../../Components/Loaders/Loaders";
 import { showErrorToast } from "../../../../Components/Alerts/Alert";
-import "./UsersDetails.css";
 
-export default function ViewUserInfo({ userID, userData, setUserData }) {
+export default function UsersDetails({ userID, userData, setUserData }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -32,11 +31,11 @@ export default function ViewUserInfo({ userID, userData, setUserData }) {
   }, [userID]);
 
   return (
-    <div className="userinfo-container">
+    <div className="sidebar-info-container">
       {loading ? (
         <Loaders />
       ) : (
-        <div className="userinfo-table-container">
+        <div className="sidebar-info-table-container">
           <table>
             <tbody>
               <tr>
