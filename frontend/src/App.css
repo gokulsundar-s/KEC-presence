@@ -2,12 +2,14 @@
   font-family: "Poppins";
   margin: 0;
   padding: 0;
+  scrollbar-color: #ddd #f5f5f5;
 }
 
 .page-container {
   width: 100%;
   padding: 2rem;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .page-header {
@@ -167,7 +169,7 @@
   height: 66vh;
   overflow-y: auto;
   border-radius: 6px;
-  scrollbar-color: #eee #fff;
+  scrollbar-color: #ddd #f5f5f5;
 }
 
 .view-info-table {

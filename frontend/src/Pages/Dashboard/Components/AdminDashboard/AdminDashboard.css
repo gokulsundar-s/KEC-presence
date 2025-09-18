@@ -1,10 +1,10 @@
-.dashboard-counts {
+.admin-dashboard-counts {
   display: flex;
   justify-content: space-between;
   gap: 2rem;
 }
 
-.dashboard-counts-box {
+.admin-dashboard-counts-box {
   flex: 1;
   border-radius: 12px;
   padding: 2rem 1.5rem;
@@ -14,53 +14,9 @@
   transition: box-shadow 0.2s;
 }
 
-.gray-box {
-  background: #f6f6f6;
-}
-
-.green-box {
-  background: #e8faef;
-}
-
-.red-box {
-  background: #feecec;
-}
-
-.orange-box {
-  background: #fff6eb;
-}
-
 .blue-box {
   background: #e7ebff;
   border: 2px solid #dfe5ff;
-}
-
-.gray-count {
-  font-size: 3.5rem;
-  font-weight: 700;
-  color: #777;
-  margin-bottom: 0.5rem;
-}
-
-.green-count {
-  font-size: 3.5rem;
-  font-weight: 700;
-  color: #22944c;
-  margin-bottom: 0.5rem;
-}
-
-.red-count {
-  font-size: 3.5rem;
-  font-weight: 700;
-  color: #d93025;
-  margin-bottom: 0.5rem;
-}
-
-.orange-count {
-  font-size: 3.5rem;
-  font-weight: 700;
-  color: #ff8800;
-  margin-bottom: 0.5rem;
 }
 
 .blue-count {
@@ -70,38 +26,13 @@
   margin-bottom: 0.5rem;
 }
 
-.gray-label {
-  color: #777;
-  font-size: 1.1rem;
-  letter-spacing: 0.5px;
-  font-weight: 900;
-}
-
-.green-label {
-  color: #22944c;
-  font-size: 1.1rem;
-  letter-spacing: 0.5px;
-}
-
-.red-label {
-  color: #d93025;
-  font-size: 1.1rem;
-  letter-spacing: 0.5px;
-}
-
-.orange-label {
-  color: #ff8800;
-  font-size: 1.1rem;
-  letter-spacing: 0.5px;
-}
-
 .blue-label {
   color: #4061f2;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
 }
 
-.dashboard-table {
+.admin-dashboard-table {
   width: 100%;
   border-collapse: collapse;
   border-radius: 6px;
@@ -117,37 +48,37 @@
   border: 2px solid #f0f0f0;
 }
 
-.dashboard-table table {
+.admin-dashboard-table table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.dashboard-table th,
-.dashboard-table td {
+.admin-dashboard-table th,
+.admin-dashboard-table td {
   padding: 0.75rem 0.25rem;
   text-align: center;
   white-space: nowrap;
   color: #777;
 }
 
-.dashboard-table th {
+.admin-dashboard-table th {
   font-weight: 900;
   color: #777;
   background-color: #f6f6f6;
 }
 
-.dashboard-table tbody tr:hover {
+.admin-dashboard-table tbody tr:hover {
   background-color: #f5f7ff;
 }
 
-.dashboard-sessions-container {
+.admin-dashboard-sessions-container {
   display: flex;
   justify-content: center;
   gap: 2rem;
   width: 100%;
 }
 
-.dashboard-table-types {
+.admin-dashboard-table-types {
   display: flex;
   align-items: center;
   gap: 0.25rem;

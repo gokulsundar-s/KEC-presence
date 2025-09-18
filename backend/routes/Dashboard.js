@@ -53,6 +53,14 @@ dashboardRoute.get("/admin", async (req, res) => {
       userID: { $regex: /^S/ },
       isActive: true,
     }).countDocuments();
+    const sessions = await UserSessions.find({ isActive: true }).limit(10);
+
+    const sessionsData = sessions.map((session) => ({
+      userID: session.userID,
+      device: session.device,
+      ipAddress: session.ipAddress,
+      loginTime: session.loginTime,
+    }));
 
     const dashboardData = {
       usersCount: [
@@ -73,6 +81,7 @@ dashboardRoute.get("/admin", async (req, res) => {
         { type: "Class Advisor", count: caSessions },
         { type: "Student", count: studentSessions },
       ],
+      sessionsData: sessionsData,
     };
 
     res.json({ status: 200, data: dashboardData });

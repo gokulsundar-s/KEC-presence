@@ -1,4 +1,10 @@
-import { SuccessIcon } from "../../Assets/Icons";
+import { useState } from "react";
+import {
+  SuccessIcon,
+  ChangePasswordIcon,
+  ChangeUserInfoIcon,
+  ConfirmIcon,
+} from "../../Assets/Icons";
 import "./Modals.css";
 
 export const ConfirmModal = ({
@@ -104,6 +110,134 @@ export const BulkAddModal = ({ data, onClose }) => {
         <div className="modal-button">
           <button onClick={onClose} className="modal-red-button">
             Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const ChangePasswordModal = ({ onClose }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  return (
+    <div className="modal-container">
+      <div className="modal-box">
+        <div className="modal-title">
+          <ChangePasswordIcon />
+          <p>Change Password</p>
+        </div>
+
+        <div className="modal-form-container">
+          <div className="form-input">
+            <p>Current Password</p>
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter Current Password"
+            />
+          </div>
+          <div className="form-input">
+            <p>New Password</p>
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter New Password"
+            />
+          </div>
+          <div className="form-input">
+            <p>Confirm New Password</p>
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Confirm New Password"
+            />
+          </div>
+
+          <div className="forget-password-form-show-password">
+            <input
+              type="checkbox"
+              id="show-password"
+              onChange={() => setShowPassword(!showPassword)}
+            />
+            <label>Show Password</label>
+          </div>
+
+          <div className="modal-button">
+            <button className="modal-blue-button">Change Password</button>
+            <button className="modal-red-button" onClick={onClose}>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const ChangeUserInfoModal = ({ onClose }) => {
+  return (
+    <div className="modal-container">
+      <div className="modal-box">
+        <div className="modal-title">
+          <ChangeUserInfoIcon />
+          <p>Change User Information</p>
+        </div>
+
+        <div className="modal-form-container">
+          <div className="form-input">
+            <p>Full Name</p>
+            <input type="text" placeholder="Enter your Full Name" />
+          </div>
+          <div className="form-input">
+            <p>Mail ID</p>
+            <input type="mail" placeholder="Enter your Mail ID" />
+          </div>
+          <div className="form-input">
+            <p>Phone Number</p>
+            <input type="tel" placeholder="Enter your Phone Number" />
+          </div>
+        </div>
+
+        <div className="modal-button">
+          <button className="modal-blue-button">Update User Info</button>
+          <button className="modal-red-button" onClick={onClose}>
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const PasswordConfirmModal = ({ icon, title, message, onClose }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  return (
+    <div className="modal-container">
+      <div className="modal-box">
+        <div className="modal-title">
+          {icon}
+          <p>{title}</p>
+        </div>
+        <p className="modal-content">{message}</p>
+        <div className="modal-form-container">
+          <div className="form-input">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter your Password"
+            />
+          </div>
+        </div>
+
+        <div className="forget-password-form-show-password">
+          <input
+            type="checkbox"
+            id="show-password"
+            onChange={() => setShowPassword(!showPassword)}
+          />
+          <label>Show Password</label>
+        </div>
+
+        <div className="modal-button">
+          <button className="modal-blue-button">Confirm</button>
+          <button className="modal-red-button" onClick={onClose}>
+            Cancel
           </button>
         </div>
       </div>

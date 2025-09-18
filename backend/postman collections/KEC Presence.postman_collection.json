@@ -10,6 +10,38 @@
 			"name": "Auth",
 			"item": [
 				{
+					"name": "Get Users Sessions Data",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostURL}}/session",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"session"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Login",
 					"request": {
 						"auth": {
@@ -33,6 +65,35 @@
 							],
 							"path": [
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"sessionID\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostURL}}/logout",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"logout"
 							]
 						}
 					},
@@ -92,70 +153,12 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Logout",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"sessionID\": \"\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{hostURL}}/logout",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"logout"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
 		{
 			"name": "Users",
 			"item": [
-				{
-					"name": "Add User",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"userType\": \"\",\r\n    \"department\": \"\",\r\n    \"name\": \"\",\r\n    \"rollNumber\": \"\",\r\n    \"year\": \"\",\r\n    \"section\": \"\",\r\n    \"mail\": \"\",\r\n    \"phoneNumber\": \"\",\r\n    \"parentMail\": \"\",\r\n    \"parentPhone\": \"\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{hostURL}}/users",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Get all Users Data",
 					"protocolProfileBehavior": {
@@ -169,7 +172,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userID\": \"\"\r\n}",
+							"raw": "{}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -201,7 +204,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userID\": \"\"\r\n}",
+							"raw": "{}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -216,6 +219,35 @@
 							"path": [
 								"users",
 								"{userID}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userType\": \"\",\r\n    \"department\": \"\",\r\n    \"name\": \"\",\r\n    \"rollNumber\": \"\",\r\n    \"year\": \"\",\r\n    \"section\": \"\",\r\n    \"mail\": \"\",\r\n    \"phoneNumber\": \"\",\r\n    \"parentMail\": \"\",\r\n    \"parentPhone\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostURL}}/users",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"users"
 							]
 						}
 					},
@@ -275,44 +307,37 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Get Users Sessions Data",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{hostURL}}/session",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"session"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
 		{
 			"name": "Configs",
 			"item": [
+				{
+					"name": "Get all Configs Data",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{hostURL}}/configs/",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"configs",
+								""
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Add Config",
 					"request": {
@@ -334,31 +359,6 @@
 							],
 							"path": [
 								"configs"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get all Configs Data",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{hostURL}}/configs/",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"configs",
-								""
 							]
 						}
 					},
@@ -431,6 +431,42 @@
 							"path": [
 								"dashboard",
 								"admin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Settings",
+			"item": [
+				{
+					"name": "Admin",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostURL}}/settings/admin/{userID}",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"settings",
+								"admin",
+								"{userID}"
 							]
 						}
 					},

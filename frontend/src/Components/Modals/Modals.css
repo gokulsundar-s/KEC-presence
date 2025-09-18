@@ -19,7 +19,7 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
   animation: slideUp 0.25s ease-out;
   overflow-y: auto;
-  scrollbar-color: #ccc transparent;
+  scrollbar-color: #ddd #f5f5f5;
 }
 
 .modal-title {
@@ -144,6 +144,34 @@
 
 .row-failed {
   color: #ff0000;
+}
+
+.modal-form-container {
+  padding-top: 1rem;
+}
+
+.forget-password-form-show-password {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.forget-password-form-show-password input[type="checkbox"] {
+  height: 0.85rem;
+}
+
+.forget-password-form-forgot-password a {
+  font-size: 0.9rem;
+  color: #4061f2;
+  text-decoration: none;
+}
+
+.forget-password-form-forgot-password a:hover {
+  text-decoration: underline;
+  color: #2646e2;
 }
 
 @keyframes rotation {

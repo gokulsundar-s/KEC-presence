@@ -15,6 +15,7 @@ const usersRoute = require("./routes/Users");
 const configsRoute = require("./routes/Configs");
 const requestRoute = require("./routes/Requests");
 const dashboardRoute = require("./routes/Dashboard");
+const settingsRoute = require("./routes/Settings");
 
 mongoose.connect(process.env.MONGODB_URL);
 
@@ -23,6 +24,7 @@ app.use("/users", usersRoute);
 app.use("/configs", configsRoute);
 app.use("/requests", requestRoute);
 app.use("/dashboard", dashboardRoute);
+app.use("/settings", settingsRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

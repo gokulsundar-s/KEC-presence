@@ -1,21 +1,20 @@
-import { jwtDecode } from "jwt-decode";
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import AdminDashboard from "./Components/AdminDashboard/AdminDashboard";
+import AdminSettings from "./Components/AdminSettings/AdminSettings";
 
-export default function Dashboard() {
+export default function Settings() {
   const navigate = useNavigate();
 
-  let name = "";
   let userType = "";
-
   try {
     const userDetailsToken = Cookies.get("userDetailsToken");
     if (!userDetailsToken) {
       navigate("/login");
     } else {
-      name = jwtDecode(userDetailsToken).name;
-      userType = jwtDecode(userDetailsToken).userType;
+      const decodedToken = jwtDecode(userDetailsToken);
+      userType = decodedToken.userType;
     }
   } catch (error) {
     navigate("/login");
@@ -23,9 +22,9 @@ export default function Dashboard() {
 
   return (
     <div className="page-container">
-      <p className="page-header">Welcome {name}🎉</p>
+      <p className="page-header">User Settings</p>
 
-      {userType === "ADM" && <AdminDashboard />}
+      {userType === "ADM" && <AdminSettings />}
     </div>
   );
 }
