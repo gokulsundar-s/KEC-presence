@@ -102,6 +102,7 @@ usersRoute.post("/", async (req, res) => {
     const auth = new Auth({
       userID: userID,
       password: hashedPassword,
+      isActive: true,
     });
 
     const userDetails = new UserDetails({
@@ -180,6 +181,7 @@ usersRoute.get("/", async (req, res) => {
 usersRoute.get("/:userID", async (req, res) => {
   try {
     const userID = req.params.userID;
+    const authUser = await Auth.findOne({ userID: userID });
     const userDetails = await UserDetails.findOne({ userID: userID });
     const userDepartmentDetails = await UserDepartmentDetails.findOne({
       userID: userID,
@@ -202,6 +204,7 @@ usersRoute.get("/:userID", async (req, res) => {
       phoneNumber: userContactDetails?.phoneNumber || null,
       parentMail: userContactDetails?.parentMail || null,
       parentPhone: userContactDetails?.parentPhone || null,
+      userStatus: authUser?.isActive ? true : false || null,
     };
 
     res.send({ status: 200, data: usersData });

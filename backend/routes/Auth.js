@@ -208,25 +208,28 @@ authRoute.put("/reset-password", async (req, res) => {
 authRoute.put("/change-password", async (req, res) => {
   try {
     const userID = req.body.userID;
-    const oldPassword = req.body.oldPassword;
+    const currentPassword = req.body.currentPassword;
     const newPassword = req.body.newPassword;
-    const confirmPassword = req.body.confirmPassword;
+    const confirmNewPassword = req.body.confirmNewPassword;
 
-    if (!oldPassword) {
-      return res.send({ status: 400, message: "Old password is required" });
+    if (!currentPassword) {
+      return res.send({ status: 400, message: "Current password is required" });
     } else if (!newPassword) {
       return res.send({ status: 400, message: "New password is required" });
-    } else if (!confirmPassword) {
-      return res.send({ status: 400, message: "Confirm password is required" });
-    } else if (newPassword !== confirmPassword) {
+    } else if (!confirmNewPassword) {
+      return res.send({
+        status: 400,
+        message: "Confirm new password is required",
+      });
+    } else if (newPassword !== confirmNewPassword) {
       return res.send({
         status: 400,
         message: "New password and confirm password do not match",
       });
-    } else if (oldPassword === newPassword) {
+    } else if (currentPassword === newPassword) {
       return res.send({
         status: 400,
-        message: "New password must be different from old password",
+        message: "New password must be different from current password",
       });
     }
 
@@ -235,25 +238,18 @@ authRoute.put("/change-password", async (req, res) => {
       return res.status(404).send("User not found");
     }
 
-    const isAuthUser = await bcrypt.compare(oldPassword, userCheck.password);
+    const isAuthUser = await bcrypt.compare(
+      currentPassword,
+      userCheck.password
+    );
     if (!isAuthUser) {
       return res.send({
         status: 400,
-        message: "Your old password is incorrect",
+        message: "Your current password is incorrect",
       });
     }
 
-    if (newPassword.length < 8) {
-      return res.send({
-        status: 400,
-        message: "New password must be at least 8 characters long",
-      });
-    } else if (newPassword.length > 20) {
-      return res.send({
-        status: 400,
-        message: "New password must be at most 20 characters long",
-      });
-    } else if (!isStrongPassword(newPassword).valid) {
+    if (!isStrongPassword(newPassword).valid) {
       return res.send({
         status: 400,
         message: isStrongPassword(newPassword).reason,

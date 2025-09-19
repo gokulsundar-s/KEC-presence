@@ -3,6 +3,7 @@ import axios from "axios";
 import { baseUrl } from "../../../../Utils/Constants";
 import Loaders from "../../../../Components/Loaders/Loaders";
 import { showErrorToast } from "../../../../Components/Alerts/Alert";
+import "./UsersDetails.css";
 
 export default function UsersDetails({ userID, userData, setUserData }) {
   const [loading, setLoading] = useState(false);
@@ -77,6 +78,19 @@ export default function UsersDetails({ userID, userData, setUserData }) {
               <tr>
                 <th>Parent Phone Number</th>
                 <td>{userData.parentPhone ?? "-"}</td>
+              </tr>
+              <tr>
+                <th>User Status</th>
+                <td>
+                  <div className="user-status-dot-container">
+                    <span
+                      className={`user-status-dot ${
+                        userData.userStatus ? "active" : "inactive"
+                      }`}
+                    ></span>
+                    {userData.userStatus ? "Active" : "Expired"}
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>

@@ -19,23 +19,36 @@ import {
   ChangeUserInfoModal,
   PasswordConfirmModal,
 } from "../../../../Components/Modals/Modals";
-import { showErrorToast } from "../../../../Components/Alerts/Alert";
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "../../../../Components/Alerts/Alert";
 import { baseUrl } from "../../../../Utils/Constants";
 import "./AdminSettings.css";
 
 export default function AdminSettings() {
+  const [userID, setUserID] = useState("");
+  const [userType, setUserType] = useState("");
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [showChangeUserInfoModal, setShowChangeUserInfoModal] = useState(false);
   const [showMigrationModal, setShowMigrationModal] = useState(false);
   const [showDeleteSessionsModal, setShowDeleteSessionsModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [dashboardData, setDashboardData] = useState(null);
+  const [settingsData, setSettingsData] = useState(null);
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmNewPassword: "",
+  });
+  const [userInfoData, setUserInfoData] = useState({
+    name: "",
+    mail: "",
+    phoneNumber: "",
+  });
+  const [userPassword, setUserPassword] = useState("");
 
   const navigate = useNavigate();
-
-  let userType = "";
-  let userID = "";
 
   useEffect(() => {
     try {
@@ -45,8 +58,8 @@ export default function AdminSettings() {
         return;
       }
       const decodedToken = jwtDecode(userDetailsToken);
-      userType = decodedToken?.userType ?? "";
-      userID = decodedToken?.userID ?? "";
+      setUserType(decodedToken?.userType ?? "");
+      setUserID(decodedToken?.userID ?? "");
     } catch (error) {
       navigate("/login");
     }
@@ -83,19 +96,97 @@ export default function AdminSettings() {
     }
   };
 
-  useEffect(() => {
-    const getSettingsData = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(`${baseUrl}/settings/admin/${userID}`);
-        setDashboardData(response.data.data);
-      } catch {
-        showErrorToast("Server Error. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const handlePasswordChange = async () => {
+    try {
+      const response = await axios.put(`${baseUrl}/change-password`, {
+        userID: userID,
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+        confirmNewPassword: passwordData.confirmNewPassword,
+      });
 
+      if (response.data.status === 200) {
+        showSuccessToast(response.data.message);
+        setShowChangePasswordModal(false);
+        setPasswordData({
+          currentPassword: "",
+          newPassword: "",
+          confirmNewPassword: "",
+        });
+      } else {
+        showErrorToast(response.data.message);
+      }
+    } catch (error) {
+      showErrorToast("Server Error");
+    }
+  };
+
+  const handleUpdateUserInfo = async () => {
+    try {
+      const response = await axios.put(`${baseUrl}/users/${userID}`, {
+        userType: userType,
+        name: userInfoData.name,
+        mail: userInfoData.mail,
+        phoneNumber: userInfoData.phoneNumber,
+      });
+
+      if (response.data.status === 200) {
+        showSuccessToast(response.data.message);
+        setShowChangeUserInfoModal(false);
+        setUserInfoData({
+          name: "",
+          mail: "",
+          phoneNumber: "",
+        });
+        getSettingsData();
+      } else {
+        showErrorToast(response.data.message);
+      }
+    } catch (error) {
+      showErrorToast("Server Error");
+    }
+  };
+
+  const handleMigrateYear = async () => {
+    try {
+      const response = await axios.post(
+        `${baseUrl}/settings/admin/migrate-year`,
+        {
+          userID: userID,
+          password: userPassword,
+        }
+      );
+
+      if (response.data.status === 200) {
+        showSuccessToast(response.data.message);
+        setShowMigrationModal(false);
+        setUserPassword("");
+      } else {
+        showErrorToast(response.data.message);
+      }
+    } catch (error) {
+      showErrorToast("Server Error");
+    }
+  };
+
+  const getSettingsData = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`${baseUrl}/settings/admin/${userID}`);
+      setSettingsData(response.data.data);
+      setUserInfoData({
+        name: response.data.data?.userInfoData?.name || "",
+        mail: response.data.data?.userInfoData?.mail || "",
+        phoneNumber: response.data.data?.userInfoData?.phoneNumber || "",
+      });
+    } catch {
+      showErrorToast("Server Error. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     if (userID) getSettingsData();
   }, [userID]);
 
@@ -112,24 +203,24 @@ export default function AdminSettings() {
               <div className="settings-profile-item">
                 <SettingsUserIcon />
                 <p className="settings-profile-item-header">Full Name :</p>
-                <p>{dashboardData?.userInfoData?.name ?? "-"}</p>
+                <p>{settingsData?.userInfoData?.name ?? "-"}</p>
               </div>
               <div className="settings-profile-item">
                 <SettingsMailIcon />
                 <p className="settings-profile-item-header">Mail ID :</p>
-                <p>{dashboardData?.userInfoData?.mail ?? "-"}</p>
+                <p>{settingsData?.userInfoData?.mail ?? "-"}</p>
               </div>
               <div className="settings-profile-item">
                 <SettingsPhoneIcon />
                 <p className="settings-profile-item-header">Phone Number :</p>
-                <p>{dashboardData?.userInfoData?.phoneNumber ?? "-"}</p>
+                <p>{settingsData?.userInfoData?.phoneNumber ?? "-"}</p>
               </div>
 
               <div className="settings-profile-item">
                 <SettingsLastLoginIcon />
                 <p className="settings-profile-item-header">Last Login :</p>
                 <p>
-                  {formatDateTime(dashboardData?.loginData?.lastLogin) ?? "-"}
+                  {formatDateTime(settingsData?.loginData?.lastLogin) ?? "-"}
                 </p>
               </div>
               <div className="settings-profile-item">
@@ -137,25 +228,23 @@ export default function AdminSettings() {
                 <p className="settings-profile-item-header">
                   Total Active Logins :
                 </p>
-                <p>{dashboardData?.loginData?.loginCounts ?? "-"}</p>
+                <p>{settingsData?.loginData?.loginCounts ?? "-"}</p>
               </div>
             </div>
 
             <div className="settings-profile-buttons-container">
-              <div className="settings-profile-userinfo-buttons">
-                <button
-                  className="primary-button"
-                  onClick={() => setShowChangeUserInfoModal(true)}
-                >
-                  Change User Info
-                </button>
-                <button
-                  className="secondary-button"
-                  onClick={() => setShowChangePasswordModal(true)}
-                >
-                  Change Password
-                </button>
-              </div>
+              <button
+                className="primary-button"
+                onClick={() => setShowChangeUserInfoModal(true)}
+              >
+                Update User Info
+              </button>
+              <button
+                className="secondary-button"
+                onClick={() => setShowChangePasswordModal(true)}
+              >
+                Change Password
+              </button>
               <button
                 onClick={() => setShowConfirmModal(true)}
                 className="logout-button"
@@ -182,7 +271,7 @@ export default function AdminSettings() {
             </div>
             <div className="setting-privileges-container">
               <p className="settings-privileges-title">
-                Delete all Active Sessions
+                Inactive all Active Sessions
               </p>
               <p className="settings-privileges-content">
                 This button removes all active sessions of the user, effectively
@@ -194,7 +283,7 @@ export default function AdminSettings() {
                 className="logout-button"
                 onClick={() => setShowDeleteSessionsModal(true)}
               >
-                Delete All Active Sessions
+                Inactive All Active Sessions
               </button>
             </div>
           </div>
@@ -214,13 +303,26 @@ export default function AdminSettings() {
 
       {showChangePasswordModal && (
         <ChangePasswordModal
-          onClose={() => setShowChangePasswordModal(false)}
+          onClose={() => {
+            setShowChangePasswordModal(false);
+            setPasswordData({
+              currentPassword: "",
+              newPassword: "",
+              confirmNewPassword: "",
+            });
+          }}
+          setPasswordData={setPasswordData}
+          passwordData={passwordData}
+          onSubmit={handlePasswordChange}
         />
       )}
 
       {showChangeUserInfoModal && (
         <ChangeUserInfoModal
           onClose={() => setShowChangeUserInfoModal(false)}
+          setUserInfoData={setUserInfoData}
+          userInfoData={userInfoData}
+          onSubmit={handleUpdateUserInfo}
         />
       )}
 
@@ -228,17 +330,20 @@ export default function AdminSettings() {
         <PasswordConfirmModal
           icon={<ConfirmIcon />}
           title="Confirm Academic Year Migration"
-          message="Are you sure to migrate the academin year? To confirm please enter your password below."
+          message="Are you sure to migrate the academic year? To confirm please enter your password below."
           onClose={() => setShowMigrationModal(false)}
+          setUserPassword={setUserPassword}
+          onSubmit={handleMigrateYear}
         />
       )}
 
       {showDeleteSessionsModal && (
         <PasswordConfirmModal
           icon={<ConfirmIcon />}
-          title="Confirm Delete All Active Sessions"
-          message="Are you sure to delete all active sessions? To confirm please enter your password below."
+          title="Confirm Inactive All Active Sessions"
+          message="Are you sure to inactive all active sessions? To confirm please enter your password below."
           onClose={() => setShowDeleteSessionsModal(false)}
+          setUserPassword={setUserPassword}
         />
       )}
     </>

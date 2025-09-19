@@ -767,16 +767,16 @@ export const SessionIcon = ({ filled }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M4.6138 8.54479L4.1875 10.25H2C1.58579 10.25 1.25 10.5858 1.25 11C1.25 11.4142 1.58579 11.75 2 11.75H22C22.4142 11.75 22.75 11.4142 22.75 11C22.75 10.5858 22.4142 10.25 22 10.25H19.8125L19.3862 8.54479C18.8405 6.36211 18.5677 5.27077 17.7539 4.63538C16.9401 4 15.8152 4 13.5653 4H10.4347C8.1848 4 7.05988 4 6.24609 4.63538C5.43231 5.27077 5.15947 6.36211 4.6138 8.54479ZM6.5 21C8.12316 21 9.48826 19.8951 9.88417 18.3963L10.9938 17.8415C11.6272 17.5248 12.3728 17.5248 13.0062 17.8415L14.1158 18.3963C14.5117 19.8951 15.8768 21 17.5 21C19.433 21 21 19.433 21 17.5C21 15.567 19.433 14 17.5 14C15.8399 14 14.4498 15.1558 14.0903 16.7065L13.6771 16.4999C12.6213 15.972 11.3787 15.972 10.3229 16.4999L9.90967 16.7065C9.55023 15.1558 8.16009 14 6.5 14C4.567 14 3 15.567 3 17.5C3 19.433 4.567 21 6.5 21Z"
           fill="#ffffff"
         ></path>
@@ -790,40 +790,40 @@ export const SessionIcon = ({ filled }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
           d="M21 17.5C21 19.433 19.433 21 17.5 21C15.567 21 14 19.433 14 17.5C14 15.567 15.567 14 17.5 14C19.433 14 21 15.567 21 17.5Z"
           stroke="#ffffff"
-          stroke-width="1.5"
+          strokeWidth="1.5"
         ></path>
         <path
           d="M2 11H22"
           stroke="#ffffff"
-          stroke-width="1.5"
-          stroke-linecap="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
         ></path>
         <path
           d="M4 11L4.6138 8.54479C5.15947 6.36211 5.43231 5.27077 6.24609 4.63538C7.05988 4 8.1848 4 10.4347 4H13.5653C15.8152 4 16.9401 4 17.7539 4.63538C18.5677 5.27077 18.8405 6.36211 19.3862 8.54479L20 11"
           stroke="#ffffff"
-          stroke-width="1.5"
-          stroke-linecap="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
         ></path>
         <path
           d="M10 17.5C10 19.433 8.433 21 6.5 21C4.567 21 3 19.433 3 17.5C3 15.567 4.567 14 6.5 14C8.433 14 10 15.567 10 17.5Z"
           stroke="#ffffff"
-          stroke-width="1.5"
+          strokeWidth="1.5"
         ></path>
         <path
           d="M10 17.4999L10.6584 17.1707C11.5029 16.7484 12.4971 16.7484 13.3416 17.1707L14 17.4999"
           stroke="#ffffff"
-          stroke-width="1.5"
-          stroke-linecap="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
         ></path>
       </g>
     </svg>
@@ -839,24 +839,24 @@ export const TableLaptopIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
           d="M19.6471 15.5357H4.35294M19.6471 15.5357V8C19.6471 6.11438 19.6471 5.17157 19.0613 4.58579C18.4755 4 17.5327 4 15.6471 4H8.35294C6.46732 4 5.52451 4 4.93873 4.58579C4.35294 5.17157 4.35294 6.11438 4.35294 8V15.5357M19.6471 15.5357L21.3911 17.3358C21.4356 17.3818 21.4579 17.4048 21.4787 17.4276C21.7998 17.7802 21.9843 18.2358 21.999 18.7124C22 18.7433 22 18.7753 22 18.8393C22 18.9885 22 19.0631 21.996 19.1261C21.9325 20.1314 21.1314 20.9325 20.1261 20.996C20.0631 21 19.9885 21 19.8393 21H4.16068C4.01148 21 3.93688 21 3.87388 20.996C2.86865 20.9325 2.06749 20.1314 2.00398 19.1261C2 19.0631 2 18.9885 2 18.8393C2 18.7753 2 18.7433 2.00096 18.7124C2.01569 18.2358 2.20022 17.7802 2.52127 17.4276C2.54208 17.4048 2.56438 17.3818 2.60888 17.3358L4.35294 15.5357"
           stroke="#777777"
-          stroke-width="2"
-          stroke-linecap="round"
+          strokeWidth="2"
+          strokeLinecap="round"
         ></path>
         <path
           d="M9.5 18.5H14.5"
           stroke="#777777"
-          stroke-width="2"
-          stroke-linecap="round"
+          strokeWidth="2"
+          strokeLinecap="round"
         ></path>
         <path
           d="M12.75 6.75C12.75 7.16421 12.4142 7.5 12 7.5C11.5858 7.5 11.25 7.16421 11.25 6.75C11.25 6.33579 11.5858 6 12 6C12.4142 6 12.75 6.33579 12.75 6.75Z"
@@ -876,23 +876,23 @@ export const TableMobileIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
           d="M4 10C4 6.22876 4 4.34315 5.17157 3.17157C6.34315 2 8.22876 2 12 2C15.7712 2 17.6569 2 18.8284 3.17157C20 4.34315 20 6.22876 20 10V14C20 17.7712 20 19.6569 18.8284 20.8284C17.6569 22 15.7712 22 12 22C8.22876 22 6.34315 22 5.17157 20.8284C4 19.6569 4 17.7712 4 14V10Z"
           stroke="#777777"
-          stroke-width="2"
+          strokeWidth="2"
         ></path>
         <path
           d="M15 5H9"
           stroke="#777777"
-          stroke-width="2"
-          stroke-linecap="round"
+          strokeWidth="2"
+          strokeLinecap="round"
         ></path>
         <circle cx="12" cy="19" r="1" stroke="#777777"></circle>
         <path d="M4 17H20" stroke="#77777777777"></path>
@@ -911,18 +911,18 @@ export const TableUserIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
-        <circle cx="12" cy="6" r="4" stroke="#777777" stroke-width="2"></circle>
+        <circle cx="12" cy="6" r="4" stroke="#777777" strokeWidth="2"></circle>
         <path
           d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z"
           stroke="#777777"
-          stroke-width="2"
+          strokeWidth="2"
         ></path>
       </g>
     </svg>
@@ -938,11 +938,11 @@ export const SettingsUserIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
@@ -967,11 +967,11 @@ export const SettingsMailIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
@@ -979,8 +979,8 @@ export const SettingsMailIcon = () => {
           fill="#777777"
         ></path>
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M3.46447 3.46447C2 4.92893 2 7.28595 2 12C2 16.714 2 19.0711 3.46447 20.5355C4.92893 22 7.28595 22 12 22C16.714 22 19.0711 22 20.5355 20.5355C22 19.0711 22 16.714 22 12C22 7.28595 22 4.92893 20.5355 3.46447C19.0711 2 16.714 2 12 2C7.28595 2 4.92893 2 3.46447 3.46447ZM6.75 12C6.75 9.1005 9.1005 6.75 12 6.75C14.8995 6.75 17.25 9.1005 17.25 12C17.25 12.6327 17.1384 13.2376 16.9345 13.7973C16.8991 13.8944 16.8295 13.9989 16.7183 14.1015L16.6377 14.1758C16.3369 14.4533 15.8853 14.4888 15.5448 14.2618C15.2981 14.0974 15.15 13.8206 15.15 13.5241V12C15.15 10.2603 13.7397 8.85 12 8.85C10.2603 8.85 8.85 10.2603 8.85 12C8.85 13.7397 10.2603 15.15 12 15.15C12.7017 15.15 13.3499 14.9205 13.8735 14.5325C14.0557 14.9233 14.3431 15.2635 14.7127 15.5099C15.6294 16.121 16.8451 16.0252 17.6548 15.2783L17.7354 15.204C17.9855 14.9732 18.211 14.6756 18.3439 14.3108C18.6069 13.5889 18.75 12.8103 18.75 12C18.75 8.27208 15.7279 5.25 12 5.25C8.27208 5.25 5.25 8.27208 5.25 12C5.25 15.7279 8.27208 18.75 12 18.75C12.4142 18.75 12.75 18.4142 12.75 18C12.75 17.5858 12.4142 17.25 12 17.25C9.1005 17.25 6.75 14.8995 6.75 12Z"
           fill="#777777"
         ></path>
@@ -998,11 +998,11 @@ export const SettingsPhoneIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
@@ -1014,8 +1014,8 @@ export const SettingsPhoneIcon = () => {
           fill="#777777"
         ></path>
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M13.4857 5.3293C13.5995 4.93102 14.0146 4.7004 14.4129 4.81419L14.2069 5.53534C14.4129 4.81419 14.4129 4.81419 14.4129 4.81419L14.4144 4.81461L14.4159 4.81505L14.4192 4.81602L14.427 4.81834L14.4468 4.8245C14.4618 4.82932 14.4807 4.8356 14.5031 4.84357C14.548 4.85951 14.6074 4.88217 14.6802 4.91337C14.8259 4.97581 15.0249 5.07223 15.2695 5.21694C15.7589 5.50662 16.4271 5.9878 17.2121 6.77277C17.9971 7.55775 18.4782 8.22593 18.7679 8.7154C18.9126 8.95991 19.009 9.15897 19.0715 9.30466C19.1027 9.37746 19.1254 9.43682 19.1413 9.48173C19.1493 9.50418 19.1555 9.52301 19.1604 9.53809L19.1665 9.55788L19.1688 9.56563L19.1698 9.56896L19.1702 9.5705C19.1702 9.5705 19.1707 9.57194 18.4495 9.77798L19.1707 9.57194C19.2845 9.97021 19.0538 10.3853 18.6556 10.4991C18.2607 10.6119 17.8492 10.3862 17.7313 9.99413L17.7276 9.98335C17.7223 9.96832 17.7113 9.93874 17.6928 9.89554C17.6558 9.8092 17.5887 9.66797 17.4771 9.47938C17.2541 9.10264 16.8514 8.53339 16.1514 7.83343C15.4515 7.13348 14.8822 6.73078 14.5055 6.50781C14.3169 6.39619 14.1757 6.32909 14.0893 6.29209C14.0461 6.27358 14.0165 6.26254 14.0015 6.25721L13.9907 6.25352C13.5987 6.13564 13.3729 5.72419 13.4857 5.3293Z"
           fill="#777777"
         ></path>
@@ -1033,11 +1033,11 @@ export const SettingsLastLoginIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
@@ -1045,8 +1045,8 @@ export const SettingsLastLoginIcon = () => {
           fill="#777777"
         ></path>
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M12 7.25C12.4142 7.25 12.75 7.58579 12.75 8V11.6893L15.0303 13.9697C15.3232 14.2626 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2626 15.3232 13.9697 15.0303L11.4697 12.5303C11.329 12.3897 11.25 12.1989 11.25 12V8C11.25 7.58579 11.5858 7.25 12 7.25Z"
           fill="white"
         ></path>
@@ -1064,11 +1064,11 @@ export const SettingsLoginCountIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
@@ -1089,35 +1089,35 @@ export const ChangePasswordIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
         <path
           d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12C22 15.7712 22 17.6569 20.8284 18.8284C19.6569 20 17.7712 20 14 20H10C6.22876 20 4.34315 20 3.17157 18.8284C2 17.6569 2 15.7712 2 12Z"
           stroke="#4061f2"
-          stroke-width="1.5"
+          strokeWidth="1.5"
         ></path>
         <path
           d="M12.0002 10V14M10.2678 11L13.7319 13M13.7317 11L10.2676 13"
           stroke="#4061f2"
-          stroke-width="1.5"
-          stroke-linecap="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
         ></path>
         <path
           d="M6.73266 10V14M5.00023 11L8.46434 13M8.4641 11L5 13"
           stroke="#4061f2"
-          stroke-width="1.5"
-          stroke-linecap="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
         ></path>
         <path
           d="M17.2681 10V14M15.5356 11L18.9997 13M18.9995 11L15.5354 13"
           stroke="#4061f2"
-          stroke-width="1.5"
-          stroke-linecap="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
         ></path>
       </g>
     </svg>
@@ -1133,47 +1133,41 @@ export const ChangeUserInfoIcon = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
       <g
         id="SVGRepo_tracerCarrier"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
-        <circle
-          cx="9"
-          cy="9"
-          r="2"
-          stroke="#4061f2"
-          stroke-width="1.5"
-        ></circle>
+        <circle cx="9" cy="9" r="2" stroke="#4061f2" strokeWidth="1.5"></circle>
         <path
           d="M13 15C13 16.1046 13 17 9 17C5 17 5 16.1046 5 15C5 13.8954 6.79086 13 9 13C11.2091 13 13 13.8954 13 15Z"
           stroke="#4061f2"
-          stroke-width="1.5"
+          strokeWidth="1.5"
         ></path>
         <path
           d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12C22 15.7712 22 17.6569 20.8284 18.8284C19.6569 20 17.7712 20 14 20H10C6.22876 20 4.34315 20 3.17157 18.8284C2 17.6569 2 15.7712 2 12Z"
           stroke="#4061f2"
-          stroke-width="1.5"
+          strokeWidth="1.5"
         ></path>
         <path
           d="M19 12H15"
           stroke="#4061f2"
-          stroke-width="1.5"
-          stroke-linecap="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
         ></path>
         <path
           d="M19 9H14"
           stroke="#4061f2"
-          stroke-width="1.5"
-          stroke-linecap="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
         ></path>
         <path
           d="M19 15H16"
           stroke="#4061f2"
-          stroke-width="1.5"
-          stroke-linecap="round"
+          strokeWidth="1.5"
+          strokeLinecap="round"
         ></path>
       </g>
     </svg>

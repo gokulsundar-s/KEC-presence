@@ -10,6 +10,7 @@ const authSchema = new mongoose.Schema(
   {
     userID: String,
     password: String,
+    isActive: Boolean,
   },
   { collection: "auth" }
 );

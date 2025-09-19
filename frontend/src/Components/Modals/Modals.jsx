@@ -117,7 +117,12 @@ export const BulkAddModal = ({ data, onClose }) => {
   );
 };
 
-export const ChangePasswordModal = ({ onClose }) => {
+export const ChangePasswordModal = ({
+  onClose,
+  passwordData,
+  setPasswordData,
+  onSubmit,
+}) => {
   const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="modal-container">
@@ -133,6 +138,13 @@ export const ChangePasswordModal = ({ onClose }) => {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Enter Current Password"
+              value={passwordData.currentPassword}
+              onChange={(e) =>
+                setPasswordData({
+                  ...passwordData,
+                  currentPassword: e.target.value,
+                })
+              }
             />
           </div>
           <div className="form-input">
@@ -140,6 +152,13 @@ export const ChangePasswordModal = ({ onClose }) => {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Enter New Password"
+              value={passwordData.newPassword}
+              onChange={(e) =>
+                setPasswordData({
+                  ...passwordData,
+                  newPassword: e.target.value,
+                })
+              }
             />
           </div>
           <div className="form-input">
@@ -147,6 +166,13 @@ export const ChangePasswordModal = ({ onClose }) => {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Confirm New Password"
+              value={passwordData.confirmNewPassword}
+              onChange={(e) =>
+                setPasswordData({
+                  ...passwordData,
+                  confirmNewPassword: e.target.value,
+                })
+              }
             />
           </div>
 
@@ -160,7 +186,9 @@ export const ChangePasswordModal = ({ onClose }) => {
           </div>
 
           <div className="modal-button">
-            <button className="modal-blue-button">Change Password</button>
+            <button className="modal-blue-button" onClick={onSubmit}>
+              Change Password
+            </button>
             <button className="modal-red-button" onClick={onClose}>
               Close
             </button>
@@ -171,7 +199,12 @@ export const ChangePasswordModal = ({ onClose }) => {
   );
 };
 
-export const ChangeUserInfoModal = ({ onClose }) => {
+export const ChangeUserInfoModal = ({
+  onClose,
+  userInfoData,
+  setUserInfoData,
+  onSubmit,
+}) => {
   return (
     <div className="modal-container">
       <div className="modal-box">
@@ -183,20 +216,46 @@ export const ChangeUserInfoModal = ({ onClose }) => {
         <div className="modal-form-container">
           <div className="form-input">
             <p>Full Name</p>
-            <input type="text" placeholder="Enter your Full Name" />
+            <input
+              type="text"
+              placeholder="Enter your Full Name"
+              value={userInfoData.name}
+              onChange={(e) =>
+                setUserInfoData({ ...userInfoData, name: e.target.value })
+              }
+            />
           </div>
           <div className="form-input">
             <p>Mail ID</p>
-            <input type="mail" placeholder="Enter your Mail ID" />
+            <input
+              type="mail"
+              placeholder="Enter your Mail ID"
+              value={userInfoData.mail}
+              onChange={(e) =>
+                setUserInfoData({ ...userInfoData, mail: e.target.value })
+              }
+            />
           </div>
           <div className="form-input">
             <p>Phone Number</p>
-            <input type="tel" placeholder="Enter your Phone Number" />
+            <input
+              type="tel"
+              placeholder="Enter your Phone Number"
+              value={userInfoData.phoneNumber}
+              onChange={(e) =>
+                setUserInfoData({
+                  ...userInfoData,
+                  phoneNumber: e.target.value,
+                })
+              }
+            />
           </div>
         </div>
 
         <div className="modal-button">
-          <button className="modal-blue-button">Update User Info</button>
+          <button className="modal-blue-button" onCClick={onSubmit}>
+            Update User Info
+          </button>
           <button className="modal-red-button" onClick={onClose}>
             Close
           </button>
@@ -206,7 +265,14 @@ export const ChangeUserInfoModal = ({ onClose }) => {
   );
 };
 
-export const PasswordConfirmModal = ({ icon, title, message, onClose }) => {
+export const PasswordConfirmModal = ({
+  icon,
+  title,
+  message,
+  onClose,
+  setUserPassword,
+  onSubmit,
+}) => {
   const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="modal-container">
@@ -221,6 +287,7 @@ export const PasswordConfirmModal = ({ icon, title, message, onClose }) => {
             <input
               type={showPassword ? "text" : "password"}
               placeholder="Enter your Password"
+              onChange={(e) => setUserPassword(e.target.value)}
             />
           </div>
         </div>
@@ -235,7 +302,9 @@ export const PasswordConfirmModal = ({ icon, title, message, onClose }) => {
         </div>
 
         <div className="modal-button">
-          <button className="modal-blue-button">Confirm</button>
+          <button className="modal-blue-button" onClick={onSubmit}>
+            Confirm
+          </button>
           <button className="modal-red-button" onClick={onClose}>
             Cancel
           </button>
