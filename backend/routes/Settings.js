@@ -138,4 +138,38 @@ settingsRoute.post("/admin/migrate-year", async (req, res) => {
   }
 });
 
+settingsRoute.post("/admin/inactive-users", async (req, res) => {
+  try {
+    const { userID, password, sessionID } = req.body;
+    if (!password) {
+      return res.json({ status: 400, message: "Password is required" });
+    }
+
+    const userInfo = await UserDetails.findOne({ userID: userID });
+    if (!userInfo) {
+      return res.json({ status: 404, message: "User not found" });
+    }
+
+    const userPassword = await Auth.findOne({ userID: userInfo.userID });
+    const isAuthUser = await bcrypt.compare(password, userPassword.password);
+    if (!isAuthUser) {
+      return res.json({ status: 401, message: "Your password is incorrect" });
+    }
+
+    const sessionInfo = await UserSessions.findOne({
+      isActive: true,
+      sessionID: { $ne: sessionID },
+    });
+
+    await UserSessions.updateMany(
+      { isActive: true, sessionID: { $ne: sessionID } },
+      { $set: { isActive: false } }
+    );
+
+    res.json({ status: 200, message: "All active sessions are inactivated" });
+  } catch (error) {
+    res.json({ status: 500, message: "Server Error" });
+  }
+});
+
 module.exports = settingsRoute;

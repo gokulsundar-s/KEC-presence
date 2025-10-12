@@ -9,6 +9,7 @@ const requests = conn.useDb("requests");
 const requestUserMapSchema = mongoose.Schema({
   requestID: String,
   userID: String,
+  isActiveRequest: Boolean,
 });
 
 const requestSchema = mongoose.Schema({
@@ -17,7 +18,9 @@ const requestSchema = mongoose.Schema({
   reason: String,
   fromDate: String,
   toDate: String,
-  session: String,
+  fromSession: String,
+  toSession: String,
+  days: Number,
 });
 
 const statusSchema = mongoose.Schema({

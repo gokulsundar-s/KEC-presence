@@ -28,6 +28,7 @@ import "./AdminSettings.css";
 
 export default function AdminSettings() {
   const [userID, setUserID] = useState("");
+  const [sessionID, setSessionID] = useState("");
   const [userType, setUserType] = useState("");
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
@@ -52,14 +53,17 @@ export default function AdminSettings() {
 
   useEffect(() => {
     try {
+      const authToken = Cookies.get("authToken");
       const userDetailsToken = Cookies.get("userDetailsToken");
       if (!userDetailsToken) {
         navigate("/login");
         return;
       }
-      const decodedToken = jwtDecode(userDetailsToken);
-      setUserType(decodedToken?.userType ?? "");
-      setUserID(decodedToken?.userID ?? "");
+      const decodedUsersToken = jwtDecode(userDetailsToken);
+      const decodedAuthToken = jwtDecode(authToken);
+      setUserType(decodedUsersToken?.userType ?? "");
+      setUserID(decodedUsersToken?.userID ?? "");
+      setSessionID(decodedAuthToken?.sessionID ?? "");
     } catch (error) {
       navigate("/login");
     }
@@ -160,6 +164,29 @@ export default function AdminSettings() {
       if (response.data.status === 200) {
         showSuccessToast(response.data.message);
         setShowMigrationModal(false);
+        setUserPassword("");
+      } else {
+        showErrorToast(response.data.message);
+      }
+    } catch (error) {
+      showErrorToast("Server Error");
+    }
+  };
+
+  const handleDeleteSessions = async () => {
+    try {
+      const response = await axios.post(
+        `${baseUrl}/settings/admin/inactive-users`,
+        {
+          userID: userID,
+          password: userPassword,
+          sessionID: sessionID,
+        }
+      );
+
+      if (response.data.status === 200) {
+        showSuccessToast(response.data.message);
+        setShowDeleteSessionsModal(false);
         setUserPassword("");
       } else {
         showErrorToast(response.data.message);
@@ -344,6 +371,7 @@ export default function AdminSettings() {
           message="Are you sure to inactive all active sessions? To confirm please enter your password below."
           onClose={() => setShowDeleteSessionsModal(false)}
           setUserPassword={setUserPassword}
+          onSubmit={handleDeleteSessions}
         />
       )}
     </>

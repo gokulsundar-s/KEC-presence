@@ -1,5 +1,4 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const { sendMail } = require("../utiles/SendMail");
 const {
@@ -12,12 +11,19 @@ const {
 const requestsRoute = express.Router();
 
 dotenv.config();
-const saltRounds = 10;
 
 requestsRoute.post("/", async (req, res) => {
   try {
-    const { userID, reqType, reason, fromDate, toDate, session, proofLink } =
-      req.body;
+    const {
+      userID,
+      reqType,
+      reason,
+      fromDate,
+      fromSession,
+      toDate,
+      toSession,
+      proofLink,
+    } = req.body;
 
     if (reqType === "") {
       return res.json({ status: 400, message: "Request type is required" });
@@ -27,8 +33,10 @@ requestsRoute.post("/", async (req, res) => {
       return res.json({ status: 400, message: "From date is required" });
     } else if (toDate === "") {
       return res.json({ status: 400, message: "To date is required" });
-    } else if (session === "") {
-      return res.json({ status: 400, message: "Session is required" });
+    } else if (fromSession === "") {
+      return res.json({ status: 400, message: "From session is required" });
+    } else if (toSession === "") {
+      return res.json({ status: 400, message: "To session is required" });
     } else if (reqType === "OD" && proofLink === "") {
       return res.json({ status: 400, message: "Proof link is required" });
     } else if (fromDate > toDate) {
@@ -51,6 +59,21 @@ requestsRoute.post("/", async (req, res) => {
           message:
             "You have posted a request already with or within the given date range",
         });
+      } else if (
+        request.fromDate === fromDate &&
+        request.fromSession === fromSession
+      ) {
+        return res.json({
+          status: 400,
+          message:
+            "You have posted a request already with or within the given date range",
+        });
+      } else if (request.toDate === toDate && request.toSession === toSession) {
+        return res.json({
+          status: 400,
+          message:
+            "You have posted a request already with or within the given date range",
+        });
       }
     }
 
@@ -59,34 +82,42 @@ requestsRoute.post("/", async (req, res) => {
       reqType.charAt(0) +
       (requestsCount.length + 1).toString().padStart(5, "0");
 
+    const days =
+      Math.floor(
+        (new Date(toDate) - new Date(fromDate)) / (1000 * 60 * 60 * 24)
+      ) + 1;
+
     const newRequestUserMap = new RequestUserMap({
-      requestID: requestID,
+      requestID,
       userID,
+      isActiveRequest: true,
     });
 
     const newRequest = new Request({
-      requestID: requestID,
+      requestID,
       reqType,
       reason,
       fromDate,
+      fromSession,
       toDate,
-      session,
+      toSession,
+      days,
     });
 
     const newStatus = new Status({
-      requestID: requestID,
-      advisorStatus: "Pending",
-      inchargeStatus: "Pending",
+      requestID,
+      advisorStatus: "pending",
+      inchargeStatus: "pending",
     });
 
     const newNotes = new Notes({
-      requestID: requestID,
+      requestID,
       advisorNote: "",
       inchargeNote: "",
     });
 
     const newProofs = new Proofs({
-      requestID: requestID,
+      requestID,
       proofLink,
     });
 
@@ -96,10 +127,67 @@ requestsRoute.post("/", async (req, res) => {
     await newNotes.save();
     await newProofs.save();
     res.json({ status: 200, message: "Request created successfully" });
-  } catch (error) {
-    console.log(error);
+  } catch {
+    res.json({
+      status: 500,
+      message: "Internal Server Error! Please contact Administrator.",
+    });
+  }
+});
 
-    res.json({ status: 500, message: "Server Error" });
+requestsRoute.get("/", async (req, res) => {
+  try {
+    const { userID, isActiveRequest } = req.query;
+
+    if (!userID) {
+      return res.json({ status: 400, message: "User ID is required" });
+    }
+
+    const requestsUserMap = await RequestUserMap.find({
+      userID: userID,
+      isActiveRequest: isActiveRequest,
+    });
+
+    const requestDetails = await Request.find({});
+    const requestStatus = await Status.find({});
+    const requestNotes = await Notes.find({});
+
+    const requestData = requestsUserMap.map((request) => {
+      const reqDetails = requestDetails.find(
+        (detail) => detail.requestID === request.requestID
+      );
+      const reqStatus = requestStatus.find(
+        (stat) => stat.requestID === request.requestID
+      );
+      const reqNotes = requestNotes.find(
+        (note) => note.requestID === request.requestID
+      );
+
+      const notesCount = 0;
+      if (reqNotes?.advisorNote) notesCount++;
+      if (reqNotes?.inchargeNote) notesCount++;
+
+      return {
+        requestID: reqDetails.requestID || null,
+        reqType: reqDetails.reqType || null,
+        fromDate: reqDetails.fromDate || null,
+        toDate: reqDetails.toDate || null,
+        status: reqStatus.inchargeStatus || null,
+        notesCount: notesCount,
+      };
+    });
+
+    res.json({
+      status: 200,
+      data: requestData,
+      message: "Requests fetched successfully",
+    });
+  } catch (error) {
+    console.log("error", error);
+    res.json({
+      status: 500,
+      message: "Internal Server Error! Please contact Administrator.",
+    });
   }
 });
 

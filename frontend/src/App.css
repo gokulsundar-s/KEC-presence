@@ -127,6 +127,11 @@
   opacity: 0.8;
 }
 
+.form-info p {
+  font-size: 1rem;
+  color: #ff0000;
+}
+
 /* ----- View Info Styles ----- */
 
 .view-info-inputs-container {
