@@ -71,6 +71,9 @@ export default function NewRequest() {
           reason: "",
           proofLink: "",
         });
+      } else {
+        setAddLoading(false);
+        showErrorToast(response.data.message);
       }
     } catch (error) {
       setAddLoading(false);
