@@ -473,6 +473,128 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Requests",
+			"item": [
+				{
+					"name": "Get All Requests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostURL}}/requests?userID={userID}&isActiveRequest=true",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"requests"
+							],
+							"query": [
+								{
+									"key": "userID",
+									"value": "{userID}"
+								},
+								{
+									"key": "isActiveRequest",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{hostURL}}/requests/{requestID}",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"requests",
+								"{requestID}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userID\": \"\",\r\n    \"reqType\": \"\",\r\n    \"reason\": \"\",\r\n    \"fromDate\": \"\",\r\n    \"fromSession\": \"\",\r\n    \"toDate\": \"\",\r\n    \"toSession\": \"\",\r\n    \"proofLink\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostURL}}/requests",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Request",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reqType\": \"\",\r\n    \"reason\": \"\",\r\n    \"fromDate\": \"\",\r\n    \"fromSession\": \"\",\r\n    \"toDate\": \"\",\r\n    \"toSession\": \"\",\r\n    \"proofLink\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostURL}}/requests/{requestID}",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"requests",
+								"{requestID}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Request",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{hostURL}}/requests/{requestID}/cancel",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"requests",
+								"{requestID}",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

@@ -132,8 +132,8 @@ export default function NewRequest() {
                 <td>Request Type</td>
                 <td>From Date</td>
                 <td>To Date</td>
+                <td>Total Days</td>
                 <td>Status</td>
-                <td>Notes</td>
                 <td>Actions</td>
               </tr>
             </thead>
@@ -142,13 +142,13 @@ export default function NewRequest() {
                 <tr key={request.requestID}>
                   <td>{request.requestID}</td>
                   <td>{request.reqType}</td>
-                  <td>{request.fromDate}</td>
-                  <td>{request.toDate}</td>
+                  <td>{request.fromDate.slice(0, 10)}</td>
+                  <td>{request.toDate.slice(0, 10)}</td>
+                  <td>{request.days}</td>
                   <td>
                     {request.status.charAt(0).toUpperCase() +
                       request.status.slice(1)}
                   </td>
-                  <td>{request.notesCount}</td>
                   <td>
                     <button
                       className="details-button"
