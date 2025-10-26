@@ -1,11 +1,11 @@
-.admin-settings-container {
+.student-settings-container {
   display: flex;
   justify-content: center;
   align-items: top;
   gap: 2rem;
 }
 
-.admin-settings-profile-container {
+.student-settings-profile-container {
   width: 40%;
   padding: 0.75rem 1rem;
   background-color: #f6f6f6;
@@ -13,18 +13,18 @@
   border-radius: 12px;
 }
 
-.admin-settings-profile-items {
+.student-settings-profile-items {
   color: #777;
   text-align: center;
 }
 
-.admin-settings-profile-title {
+.student-settings-profile-title {
   font-size: 1.5rem;
   font-weight: 900;
   padding: 1.5rem 0;
 }
 
-.admin-settings-profile-item {
+.student-settings-profile-item {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,7 +33,7 @@
   padding: 0.75rem 0;
 }
 
-.admin-settings-profile-item-header {
+.student-settings-profile-item-header {
   font-weight: 900;
 }
 
@@ -42,7 +42,7 @@
   width: 100%;
 }
 
-.admin-settings-profile-buttons-container {
+.student-settings-profile-buttons-container {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -69,37 +69,4 @@
 
 .logout-button:hover {
   opacity: 0.8;
-}
-
-.setting-admin-privileges-container {
-  width: 60%;
-  gap: 2rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.setting-privileges-container {
-  height: 100%;
-  background-color: #f6f6f6;
-  border: 2px solid #f0f0f0;
-  border-radius: 12px;
-  padding: 0.75rem 2rem;
-}
-
-.admin-settings-privileges-title {
-  font-size: 1.5rem;
-  font-weight: 900;
-  color: #777;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
-.admin-settings-privileges-content {
-  color: #555;
-  line-height: 1.5rem;
-  padding-bottom: 2rem;
-}
-
-.setting-privileges-container button {
-  margin-bottom: 1rem;
 }

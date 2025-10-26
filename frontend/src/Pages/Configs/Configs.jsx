@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { baseUrl } from "../../Utils/Constants";
-import { ConfirmIcon } from "../../Assets/Icons";
 import {
   showErrorToast,
   showSuccessToast,
@@ -300,7 +299,6 @@ export default function Configs() {
 
       {deleteConfig && (
         <ConfirmModal
-          icon={<ConfirmIcon />}
           title="Confirm Deletion"
           message="Are you sure you want to delete this configuration?"
           onConfirm={handleDeleteConfig}

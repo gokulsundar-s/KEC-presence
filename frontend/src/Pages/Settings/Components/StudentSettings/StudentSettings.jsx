@@ -10,7 +10,6 @@ import {
   SettingsPhoneIcon,
   SettingsLastLoginIcon,
   SettingsLoginCountIcon,
-  ConfirmIcon,
 } from "../../../../Assets/Icons";
 import { formatDateTime } from "../../../../Utils/Formatters";
 import {
@@ -24,17 +23,15 @@ import {
   showSuccessToast,
 } from "../../../../Components/Alerts/Alert";
 import { baseUrl } from "../../../../Utils/Constants";
-import "./AdminSettings.css";
+import "./StudentSettings.css";
 
-export default function AdminSettings() {
+export default function StudentSettings() {
   const [userID, setUserID] = useState("");
   const [sessionID, setSessionID] = useState("");
   const [userType, setUserType] = useState("");
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const [showChangeUserInfoModal, setShowChangeUserInfoModal] = useState(false);
-  const [showMigrationModal, setShowMigrationModal] = useState(false);
-  const [showDeleteSessionsModal, setShowDeleteSessionsModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [settingsData, setSettingsData] = useState(null);
   const [passwordData, setPasswordData] = useState({
@@ -47,7 +44,6 @@ export default function AdminSettings() {
     mail: "",
     phoneNumber: "",
   });
-  const [userPassword, setUserPassword] = useState("");
 
   const navigate = useNavigate();
 
@@ -151,51 +147,6 @@ export default function AdminSettings() {
     }
   };
 
-  const handleMigrateYear = async () => {
-    try {
-      const response = await axios.post(
-        `${baseUrl}/settings/admin/migrate-year`,
-        {
-          userID: userID,
-          password: userPassword,
-        }
-      );
-
-      if (response.data.status === 200) {
-        showSuccessToast(response.data.message);
-        setShowMigrationModal(false);
-        setUserPassword("");
-      } else {
-        showErrorToast(response.data.message);
-      }
-    } catch (error) {
-      showErrorToast("Server Error");
-    }
-  };
-
-  const handleDeleteSessions = async () => {
-    try {
-      const response = await axios.post(
-        `${baseUrl}/settings/admin/inactive-users`,
-        {
-          userID: userID,
-          password: userPassword,
-          sessionID: sessionID,
-        }
-      );
-
-      if (response.data.status === 200) {
-        showSuccessToast(response.data.message);
-        setShowDeleteSessionsModal(false);
-        setUserPassword("");
-      } else {
-        showErrorToast(response.data.message);
-      }
-    } catch (error) {
-      showErrorToast("Server Error");
-    }
-  };
-
   const getSettingsData = async () => {
     try {
       setLoading(true);
@@ -222,44 +173,52 @@ export default function AdminSettings() {
       {loading ? (
         <Loaders />
       ) : (
-        <div className="admin-settings-container">
-          <div className="admin-settings-profile-container">
-            <div className="admin-settings-profile-items">
-              <p className="admin-settings-profile-title">User Information</p>
+        <div className="student-settings-container">
+          <div className="student-settings-profile-container">
+            <div className="student-settings-profile-items">
+              <p className="student-settings-profile-title">User Information</p>
 
-              <div className="admin-settings-profile-item">
+              <div className="student-settings-profile-item">
                 <SettingsUserIcon />
-                <p className="admin-settings-profile-item-header">Full Name :</p>
+                <p className="student-settings-profile-item-header">
+                  Full Name :
+                </p>
                 <p>{settingsData?.userInfoData?.name ?? "-"}</p>
               </div>
-              <div className="admin-settings-profile-item">
+              <div className="student-settings-profile-item">
                 <SettingsMailIcon />
-                <p className="admin-settings-profile-item-header">Mail ID :</p>
+                <p className="student-settings-profile-item-header">
+                  Mail ID :
+                </p>
                 <p>{settingsData?.userInfoData?.mail ?? "-"}</p>
               </div>
-              <div className="admin-settings-profile-item">
+              <div className="student-settings-profile-item">
                 <SettingsPhoneIcon />
-                <p className="admin-settings-profile-item-header">Phone Number :</p>
+                <p className="student-settings-profile-item-header">
+                  Phone Number :
+                </p>
                 <p>{settingsData?.userInfoData?.phoneNumber ?? "-"}</p>
               </div>
 
-              <div className="admin-settings-profile-item">
+              <div className="student-settings-profile-item">
                 <SettingsLastLoginIcon />
-                <p className="admin-settings-profile-item-header">Last Login :</p>
+                <p className="student-settings-profile-item-header">
+                  Last Login :
+                </p>
                 <p>
                   {formatDateTime(settingsData?.loginData?.lastLogin) ?? "-"}
                 </p>
               </div>
-              <div className="admin-settings-profile-item">
+              <div className="student-settings-profile-item">
                 <SettingsLoginCountIcon />
-                <p className="admin-settings-profile-item-header">
+                <p className="student-settings-profile-item-header">
                   Total Active Logins :
                 </p>
                 <p>{settingsData?.loginData?.loginCounts ?? "-"}</p>
               </div>
             </div>
 
-            <div className="admin-settings-profile-buttons-container">
+            <div className="student-settings-profile-buttons-container">
               <button
                 className="primary-button"
                 onClick={() => setShowChangeUserInfoModal(true)}
@@ -277,40 +236,6 @@ export default function AdminSettings() {
                 className="logout-button"
               >
                 Logout
-              </button>
-            </div>
-          </div>
-
-          <div className="setting-admin-privileges-container">
-            <div className="setting-privileges-container">
-              <p className="admin-settings-privileges-title">Migrate Academic Year</p>
-              <p className="admin-settings-privileges-content">
-                This button promotes all students of a selected academic year to
-                the next year with a single click. This automates the yearly
-                student advancement process efficiently and accurately.
-              </p>
-              <button
-                className="primary-button"
-                onClick={() => setShowMigrationModal(true)}
-              >
-                Migrate Academic Year
-              </button>
-            </div>
-            <div className="setting-privileges-container">
-              <p className="admin-settings-privileges-title">
-                Inactive all Active Sessions
-              </p>
-              <p className="admin-settings-privileges-content">
-                This button removes all active sessions of the user, effectively
-                logging them out from every device or browser where they are
-                logged in. This ensures that the user has no ongoing active
-                sessions, typically for security or account management purposes.
-              </p>
-              <button
-                className="logout-button"
-                onClick={() => setShowDeleteSessionsModal(true)}
-              >
-                Inactive All Active Sessions
               </button>
             </div>
           </div>
@@ -349,26 +274,6 @@ export default function AdminSettings() {
           setUserInfoData={setUserInfoData}
           userInfoData={userInfoData}
           onSubmit={handleUpdateUserInfo}
-        />
-      )}
-
-      {showMigrationModal && (
-        <PasswordConfirmModal
-          title="Confirm Academic Year Migration"
-          message="Are you sure to migrate the academic year? To confirm please enter your password below."
-          onClose={() => setShowMigrationModal(false)}
-          setUserPassword={setUserPassword}
-          onSubmit={handleMigrateYear}
-        />
-      )}
-
-      {showDeleteSessionsModal && (
-        <PasswordConfirmModal
-          title="Confirm Inactive All Active Sessions"
-          message="Are you sure to inactive all active sessions? To confirm please enter your password below."
-          onClose={() => setShowDeleteSessionsModal(false)}
-          setUserPassword={setUserPassword}
-          onSubmit={handleDeleteSessions}
         />
       )}
     </>

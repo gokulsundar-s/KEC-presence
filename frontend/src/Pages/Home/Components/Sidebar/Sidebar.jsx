@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useState } from "react";
 import Logo from "../../../../assets/kec-logo.png";
 import {
   DashboardIcon,
@@ -17,22 +17,6 @@ import "./Sidebar.css";
 export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeTab, setActiveTab] = React.useState(0);
-
-  useEffect(() => {
-    const currentPath = location.pathname;
-    if (currentPath.includes("users")) {
-      setActiveTab(1);
-    } else if (currentPath.includes("configs")) {
-      setActiveTab(2);
-    } else if (currentPath.includes("calendar")) {
-      setActiveTab(3);
-    } else if (currentPath.includes("settings")) {
-      setActiveTab(6);
-    } else {
-      setActiveTab(0);
-    }
-  }, []);
 
   var userType = "";
   try {
@@ -50,7 +34,7 @@ export default function Sidebar() {
             ? "Admin"
             : userType === "STU"
             ? "Student"
-            : "Unknown"}
+            : "Faculty"}
         </p>
       </div>
 
@@ -61,7 +45,7 @@ export default function Sidebar() {
             setActiveTab(0);
           }}
         >
-          <DashboardIcon filled={activeTab === 0} />
+          <DashboardIcon filled={location.pathname === "/"} />
           <p>Dashboard</p>
         </button>
 
@@ -69,10 +53,9 @@ export default function Sidebar() {
           <button
             onClick={() => {
               navigate("/users");
-              setActiveTab(1);
             }}
           >
-            <UsersInfoIcon filled={activeTab === 1} />
+            <UsersInfoIcon filled={location.pathname === "/users"} />
             <p>User Info</p>
           </button>
         )}
@@ -81,10 +64,9 @@ export default function Sidebar() {
           <button
             onClick={() => {
               navigate("/configs");
-              setActiveTab(2);
             }}
           >
-            <ConfigIcon filled={activeTab === 2} />
+            <ConfigIcon filled={location.pathname === "/configs"} />
             <p>Configs</p>
           </button>
         )}
@@ -93,10 +75,9 @@ export default function Sidebar() {
           <button
             onClick={() => {
               navigate("/sessions");
-              setActiveTab(3);
             }}
           >
-            <SessionIcon filled={activeTab === 3} />
+            <SessionIcon filled={location.pathname === "/sessions"} />
             <p>Sessions</p>
           </button>
         )}
@@ -105,10 +86,9 @@ export default function Sidebar() {
           <button
             onClick={() => {
               navigate("/new-request");
-              setActiveTab(4);
             }}
           >
-            <NewRequestIcon filled={activeTab === 4} />
+            <NewRequestIcon filled={location.pathname === "/new-request"} />
             <p>New Request</p>
           </button>
         )}
@@ -117,10 +97,31 @@ export default function Sidebar() {
           <button
             onClick={() => {
               navigate("/history");
-              setActiveTab(5);
             }}
           >
-            <HistoryIcon filled={activeTab === 5} />
+            <HistoryIcon filled={location.pathname === "/history"} />
+            <p>History</p>
+          </button>
+        )}
+
+        {userType === "CA" && (
+          <button
+            onClick={() => {
+              navigate("/approval");
+            }}
+          >
+            <NewRequestIcon filled={location.pathname === "/approval"} />
+            <p>Approvals</p>
+          </button>
+        )}
+
+        {userType === "CA" && (
+          <button
+            onClick={() => {
+              navigate("/approval-history");
+            }}
+          >
+            <HistoryIcon filled={location.pathname === "/approval-history"} />
             <p>History</p>
           </button>
         )}
@@ -128,10 +129,9 @@ export default function Sidebar() {
         <button
           onClick={() => {
             navigate("/settings");
-            setActiveTab(6);
           }}
         >
-          <SettingsIcon filled={activeTab === 6} />
+          <SettingsIcon filled={location.pathname === "/settings"} />
           <p>Settings</p>
         </button>
       </div>

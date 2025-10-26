@@ -1,5 +1,5 @@
 export default function ConfigsDetails({ configData }) {
-  if (!configData) return null; // Guard clause for empty data
+  if (!configData) return null;
 
   return (
     <div className="sidebar-info-table-container">

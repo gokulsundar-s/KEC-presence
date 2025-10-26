@@ -4,18 +4,13 @@ import { baseUrl } from "../../Utils/Constants";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import SideTab from "../../Components/SiderTab/SideTab";
-import RequestForm from "./Components/RequestForm/RequestForm";
-import RequestDetails from "./Components/RequestDetails/RequestDetails";
 import Loaders from "../../Components/Loaders/Loaders";
 import NoData from "../../Components/NoData/NoData";
-import {
-  showErrorToast,
-  showSuccessToast,
-} from "../../Components/Alerts/Alert";
-import { ConfirmModal, SuccessModal } from "../../Components/Modals/Modals";
+import { showErrorToast } from "../../Components/Alerts/Alert";
 
-export default function NewRequest() {
+export default function ApprovalsHistory() {
   const [loading, setLoading] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState(null);
   const [requestsData, setRequestsData] = useState([]);
   const [requestData, setRequestData] = useState({
     userID: "",
@@ -27,8 +22,7 @@ export default function NewRequest() {
     reason: "",
     proofLink: "",
   });
-  const [openAddRequestSider, setOpenAddRequestSider] = useState(false);
-  const [addLoading, setAddLoading] = useState(false);
+  const [openInfoSider, setOpenInfoSider] = useState(false);
 
   const getRequestsData = async (userID) => {
     try {
@@ -47,40 +41,6 @@ export default function NewRequest() {
     }
   };
 
-  const handleAddRequest = async () => {
-    try {
-      setAddLoading(true);
-      const response = await axios.post(`${baseUrl}/requests`, requestData);
-
-      if (response.data.status === 200) {
-        setAddLoading(false);
-        setOpenAddRequestSider(false);
-        showSuccessToast("Request posted successfully");
-
-        const userDetailsToken = Cookies.get("userDetailsToken");
-        const decodedUsersToken = jwtDecode(userDetailsToken);
-        getRequestsData(decodedUsersToken?.userID);
-
-        setRequestData({
-          userID: "",
-          reqType: "",
-          fromDate: "",
-          fromSession: "",
-          toDate: "",
-          toSession: "",
-          reason: "",
-          proofLink: "",
-        });
-      } else {
-        setAddLoading(false);
-        showErrorToast(response.data.message);
-      }
-    } catch (error) {
-      setAddLoading(false);
-      showErrorToast("Internal Server Error! Please contact Administrator");
-    }
-  };
-
   useEffect(() => {
     const userDetailsToken = Cookies.get("userDetailsToken");
     const decodedUsersToken = jwtDecode(userDetailsToken);
@@ -88,33 +48,41 @@ export default function NewRequest() {
     getRequestsData(decodedUsersToken?.userID);
   }, []);
 
+  useEffect(() => {
+    if (!openInfoSider) {
+      setSelectedRequest(null);
+      setRequestData({
+        userID: requestData.userID,
+        reqType: "",
+        fromDate: "",
+        fromSession: "",
+        toDate: "",
+        toSession: "",
+        reason: "",
+        proofLink: "",
+      });
+    }
+  }, [openInfoSider]);
+
   return (
     <div className="page-container">
-      <p className="page-header">New Request</p>
+      <p className="page-header">Requests History</p>
 
       <div className="view-info-container">
         <div className="view-info-inputs-container">
           <div className="view-info-input">
-            <p>Request Type</p>
-            <select>
-              <option value="all">All</option>
-              <option value="OD">On-Duty</option>
-              <option value="LEAVE">Leave</option>
-            </select>
+            <p>From Date</p>
+            <input type="date" />
+          </div>
+
+          <div className="view-info-input">
+            <p>To Date</p>
+            <input type="date" />
           </div>
 
           <div className="view-info-input">
             <p>Search</p>
             <input type="text" placeholder="Search" />
-          </div>
-
-          <div className="view-info-input">
-            <button
-              className="primary-button"
-              onClick={() => setOpenAddRequestSider(true)}
-            >
-              Add New Request
-            </button>
           </div>
         </div>
       </div>
@@ -154,8 +122,7 @@ export default function NewRequest() {
                       className="details-button"
                       onClick={() => {
                         setOpenInfoSider(true);
-                        setSelectedConfig(config.configID);
-                        setConfigData(config);
+                        setSelectedRequest(request.requestID);
                       }}
                     >
                       View
@@ -169,28 +136,10 @@ export default function NewRequest() {
       </div>
 
       <SideTab
-        open={openAddRequestSider}
-        setOpen={setOpenAddRequestSider}
-        title={"New Request"}
-        footer={
-          <button
-            className="primary-button"
-            onClick={handleAddRequest}
-            disabled={addLoading}
-          >
-            {addLoading ? (
-              <span className="login-button-loader"></span>
-            ) : (
-              "Submit"
-            )}
-          </button>
-        }
-      >
-        <RequestForm
-          requestData={requestData}
-          setRequestData={setRequestData}
-        />
-      </SideTab>
+        open={openInfoSider}
+        setOpen={setOpenInfoSider}
+        title={"Request Details"}
+      ></SideTab>
     </div>
   );
 }

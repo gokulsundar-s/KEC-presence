@@ -1,13 +1,15 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import LoadingWrapper from "../../Components/LoadingWrapper/LoadingWrapper";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Dashboard from "../Dashboard/Dashboard";
-import NewRequest from "../New Request/NewRequest";
+import Settings from "../Settings/Settings";
 import Users from "../Users/Users";
-import History from "../History/History";
 import Configs from "../Configs/Configs";
 import Sessions from "../Sessions/Sessions";
-import Settings from "../Settings/Settings";
+import NewRequest from "../Requests/NewRequest";
+import RequestsHistory from "../Requests/RequestsHistory";
+import Approval from "../Approval/Approval";
+import ApprovalsHistory from "../Approval/ApprovalsHistory";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import "./Home.css";
@@ -27,7 +29,9 @@ export default function Home() {
       <div className="home-container">
         <Sidebar />
         <Routes>
+          <Route path="*" element={<Navigate to="/" replace />} />
           <Route path="/" element={<Dashboard />} />
+          <Route path="settings" element={<Settings />} />
 
           {userType === "ADM" && <Route path="users" element={<Users />} />}
           {userType === "ADM" && <Route path="configs" element={<Configs />} />}
@@ -38,9 +42,16 @@ export default function Home() {
           {userType === "STU" && (
             <Route path="new-request" element={<NewRequest />} />
           )}
-          {userType === "STU" && <Route path="history" element={<History />} />}
+          {userType === "STU" && (
+            <Route path="history" element={<RequestsHistory />} />
+          )}
 
-          <Route path="settings" element={<Settings />} />
+          {userType === "CA" && (
+            <Route path="approval" element={<Approval />} />
+          )}
+          {userType === "CA" && (
+            <Route path="approval-history" element={<ApprovalsHistory />} />
+          )}
         </Routes>
       </div>
     </LoadingWrapper>

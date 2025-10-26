@@ -402,7 +402,6 @@ export default function UserInfo() {
 
       {deleteUser && (
         <ConfirmModal
-          icon={<ConfirmIcon />}
           title="Confirm Deletion"
           message="Are you sure you want to delete this user?"
           onConfirm={handleDeleteUser}

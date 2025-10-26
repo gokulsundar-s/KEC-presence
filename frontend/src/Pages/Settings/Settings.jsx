@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import AdminSettings from "./Components/AdminSettings/AdminSettings";
+import StudentSettings from "./Components/StudentSettings/StudentSettings";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ export default function Settings() {
       <p className="page-header">User Settings</p>
 
       {userType === "ADM" && <AdminSettings />}
+      {userType === "STU" && <StudentSettings />}
     </div>
   );
 }

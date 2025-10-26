@@ -35,6 +35,10 @@
   color: #4061f2;
 }
 
+.modal-red-title p {
+  color: #df0000;
+}
+
 .modal-icon {
   display: flex;
   align-items: center;

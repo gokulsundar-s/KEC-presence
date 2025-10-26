@@ -4,11 +4,11 @@ import {
   ChangePasswordIcon,
   ChangeUserInfoIcon,
   ConfirmIcon,
+  WarningIcon,
 } from "../../Assets/Icons";
 import "./Modals.css";
 
 export const ConfirmModal = ({
-  icon,
   title,
   message,
   onClose,
@@ -19,7 +19,7 @@ export const ConfirmModal = ({
     <div className="modal-container">
       <div className="modal-box">
         <div className="modal-title">
-          {icon}
+          <ConfirmIcon />
           <p>{title}</p>
         </div>
         <p className="modal-content">{message}</p>
@@ -33,6 +33,25 @@ export const ConfirmModal = ({
           </button>
           <button onClick={onClose} className="modal-blue-button">
             No
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const WarningModal = ({ title, message, onClose }) => {
+  return (
+    <div className="modal-container">
+      <div className="modal-box">
+        <div className="modal-title modal-red-title">
+          <WarningIcon />
+          <p>{title}</p>
+        </div>
+        <p className="modal-content">{message}</p>
+        <div className="modal-button">
+          <button className="modal-red-button" onClick={onClose}>
+            Close
           </button>
         </div>
       </div>
@@ -278,7 +297,7 @@ export const PasswordConfirmModal = ({
     <div className="modal-container">
       <div className="modal-box">
         <div className="modal-title">
-          {icon}
+          <ConfirmIcon />
           <p>{title}</p>
         </div>
         <p className="modal-content">{message}</p>
