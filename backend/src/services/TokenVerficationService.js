@@ -53,7 +53,7 @@ const verifyToken = async (token) => {
 const getTokenData = (token) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_KEY);
-    return { userID: decoded.userID, userType: decoded.userType };
+    return { tokenUserID: decoded.userID, tokenUserType: decoded.userType };
   } catch (err) {
     console.log(
       `[ERROR] - [${new Date().toISOString()}] - Get token data error: ${

@@ -3,29 +3,35 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
+const UsersService = require("./src/services/UserService");
 
 dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const PORT = 3003;
-const authRoute = require("./routes/Auth");
-const usersRoute = require("./routes/Users");
-const configsRoute = require("./routes/Configs");
-const requestRoute = require("./routes/Requests");
-const dashboardRoute = require("./routes/Dashboard");
-const settingsRoute = require("./routes/Settings");
+try {
+  mongoose.connect(process.env.MONGODB_URL);
+  console.log(
+    `[INFO] - ${new Date().toISOString()} - MongoDB connection successful`
+  );
+} catch (error) {
+  console.error(
+    `[ERROR] - ${new Date().toISOString()} - Error connecting to MongoDB: ${error}`
+  );
+}
 
-mongoose.connect(process.env.MONGODB_URL);
+UsersService.createAdminUser();
+
+const authRoute = require("./src/routes/AuthRoute");
+const usersRoute = require("./src/routes/UserRoute");
+const requestRoute = require("./src/routes/RequestRoute");
 
 app.use("/", authRoute);
 app.use("/users", usersRoute);
-app.use("/configs", configsRoute);
 app.use("/requests", requestRoute);
-app.use("/dashboard", dashboardRoute);
-app.use("/settings", settingsRoute);
 
+const PORT = 3003;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

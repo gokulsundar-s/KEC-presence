@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "87629f97-cb9b-40b5-aac8-02d71c2399d5",
-		"name": "KEC Presence",
+		"_postman_id": "496845bc-ccab-482b-8f19-6dde179749aa",
+		"name": "KEC Presence - New",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "40325159"
 	},
@@ -10,42 +10,42 @@
 			"name": "Auth",
 			"item": [
 				{
-					"name": "Get Users Sessions Data",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"token\",response.token);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
 							}
 						},
-						"url": {
-							"raw": "{{hostURL}}/session",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"session"
-							]
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login",
+					],
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "POST",
 						"header": [],
@@ -71,36 +71,7 @@
 					"response": []
 				},
 				{
-					"name": "Logout",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"sessionID\": \"\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{hostURL}}/logout",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"logout"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Reset Password",
+					"name": "Forget Password",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -109,7 +80,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userID\": \"\"\r\n}",
+							"raw": "{\r\n    \"mail\": \"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -117,12 +88,41 @@
 							}
 						},
 						"url": {
-							"raw": "{{hostURL}}/reset-password",
+							"raw": "{{hostURL}}/forget-password",
 							"host": [
 								"{{hostURL}}"
 							],
 							"path": [
-								"reset-password"
+								"forget-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify OTP",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mail\": \"\",\r\n    \"otp\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostURL}}/verify-otp",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"verify-otp"
 							]
 						}
 					},
@@ -131,11 +131,14 @@
 				{
 					"name": "Change Password",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userID\": \"\",\r\n    \"oldPassword\": \"\",\r\n    \"newPassword\": \"\",\r\n    \"confirmPassword\": \"\"\r\n}",
+							"raw": "{\r\n    \"mail\": \"\",\r\n    \"otp\": \"\",\r\n    \"newPassword\": \"\",\r\n    \"confirmPassword\": \"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -153,117 +156,25 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "Users",
-			"item": [
-				{
-					"name": "Get all Users Data",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{hostURL}}/users",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
 				},
 				{
-					"name": "Get User Data",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "User Change Password",
 					"request": {
 						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
 								}
-							}
-						},
-						"url": {
-							"raw": "{{hostURL}}/users/{userID}",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"users",
-								"{userID}"
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add User",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"userType\": \"\",\r\n    \"department\": \"\",\r\n    \"name\": \"\",\r\n    \"rollNumber\": \"\",\r\n    \"year\": \"\",\r\n    \"section\": \"\",\r\n    \"mail\": \"\",\r\n    \"phoneNumber\": \"\",\r\n    \"parentMail\": \"\",\r\n    \"parentPhone\": \"\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{hostURL}}/users",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update User Data",
-					"request": {
-						"auth": {
-							"type": "noauth"
 						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userType\": \"\",\r\n    \"department\": \"\",\r\n    \"name\": \"\",\r\n    \"rollNumber\": \"\",\r\n    \"year\": \"\",\r\n    \"section\": \"\",\r\n    \"mail\": \"\",\r\n    \"phoneNumber\": \"\",\r\n    \"parentMail\": \"\",\r\n    \"parentPhone\": \"\"\r\n}",
+							"raw": "{\r\n    \"currentPassword\": \"\",\r\n    \"newPassword\": \"\",\r\n    \"confirmPassword\": \"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -271,183 +182,31 @@
 							}
 						},
 						"url": {
-							"raw": "{{hostURL}}/users/{userID}",
+							"raw": "{{hostURL}}/user-change-password",
 							"host": [
 								"{{hostURL}}"
 							],
 							"path": [
-								"users",
-								"{userID}"
+								"user-change-password"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Delete User",
+					"name": "Logout",
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
 						},
 						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{hostURL}}/users/{userID}",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"users",
-								"{userID}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Configs",
-			"item": [
-				{
-					"name": "Get all Configs Data",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{hostURL}}/configs/",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"configs",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add Config",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n \"codeType\":\"\",\r\n \"code\":\"\",\r\n \"description\":\"\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{hostURL}}/configs",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"configs"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Config Data",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n            \"codeType\": \"\",\r\n            \"code\": \"\",\r\n            \"description\": \"\"\r\n        }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{hostURL}}/configs/{configID}",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"configs",
-								"{configID}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Config",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{hostURL}}/configs/{configID}",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"configs",
-								"{configID}"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Dashboard",
-			"item": [
-				{
-					"name": "Admin",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{hostURL}}/dashboard/admin",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"dashboard",
-								"admin"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Settings",
-			"item": [
-				{
-					"name": "Admin",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -459,14 +218,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{hostURL}}/settings/admin/{userID}",
+							"raw": "{{hostURL}}/logout",
 							"host": [
 								"{{hostURL}}"
 							],
 							"path": [
-								"settings",
-								"admin",
-								"{userID}"
+								"logout"
 							]
 						}
 					},
@@ -475,61 +232,26 @@
 			]
 		},
 		{
-			"name": "Requests",
+			"name": "Users",
 			"item": [
 				{
-					"name": "Get All Requests",
+					"name": "Create new user",
 					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{hostURL}}/requests?userID={userID}&isActiveRequest=true",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"requests"
-							],
-							"query": [
+						"auth": {
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "userID",
-									"value": "{userID}"
-								},
-								{
-									"key": "isActiveRequest",
-									"value": "true"
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
 								}
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Request",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{hostURL}}/requests/{requestID}",
-							"host": [
-								"{{hostURL}}"
-							],
-							"path": [
-								"requests",
-								"{requestID}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "New Request",
-					"request": {
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userID\": \"\",\r\n    \"reqType\": \"\",\r\n    \"reason\": \"\",\r\n    \"fromDate\": \"\",\r\n    \"fromSession\": \"\",\r\n    \"toDate\": \"\",\r\n    \"toSession\": \"\",\r\n    \"proofLink\": \"\"\r\n}",
+							"raw": "{\r\n    \"userType\": \"\",\r\n    \"department\": \"\",\r\n    \"name\": \"\",\r\n    \"rollNumber\": \"\",\r\n    \"year\": \"\",\r\n    \"section\": \"\",\r\n    \"mail\": \"\",\r\n    \"phoneNumber\": \"\",\r\n    \"parentMail\": \"\",\r\n    \"parentPhone\": \"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -537,25 +259,104 @@
 							}
 						},
 						"url": {
-							"raw": "{{hostURL}}/requests",
+							"raw": "{{hostURL}}/users",
 							"host": [
 								"{{hostURL}}"
 							],
 							"path": [
-								"requests"
+								"users"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Update Request",
+					"name": "Get all users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{hostURL}}/users",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user data by ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{hostURL}}/users/{userID}",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"users",
+								"{userID}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"reqType\": \"\",\r\n    \"reason\": \"\",\r\n    \"fromDate\": \"\",\r\n    \"fromSession\": \"\",\r\n    \"toDate\": \"\",\r\n    \"toSession\": \"\",\r\n    \"proofLink\": \"\"\r\n}",
+							"raw": "{\r\n    \"userType\": \"\",\r\n    \"department\": \"\",\r\n    \"name\": \"\",\r\n    \"rollNumber\": \"\",\r\n    \"year\": \"\",\r\n    \"section\": \"\",\r\n    \"mail\": \"\",\r\n    \"phoneNumber\": \"\",\r\n    \"parentMail\": \"\",\r\n    \"parentPhone\": \"\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -563,32 +364,51 @@
 							}
 						},
 						"url": {
-							"raw": "{{hostURL}}/requests/{requestID}",
+							"raw": "{{hostURL}}/users/{userID}",
 							"host": [
 								"{{hostURL}}"
 							],
 							"path": [
-								"requests",
-								"{requestID}"
+								"users",
+								"{userID}"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Cancel Request",
+					"name": "Inactivate user",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{hostURL}}/requests/{requestID}/cancel",
+							"raw": "{{hostURL}}/users/{userID}/inactivate",
 							"host": [
 								"{{hostURL}}"
 							],
 							"path": [
-								"requests",
-								"{requestID}",
-								"cancel"
+								"users",
+								"{userID}",
+								"inactivate"
 							]
 						}
 					},

@@ -11,7 +11,9 @@ const authSchema = new mongoose.Schema(
     userID: String,
     password: String,
     isActive: Boolean,
+    createdBy: String,
     createdAt: Date,
+    updatedBy: String,
     updatedAt: Date,
   },
   { collection: "auth" }
@@ -22,7 +24,9 @@ const userDetailsSchema = new mongoose.Schema({
   userType: String,
   name: String,
   mail: String,
+  createdBy: String,
   createdAt: Date,
+  updatedBy: String,
   updatedAt: Date,
 });
 
@@ -32,7 +36,9 @@ const userDepartmentDetailsSchema = new mongoose.Schema({
   year: Number,
   section: String,
   department: String,
+  createdBy: String,
   createdAt: Date,
+  updatedBy: String,
   updatedAt: Date,
 });
 
@@ -41,7 +47,9 @@ const userContactsSchema = new mongoose.Schema({
   phoneNumber: String,
   parentPhone: String,
   parentMail: String,
+  createdBy: String,
   createdAt: Date,
+  updatedBy: String,
   updatedAt: Date,
 });
 
@@ -54,7 +62,9 @@ const userSessionsSchema = new mongoose.Schema({
   logoutTime: String,
   token: String,
   isActive: Boolean,
+  createdBy: String,
   createdAt: Date,
+  updatedBy: String,
   updatedAt: Date,
 });
 
@@ -62,7 +72,9 @@ const passwordOtpSchema = new mongoose.Schema({
   userID: String,
   otp: String,
   isVerified: Boolean,
+  createdBy: String,
   createdAt: Date,
+  updatedBy: String,
   updatedAt: Date,
 });
 

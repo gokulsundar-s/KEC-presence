@@ -9,8 +9,7 @@ const {
   UserSessions,
   PasswordOtp,
 } = require("../models/UsersModel");
-const { mailerService } = require("./MailerService");
-const { verifyToken, getTokenData } = require("./TokenVerficationService");
+const MailerService = require("./MailerService");
 const statusCodes = require("../utils/statusCodes");
 
 dotenv.config();
@@ -74,7 +73,7 @@ const createAdminUser = async () => {
         }`
       );
 
-      mailerService(
+      MailerService.mailerService(
         process.env.MAIL,
         "Admin Account Created",
         `Dear Admin,\n\nWe are pleased to inform you that your admin account for the KEC Presence portal has been successfully created. You can now access your account using the following login credentials:\n\nMail ID: ${process.env.MAIL}\nPassword: ${password}\n\nFor security purposes, we recommend that you change your password upon your first login.\n\nThanks & Regards,\nKEC Presence Team`
@@ -112,7 +111,7 @@ const login = async (req) => {
       };
     }
 
-    if (!mail.includes("@") || !mail.includes(".")) {
+    if (!isValidEmail(mail)) {
       console.log(
         `[INFO] - [${new Date().toISOString()}] - Login attempt failed: Invalid mail format.`
       );
@@ -278,7 +277,7 @@ const forgetPassword = async (req) => {
       };
     }
 
-    if (!mail.includes("@") || !mail.includes(".")) {
+    if (!isValidEmail(mail)) {
       console.log(
         `[INFO] - [${new Date().toISOString()}] - Forget password attempt failed: Invalid mail format.`
       );
@@ -302,7 +301,7 @@ const forgetPassword = async (req) => {
 
     const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
 
-    mailerService(
+    MailerService.mailerService(
       mail,
       "Password Reset OTP",
       `Dear ${userData.name},\n\nWe received a request to reset your password. Please use the following One-Time Password (OTP) to proceed with resetting your password:\n\nOTP: ${generatedOtp}\n\nIf you did not request a password reset, please ignore this email.\n\nThanks & Regards,\nKEC Presence Team`
@@ -500,116 +499,138 @@ const changePassword = async (req) => {
 
 // Function for user to change password after login
 const userChangePassword = async (req) => {
-  const { currentPassword, newPassword, confirmPassword } = req.body;
-  const token = req.headers["authorization"].split(" ")[1];
+  try {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
 
-  if (!token) {
-    console.log(
-      `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
-    );
-    return {
-      status: statusCodes.UNAUTHORIZED,
-      message: "Authorization token is missing.",
-    };
-  }
-
-  const tokenVerification = await verifyToken(token);
-  if (!tokenVerification) {
-    console.log(
-      `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
-    );
-    return {
-      status: statusCodes.UNAUTHORIZED,
-      message: "Your session has expired. Please log in again.",
-    };
-  }
-
-  const { userID } = await getTokenData(token);
-
-  if (!currentPassword) {
-    console.log(
-      `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Current password is required.`
-    );
-    return {
-      status: statusCodes.BAD_REQUEST,
-      message: "Please provide your current password.",
-    };
-  } else if (!newPassword || !confirmPassword) {
-    console.log(
-      `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: New password and confirm password are required.`
-    );
-    return {
-      status: statusCodes.BAD_REQUEST,
-      message: "Please provide your new password and confirm it.",
-    };
-  } else if (newPassword !== confirmPassword) {
-    console.log(
-      `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Passwords do not match for user ID: ${userID}`
-    );
-    return {
-      status: statusCodes.BAD_REQUEST,
-      message: "Passwords do not match. Please try again.",
-    };
-  }
-
-  const passwordData = await Auth.findOne({ userID: userID });
-  const isOldPasswordSame = await bcrypt.compare(
-    newPassword,
-    passwordData.password
-  );
-  if (isOldPasswordSame) {
-    console.log(
-      `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: New password cannot be the same as the old password for user ID: ${userID}`
-    );
-    return {
-      status: statusCodes.BAD_REQUEST,
-      message: "New password cannot be the same as the old password.",
-    };
-  }
-
-  const isMatch = await bcrypt.compare(currentPassword, passwordData.password);
-  if (!isMatch) {
-    console.log(
-      `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Incorrect current password for user ID: ${userID}`
-    );
-    return {
-      status: statusCodes.UNAUTHORIZED,
-      message: "Incorrect current password.",
-    };
-  }
-
-  if (!isStrongPassword(newPassword).valid) {
-    console.log(
-      `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Weak new password for user ID: ${userID}`
-    );
-    return {
-      status: statusCodes.BAD_REQUEST,
-      message: isStrongPassword(newPassword).reason,
-    };
-  }
-
-  const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
-  await Auth.updateOne(
-    { userID: userID },
-    {
-      $set: {
-        password: hashedPassword,
-        updatedAt: new Date(),
-        __v: passwordData.__v + 1,
-      },
+    if (!token) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Authorization token is missing.",
+      };
     }
-  );
 
-  console.log(
-    `[INFO] - [${new Date().toISOString()}] - User change password successful for user ID: ${userID}`
-  );
-  return {
-    status: statusCodes.OK,
-    message: "Password changed successfully.",
-  };
+    const tokenVerification = await verifyToken(token);
+    if (!tokenVerification) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Your session has expired. Please log in again.",
+      };
+    }
+
+    const { userID } = await getTokenData(token);
+
+    if (!currentPassword) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Current password is required.`
+      );
+      return {
+        status: statusCodes.BAD_REQUEST,
+        message: "Please provide your current password.",
+      };
+    } else if (!newPassword || !confirmPassword) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: New password and confirm password are required.`
+      );
+      return {
+        status: statusCodes.BAD_REQUEST,
+        message: "Please provide your new password and confirm it.",
+      };
+    } else if (newPassword !== confirmPassword) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Passwords do not match for user ID: ${userID}`
+      );
+      return {
+        status: statusCodes.BAD_REQUEST,
+        message: "Passwords do not match. Please try again.",
+      };
+    }
+
+    const passwordData = await Auth.findOne({ userID: userID });
+    const isOldPasswordSame = await bcrypt.compare(
+      newPassword,
+      passwordData.password
+    );
+    if (isOldPasswordSame) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: New password cannot be the same as the old password for user ID: ${userID}`
+      );
+      return {
+        status: statusCodes.BAD_REQUEST,
+        message: "New password cannot be the same as the old password.",
+      };
+    }
+
+    const isMatch = await bcrypt.compare(
+      currentPassword,
+      passwordData.password
+    );
+    if (!isMatch) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Incorrect current password for user ID: ${userID}`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Incorrect current password.",
+      };
+    }
+
+    if (!isStrongPassword(newPassword).valid) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Weak new password for user ID: ${userID}`
+      );
+      return {
+        status: statusCodes.BAD_REQUEST,
+        message: isStrongPassword(newPassword).reason,
+      };
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    await Auth.updateOne(
+      { userID: userID },
+      {
+        $set: {
+          password: hashedPassword,
+          updatedAt: new Date(),
+          __v: passwordData.__v + 1,
+        },
+      }
+    );
+
+    console.log(
+      `[INFO] - [${new Date().toISOString()}] - User change password successful for user ID: ${userID}`
+    );
+    return {
+      status: statusCodes.OK,
+      message: "Password changed successfully.",
+    };
+  } catch (error) {
+    console.error(
+      `[ERROR] - [${new Date().toISOString()}] - Error during user change password process:`,
+      error
+    );
+    return {
+      status: statusCodes.INTERNAL_SERVER_ERROR,
+      message:
+        "Internal server error. Please report this issue to the administrator.",
+    };
+  }
 };
 
-// Function to check password strength
+// Helper function to validate email format
+function isValidEmail(email) {
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return regex.test(email);
+}
+
+// Helper function to check password strength
 function isStrongPassword(password) {
   const minLength = 8;
   const hasLowercase = /[a-z]/.test(password);

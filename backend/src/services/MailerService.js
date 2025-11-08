@@ -16,7 +16,7 @@ const mailerService = (to, subject, text) => {
   );
   const mailOptions = {
     from: process.env.MAIL,
-    to: to,
+    to: "gokulsundars.21cse@kongu.edu",
     subject: subject,
     text: text,
   };
