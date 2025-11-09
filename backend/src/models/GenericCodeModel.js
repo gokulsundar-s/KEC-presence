@@ -4,15 +4,18 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const conn = mongoose.createConnection(process.env.MONGODB_URL);
-const configs = conn.useDb("configs");
+const genericCodes = conn.useDb("genericCode");
 
 const GenericCodeSchema = mongoose.Schema({
   codeType: String,
-  codeTypeDescription: String,
   code: String,
   codeDescription: String,
+  createdAt: Date,
+  createdBy: String,
+  updatedAt: Date,
+  updatedBy: String,
 });
 
-const GenericCode = configs.model("genericCode", GenericCodeSchema);
+const GenericCode = genericCodes.model("genericCode", GenericCodeSchema);
 
 module.exports = { GenericCode };

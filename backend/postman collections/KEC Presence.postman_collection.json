@@ -415,6 +415,230 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Requests",
+			"item": [
+				{
+					"name": "Create new Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userID\": \"\",\r\n    \"requestType\": \"\",\r\n    \"reason\": \"\",\r\n    \"fromDate\": \"\",\r\n    \"fromSession\": \"\",\r\n    \"toDate\": \"\",\r\n    \"toSession\": \"\",\r\n    \"proofLink\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostURL}}/requests",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all requests",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{hostURL}}/requests",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update request data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userID\": \"\",\r\n    \"requestType\": \"\",\r\n    \"reason\": \"\",\r\n    \"fromDate\": \"\",\r\n    \"fromSession\": \"\",\r\n    \"toDate\": \"\",\r\n    \"toSession\": \"\",\r\n    \"proofLink\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostURL}}/requests/REQ00001",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"requests",
+								"REQ00001"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Generic Codes",
+			"item": [
+				{
+					"name": "Create new generic code",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"codeType\": \"\",\r\n    \"code\": \"\",\r\n    \"codeDescription\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostURL}}/generic-codes",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"generic-codes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all generic codes",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{hostURL}}/generic-codes",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"generic-codes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update generic code description",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"codeDescription\": \"Super Admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{hostURL}}/generic-codes/{code}",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"generic-codes",
+								"{code}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

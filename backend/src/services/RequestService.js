@@ -6,7 +6,7 @@ const {
   Notes,
   Proofs,
 } = require("../models/RequestModel");
-const { verifyToken, getTokenData } = require("./TokenVerficationService");
+const { verifyToken, getTokenData } = require("./TokenVerificationService");
 const statusCodes = require("../utils/statusCodes");
 const MailerService = require("./MailerService");
 
@@ -229,8 +229,8 @@ const createRequest = async (req) => {
 
     const newStatus = new Status({
       requestID,
-      advisorStatus: "pending",
-      inchargeStatus: "pending",
+      advisorStatus: "PENDING",
+      inchargeStatus: "PENDING",
       createdAt: new Date(),
       createdBy: tokenUserID,
       updatedAt: new Date(),
@@ -309,7 +309,7 @@ const getAllRequests = async (req) => {
       };
     }
 
-    const { tokenUserType } = await getTokenData(token);
+    const { tokenUserID, tokenUserType } = await getTokenData(token);
     const requestUserData = await RequestUserMap.find();
     const requestData = await Request.find();
 
@@ -500,8 +500,9 @@ const getRequestByID = async (req) => {
 // Function to update a request
 const updateRequest = async (req) => {
   try {
+    const requestID = req.params.requestID;
     const {
-      requestID,
+      userID,
       requestType,
       reason,
       fromDate,

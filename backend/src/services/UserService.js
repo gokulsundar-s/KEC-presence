@@ -6,7 +6,7 @@ const {
   UserDepartmentDetails,
   UserContacts,
 } = require("../models/UsersModel");
-const { verifyToken, getTokenData } = require("./TokenVerficationService");
+const { verifyToken, getTokenData } = require("./TokenVerificationService");
 const statusCodes = require("../utils/statusCodes");
 const MailerService = require("./MailerService");
 
@@ -296,7 +296,7 @@ const createUser = async (req) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const userCount = await UserDetails.countDocuments();
-    const newUserID = "USR" + userCount.toString().padStart(5, "0");
+    const newUserID = "USR" + (userCount + 1).toString().padStart(5, "0");
 
     const auth = new Auth({
       userID: newUserID,
@@ -354,7 +354,7 @@ const createUser = async (req) => {
     );
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - New user created with email: ${mail} by admin: ${userIDToken}`
+      `[INFO] - [${new Date().toISOString()}] - New user created with email: ${mail} by admin: ${tokenUserID}`
     );
 
     return {

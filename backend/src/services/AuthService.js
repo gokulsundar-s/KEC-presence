@@ -11,6 +11,10 @@ const {
 } = require("../models/UsersModel");
 const MailerService = require("./MailerService");
 const statusCodes = require("../utils/statusCodes");
+const {
+  verifyToken,
+  getTokenData,
+} = require("../services/TokenVerificationService");
 
 dotenv.config();
 const saltRounds = 10;
@@ -525,7 +529,7 @@ const userChangePassword = async (req) => {
       };
     }
 
-    const { userID } = await getTokenData(token);
+    const { tokenUserID } = await getTokenData(token);
 
     if (!currentPassword) {
       console.log(
@@ -545,7 +549,7 @@ const userChangePassword = async (req) => {
       };
     } else if (newPassword !== confirmPassword) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Passwords do not match for user ID: ${userID}`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Passwords do not match for user ID: ${tokenUserID}`
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -553,14 +557,15 @@ const userChangePassword = async (req) => {
       };
     }
 
-    const passwordData = await Auth.findOne({ userID: userID });
+    const passwordData = await Auth.findOne({ userID: tokenUserID });
+
     const isOldPasswordSame = await bcrypt.compare(
       newPassword,
       passwordData.password
     );
     if (isOldPasswordSame) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: New password cannot be the same as the old password for user ID: ${userID}`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: New password cannot be the same as the old password for user ID: ${tokenUserID}`
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -574,7 +579,7 @@ const userChangePassword = async (req) => {
     );
     if (!isMatch) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Incorrect current password for user ID: ${userID}`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Incorrect current password for user ID: ${tokenUserID}`
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -584,7 +589,7 @@ const userChangePassword = async (req) => {
 
     if (!isStrongPassword(newPassword).valid) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Weak new password for user ID: ${userID}`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Weak new password for user ID: ${tokenUserID}`
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -594,18 +599,19 @@ const userChangePassword = async (req) => {
 
     const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
     await Auth.updateOne(
-      { userID: userID },
+      { userID: tokenUserID },
       {
         $set: {
           password: hashedPassword,
           updatedAt: new Date(),
+          updatedBy: tokenUserID,
           __v: passwordData.__v + 1,
         },
       }
     );
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - User change password successful for user ID: ${userID}`
+      `[INFO] - [${new Date().toISOString()}] - User change password successful for user ID: ${tokenUserID}`
     );
     return {
       status: statusCodes.OK,

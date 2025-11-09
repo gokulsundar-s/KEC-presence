@@ -11,7 +11,7 @@ const requestUserMapSchema = mongoose.Schema({
   userID: String,
   isActiveRequest: Boolean,
   createdAt: Date,
-  createBy: String,
+  createdBy: String,
   updatedAt: Date,
   updatedBy: String,
 });
@@ -26,7 +26,7 @@ const requestSchema = mongoose.Schema({
   toSession: String,
   days: Number,
   createdAt: Date,
-  createBy: String,
+  createdBy: String,
   updatedAt: Date,
   updatedBy: String,
 });
@@ -36,7 +36,7 @@ const statusSchema = mongoose.Schema({
   advisorStatus: String,
   inchargeStatus: String,
   createdAt: Date,
-  createBy: String,
+  createdBy: String,
   updatedAt: Date,
   updatedBy: String,
 });
@@ -46,7 +46,7 @@ const notesSchema = mongoose.Schema({
   advisorNote: String,
   inchargeNote: String,
   createdAt: Date,
-  createBy: String,
+  createdBy: String,
   updatedAt: Date,
   updatedBy: String,
 });
@@ -55,7 +55,7 @@ const proofsSchema = mongoose.Schema({
   requestID: String,
   proofLink: String,
   createdAt: Date,
-  createBy: String,
+  createdBy: String,
   updatedAt: Date,
   updatedBy: String,
 });
