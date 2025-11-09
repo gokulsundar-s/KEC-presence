@@ -29,11 +29,13 @@ const authRoute = require("./src/routes/AuthRoute");
 const usersRoute = require("./src/routes/UserRoute");
 const requestRoute = require("./src/routes/RequestRoute");
 const genericCodeRoute = require("./src/routes/GenericCodeRoute");
+const adminRoute = require("./src/routes/AdminRoute");
 
 app.use("/", authRoute);
 app.use("/users", usersRoute);
 app.use("/requests", requestRoute);
 app.use("/generic-codes", genericCodeRoute);
+app.use("/admin", adminRoute);
 
 const PORT = 3003;
 app.listen(PORT, () => {

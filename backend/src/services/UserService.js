@@ -39,8 +39,10 @@ const createAdminUser = async () => {
         userID: "USR00001",
         password: hashedPassword,
         isActive: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: new Date().toISOString(),
+        createdBy: "SYSTEM",
+        updatedAt: new Date().toISOString(),
+        updatedBy: "SYSTEM",
       });
 
       const newUserDetails = new UserDetails({
@@ -48,21 +50,27 @@ const createAdminUser = async () => {
         userType: "ADMIN",
         name: "Admin",
         mail: process.env.MAIL,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: new Date().toISOString(),
+        caretedBy: "SYSTEM",
+        updatedAt: new Date().toISOString(),
+        updatedBy: "SYSTEM",
       });
 
       const newUserDepartmentDetails = new UserDepartmentDetails({
         userID: "USR00001",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: new Date().toISOString(),
+        createdBy: "SYSTEM",
+        updatedAt: new Date().toISOString(),
+        updatedBy: "SYSTEM",
       });
 
       const newUserContacts = new UserContacts({
         userID: "USR00001",
         phoneNumber: process.env.ADMIN_PHONE,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: new Date().toISOString(),
+        createdBy: "SYSTEM",
+        updatedAt: new Date().toISOString(),
+        updatedBy: "SYSTEM",
       });
 
       console.log(
@@ -303,9 +311,9 @@ const createUser = async (req) => {
       password: hashedPassword,
       isActive: true,
       createdBy: tokenUserID,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
       updatedBy: tokenUserID,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     });
 
     const userDetails = new UserDetails({
@@ -314,9 +322,9 @@ const createUser = async (req) => {
       name: name,
       mail: mail,
       createdBy: tokenUserID,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
       updatedBy: tokenUserID,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     });
 
     const userDepartmentDetails = new UserDepartmentDetails({
@@ -326,9 +334,9 @@ const createUser = async (req) => {
       section: section,
       department: department,
       createdBy: tokenUserID,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
       updatedBy: tokenUserID,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     });
 
     const userContacts = new UserContacts({
@@ -337,9 +345,9 @@ const createUser = async (req) => {
       parentMail: parentMail,
       parentPhone: parentPhone,
       createdBy: tokenUserID,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
       updatedBy: tokenUserID,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     });
 
     await auth.save();
@@ -793,7 +801,7 @@ const updateUserData = async (req) => {
         name: name,
         mail: mail,
         updatedBy: tokenUserID,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
       }
     );
 
@@ -805,7 +813,7 @@ const updateUserData = async (req) => {
         section: section,
         department: department,
         updatedBy: tokenUserID,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
       }
     );
 
@@ -816,7 +824,7 @@ const updateUserData = async (req) => {
         parentMail: parentMail,
         parentPhone: parentPhone,
         updatedBy: tokenUserID,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
       }
     );
 
@@ -882,7 +890,11 @@ const inactivateUser = async (req) => {
 
     await Auth.updateOne(
       { userID: userID },
-      { isActive: false, updatedBy: tokenUserID, updatedAt: new Date() }
+      {
+        isActive: false,
+        updatedBy: tokenUserID,
+        updatedAt: new Date().toISOString(),
+      }
     );
 
     console.log(

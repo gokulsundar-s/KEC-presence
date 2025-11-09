@@ -490,6 +490,41 @@
 					"response": []
 				},
 				{
+					"name": "Get request data by ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{hostURL}}/requests/{requestID}",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"requests",
+								"{requestID}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update request data",
 					"request": {
 						"auth": {
@@ -602,6 +637,41 @@
 					"response": []
 				},
 				{
+					"name": "Get generic code by code type",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{hostURL}}/generic-codes/{codeType}",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"generic-codes",
+								"{codeType}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update generic code description",
 					"request": {
 						"auth": {
@@ -633,6 +703,75 @@
 							"path": [
 								"generic-codes",
 								"{code}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin Functions",
+			"item": [
+				{
+					"name": "Migrate students years",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{hostURL}}/admin/migrate-year",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"admin",
+								"migrate-year"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inactivate user sessions",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{hostURL}}/admin/inactivate-sessions",
+							"host": [
+								"{{hostURL}}"
+							],
+							"path": [
+								"admin",
+								"inactivate-sessions"
 							]
 						}
 					},

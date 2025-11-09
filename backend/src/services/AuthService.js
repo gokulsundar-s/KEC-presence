@@ -45,8 +45,10 @@ const createAdminUser = async () => {
         userID: "USR00001",
         password: hashedPassword,
         isActive: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: new Date().toISOString(),
+        createdBy: "SYSTEM",
+        updatedAt: new Date().toISOString(),
+        updatedBy: "SYSTEM",
       });
 
       const newUserDetails = new UserDetails({
@@ -54,21 +56,27 @@ const createAdminUser = async () => {
         userType: "ADMIN",
         name: "Admin",
         mail: process.env.MAIL,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: new Date().toISOString(),
+        createdBy: "SYSTEM",
+        updatedAt: new Date().toISOString(),
+        updatedBy: "SYSTEM",
       });
 
       const newUserDepartmentDetails = new UserDepartmentDetails({
         userID: "USR00001",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: new Date().toISOString(),
+        createdBy: "SYSTEM",
+        updatedAt: new Date().toISOString(),
+        updatedBy: "SYSTEM",
       });
 
       const newUserContacts = new UserContacts({
         userID: "USR00001",
         phoneNumber: process.env.ADMIN_PHONE,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: new Date().toISOString(),
+        createdBy: "SYSTEM",
+        updatedAt: new Date().toISOString(),
+        updatedBy: "SYSTEM",
       });
 
       console.log(
@@ -192,8 +200,10 @@ const login = async (req) => {
       logoutTime: null,
       token: authToken,
       isActive: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      createdBy: userDetails.userID,
+      updatedAt: new Date().toISOString(),
+      updatedBy: userDetails.userID,
     });
     await newUserSession.save();
 
@@ -241,7 +251,8 @@ const logout = async (req) => {
 
     session.logoutTime = new Date().toISOString();
     session.isActive = false;
-    session.updatedAt = new Date();
+    session.updatedAt = new Date().toISOString();
+    session.updatedBy = session.userID;
     await session.save();
 
     console.log(
@@ -250,7 +261,6 @@ const logout = async (req) => {
       }`
     );
 
-    session.isActive = false;
     await session.save();
 
     return { status: statusCodes.OK, message: "Logout successful." };
@@ -315,8 +325,10 @@ const forgetPassword = async (req) => {
       userID: userData.userID,
       otp: generatedOtp,
       isVerified: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      createdBy: userData.userID,
+      updatedAt: new Date().toISOString(),
+      updatedBy: userData.userID,
     });
 
     await newOTP.save();
@@ -388,7 +400,8 @@ const verifyOtp = async (req) => {
       {
         $set: {
           isVerified: true,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
+          updatedBy: userData.userID,
           __v: userMail.__v + 1,
         },
       }
@@ -475,7 +488,8 @@ const changePassword = async (req) => {
       {
         $set: {
           password: hashedPassword,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
+          updatedBy: userData.userID,
           __v: authData.__v + 1,
         },
       }
@@ -603,7 +617,7 @@ const userChangePassword = async (req) => {
       {
         $set: {
           password: hashedPassword,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
           updatedBy: tokenUserID,
           __v: passwordData.__v + 1,
         },

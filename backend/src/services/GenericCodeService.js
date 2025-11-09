@@ -99,9 +99,9 @@ const createInitialGenericCodes = async () => {
           codeType: codeData.codeType,
           code: codeData.code,
           codeDescription: codeData.codeDescription,
-          createdAt: new Date(),
+          createdAt: new Date().toISOString(),
           createdBy: "SYSTEM",
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
           updatedBy: "SYSTEM",
         });
         await newGenericCode.save();
@@ -211,9 +211,9 @@ const createGenericCode = async (req) => {
       codeType,
       code,
       codeDescription,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
       createdBy: tokenUserID,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
       updatedBy: tokenUserID,
     });
     await newGenericCode.save();
@@ -424,7 +424,7 @@ const updateGenericCode = async (req) => {
       {
         $set: {
           codeDescription: codeDescription,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
           updatedBy: tokenUserID,
         },
       }

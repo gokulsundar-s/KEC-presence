@@ -1,4 +1,8 @@
-const { UserDetails, UserDepartmentDetails } = require("../models/UsersModel");
+const {
+  Auth,
+  UserDetails,
+  UserDepartmentDetails,
+} = require("../models/UsersModel");
 const {
   RequestUserMap,
   Request,
@@ -56,6 +60,18 @@ const createRequest = async (req) => {
       return {
         status: statusCodes.UNAUTHORIZED,
         message: "You are not authorized to post request for other users.",
+      };
+    }
+
+    const authData = await Auth.findOne({ userID: userID });
+    if (!authData.isActive) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Inactive or non-existent user.`
+      );
+
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "You are not authorized to post any requests.",
       };
     }
 
@@ -206,9 +222,9 @@ const createRequest = async (req) => {
       requestID,
       userID,
       isActiveRequest: true,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
       createdBy: tokenUserID,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
       updatedBy: tokenUserID,
     });
 
@@ -221,9 +237,9 @@ const createRequest = async (req) => {
       toDate,
       toSession,
       days,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
       createdBy: tokenUserID,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
       updatedBy: tokenUserID,
     });
 
@@ -231,9 +247,9 @@ const createRequest = async (req) => {
       requestID,
       advisorStatus: "PENDING",
       inchargeStatus: "PENDING",
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
       createdBy: tokenUserID,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
       updatedBy: tokenUserID,
     });
 
@@ -241,18 +257,18 @@ const createRequest = async (req) => {
       requestID,
       advisorNote: "",
       inchargeNote: "",
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
       createdBy: tokenUserID,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
       updatedBy: tokenUserID,
     });
 
     const newProofs = new Proofs({
       requestID,
       proofLink,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
       createdBy: tokenUserID,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
       updatedBy: tokenUserID,
     });
 
@@ -762,7 +778,7 @@ const updateRequest = async (req) => {
           toDate: toDate,
           toSession: toSession,
           days: days,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
           updatedBy: tokenUserID,
         },
       }
@@ -773,7 +789,7 @@ const updateRequest = async (req) => {
       {
         $set: {
           proofLink: proofLink,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
           updatedBy: tokenUserID,
         },
       }
@@ -785,7 +801,7 @@ const updateRequest = async (req) => {
         $set: {
           advisorStatus: advisorStatus,
           inchargeStatus: inchargeStatus,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
           updatedBy: tokenUserID,
         },
       }
@@ -797,7 +813,7 @@ const updateRequest = async (req) => {
         $set: {
           advisorNote: advisorNote,
           inchargeNote: inchargeNote,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
           updatedBy: tokenUserID,
         },
       }
