@@ -30,12 +30,14 @@ const usersRoute = require("./src/routes/UserRoute");
 const requestRoute = require("./src/routes/RequestRoute");
 const genericCodeRoute = require("./src/routes/GenericCodeRoute");
 const adminRoute = require("./src/routes/AdminRoute");
+const dashboardRoute = require("./src/routes/DashboardRoute");
 
 app.use("/", authRoute);
 app.use("/users", usersRoute);
 app.use("/requests", requestRoute);
 app.use("/generic-codes", genericCodeRoute);
 app.use("/admin", adminRoute);
+app.use("/dashboard", dashboardRoute);
 
 const PORT = 3003;
 app.listen(PORT, () => {

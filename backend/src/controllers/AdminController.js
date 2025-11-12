@@ -1,12 +1,12 @@
-const AdminServices = require("../services/AdminServices");
+const AdminService = require("../services/AdminService");
 
 const migrateUserYearController = async (req, res) => {
-  const result = await AdminServices.migrateUserYears(req);
+  const result = await AdminService.migrateUserYears(req);
   return res.status(result.status).json(result);
 };
 
 const inactivateUserSessionsController = async (req, res) => {
-  const result = await AdminServices.inactivateUserSessions(req);
+  const result = await AdminService.inactivateUserSessions(req);
   return res.status(result.status).json(result);
 };
 
