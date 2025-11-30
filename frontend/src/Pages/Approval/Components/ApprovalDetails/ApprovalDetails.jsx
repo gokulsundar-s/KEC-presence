@@ -143,13 +143,13 @@ export default function RequestDetails({
 
           <div className="sidebar-buttons-container">
             <button
-              className="secondary-button green-button"
+              className="primary-button green-button"
               onClick={() => handleUpdateStatus("approved")}
             >
               Approve
             </button>
             <button
-              className="secondary-button red-button"
+              className="primary-button red-button"
               onClick={() => handleUpdateStatus("rejected")}
             >
               Reject

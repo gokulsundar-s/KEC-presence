@@ -1,21 +1,38 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../../Utils/Constants";
-import { ConfirmIcon } from "../../Assets/Icons";
 import {
   showErrorToast,
   showSuccessToast,
 } from "../../Components/Alerts/Alert";
-import { ConfirmModal } from "../../Components/Modals/Modals";
 import SideTab from "../../Components/SiderTab/SideTab";
 import NoData from "../../Components/NoData/NoData";
 import Loaders from "../../Components/Loaders/Loaders";
 import UsersDetails from "./Components/UsersDetails/UsersDetails";
 import UsersForm from "./Components/UsersForm/UsersForm";
 import AddBulkUser from "./Components/AddBulkUser/AddBulkUser";
-import { SuccessModal, BulkAddModal } from "../../Components/Modals/Modals";
+import {
+  FilterIcon,
+  AddIcon,
+  InfoIcon,
+  EditIcon,
+  InActivateIcon,
+  ExportIcon,
+  SubmitIcon,
+  BulkUsersIcon,
+  BackIcon,
+} from "../../Assets/Icons";
+import {
+  ConfirmModal,
+  SuccessModal,
+  BulkAddModal,
+} from "../../Components/Modals/Modals";
 
 export default function UserInfo() {
+  const navigate = useNavigate();
+
   const [usersData, setUsersData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [openInfoSider, setOpenInfoSider] = useState(false);
@@ -44,10 +61,21 @@ export default function UserInfo() {
     parentPhone: "",
   });
 
+  var token = "";
+  try {
+    token = Cookies.get("token");
+  } catch {
+    navigate("/login");
+  }
+
   const getUserData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${baseUrl}/users`);
+      const response = await axios.get(`${baseUrl}/users`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.data.status === 200) {
         setUsersData(response.data.data);
       } else {
@@ -214,50 +242,74 @@ export default function UserInfo() {
 
       <div className="view-info-container">
         <div className="view-info-inputs-container">
-          <div className="view-info-input">
-            <p>User Type</p>
-            <select>
-              <option value="all">All</option>
-              <option value="admin">Admin</option>
-              <option value="user">User</option>
-              <option value="guest">Guest</option>
-            </select>
-          </div>
-
-          <div className="view-info-input">
-            <p>Search</p>
-            <input type="text" placeholder="Search" />
-          </div>
-
-          <div className="view-info-input">
-            <button
-              className="primary-button"
-              onClick={() => setOpenAddUserSider(true)}
-            >
-              Add User
+          <div className="view-info-inputs-left-container">
+            <div className="view-info-input">
+              <input type="text" placeholder="Search" />
+            </div>
+            <button className="view-info-input-icon-button">
+              <FilterIcon />
             </button>
+          </div>
+
+          <div className="view-info-inputs-right-container">
+            <div className="view-info-buttons-list">
+              <button className="primary-button view-info-buttons-list-first-button">
+                <InfoIcon />
+              </button>
+              <button className="primary-button view-info-buttons-list-middle-button">
+                <EditIcon />
+              </button>
+              <button className="primary-button view-info-buttons-list-last-button">
+                <InActivateIcon />
+              </button>
+            </div>
+
+            <div className="view-info-input">
+              <button
+                className="primary-button"
+                onClick={() => setOpenAddUserSider(true)}
+              >
+                <ExportIcon />
+                Export Data
+              </button>
+            </div>
+            <div className="view-info-input">
+              <button
+                className="primary-button"
+                onClick={() => setOpenAddUserSider(true)}
+              >
+                <AddIcon />
+                New User
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="view-info-table-container">
-          {loading ? (
-            <Loaders />
-          ) : usersData.length === 0 ? (
-            <NoData />
-          ) : (
+        {loading ? (
+          <Loaders />
+        ) : usersData.length === 0 ? (
+          <NoData />
+        ) : (
+          <div className="view-info-table-container">
             <table className="view-info-table">
               <thead>
                 <tr>
+                  <td>
+                    <input type="checkbox" />
+                  </td>
                   <td>User ID</td>
                   <td>User Type</td>
                   <td>Department</td>
                   <td>Name</td>
-                  <td>Actions</td>
+                  <td>Status</td>
                 </tr>
               </thead>
               <tbody>
                 {usersData.map((user) => (
                   <tr key={user.userID}>
+                    <td>
+                      <input type="checkbox" />
+                    </td>
                     <td>{user.userID}</td>
                     <td>{user.userType === "STU" ? "Student" : "Admin"}</td>
                     <td>
@@ -267,22 +319,18 @@ export default function UserInfo() {
                     </td>
                     <td>{user.name}</td>
                     <td>
-                      <button
-                        className="details-button"
-                        onClick={() => {
-                          setOpenInfoSider(true);
-                          setSelectedUser(user.userID);
-                        }}
-                      >
-                        View
-                      </button>
+                      {user.isActive ? (
+                        <p style={{ color: "green" }}>Active</p>
+                      ) : (
+                        <p style={{ color: "red" }}>Inactive</p>
+                      )}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       <SideTab
@@ -294,7 +342,7 @@ export default function UserInfo() {
             {!editUserInfo ? (
               <div>
                 <button
-                  className="secondary-button"
+                  className="primary-button"
                   onClick={() => setDeleteUser(true)}
                 >
                   Delete
@@ -309,7 +357,7 @@ export default function UserInfo() {
             ) : (
               <div>
                 <button
-                  className="secondary-button"
+                  className="primary-button"
                   onClick={() => setEditUserInfo(false)}
                 >
                   Back
@@ -350,9 +398,10 @@ export default function UserInfo() {
             {openBulkAddUser ? (
               <div>
                 <button
-                  className="secondary-button"
+                  className="primary-button"
                   onClick={() => setOpenBulkAddUser(false)}
                 >
+                  <BackIcon />
                   Back
                 </button>
 
@@ -364,17 +413,21 @@ export default function UserInfo() {
                   {addLoading ? (
                     <span className="login-button-loader"></span>
                   ) : (
-                    "Submit"
+                    <>
+                      Submit
+                      <SubmitIcon />
+                    </>
                   )}
                 </button>
               </div>
             ) : (
               <div>
                 <button
-                  className="secondary-button"
+                  className="primary-button"
                   onClick={() => setOpenBulkAddUser(true)}
                 >
-                  Add Bulk Users
+                  <AddIcon />
+                  Bulk Users
                 </button>
 
                 <button
@@ -385,7 +438,10 @@ export default function UserInfo() {
                   {addLoading ? (
                     <span className="login-button-loader"></span>
                   ) : (
-                    "Submit"
+                    <>
+                      Submit
+                      <SubmitIcon />
+                    </>
                   )}
                 </button>
               </div>

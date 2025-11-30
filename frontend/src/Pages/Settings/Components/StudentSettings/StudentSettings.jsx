@@ -49,8 +49,8 @@ export default function StudentSettings() {
 
   useEffect(() => {
     try {
-      const authToken = Cookies.get("authToken");
-      const userDetailsToken = Cookies.get("userDetailsToken");
+      const authToken = Cookies.get("token");
+      const userDetailsToken = Cookies.get("token");
       if (!userDetailsToken) {
         navigate("/login");
         return;
@@ -67,7 +67,7 @@ export default function StudentSettings() {
 
   const handleLogout = async () => {
     try {
-      const tokenString = Cookies.get("authToken");
+      const tokenString = Cookies.get("token");
 
       if (!tokenString) {
         navigate("/login");
@@ -78,8 +78,8 @@ export default function StudentSettings() {
       const sessionID = decodedAuth?.sessionID;
 
       if (!sessionID) {
-        Cookies.remove("authToken");
-        Cookies.remove("userDetailsToken");
+        Cookies.remove("token");
+        Cookies.remove("token");
         navigate("/login");
         return;
       }
@@ -87,8 +87,8 @@ export default function StudentSettings() {
       const response = await axios.post(`${baseUrl}/logout`, { sessionID });
 
       if (response.status === 200) {
-        Cookies.remove("authToken");
-        Cookies.remove("userDetailsToken");
+        Cookies.remove("token");
+        Cookies.remove("token");
         navigate("/login");
       }
     } catch (error) {
@@ -226,7 +226,7 @@ export default function StudentSettings() {
                 Update User Info
               </button>
               <button
-                className="secondary-button"
+                className="primary-button"
                 onClick={() => setShowChangePasswordModal(true)}
               >
                 Change Password

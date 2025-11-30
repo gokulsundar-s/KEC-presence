@@ -1,5 +1,6 @@
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import LoadingWrapper from "../../Components/LoadingWrapper/LoadingWrapper";
+import Header from "./Components/Header/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Dashboard from "../Dashboard/Dashboard";
 import Settings from "../Settings/Settings";
@@ -19,7 +20,7 @@ export default function Home() {
   var userType = "";
 
   try {
-    userType = jwtDecode(Cookies.get("userDetailsToken")).userType;
+    userType = jwtDecode(Cookies.get("token")).userType;
   } catch (error) {
     navigate("/login");
   }
@@ -28,31 +29,36 @@ export default function Home() {
     <LoadingWrapper>
       <div className="home-container">
         <Sidebar />
-        <Routes>
-          <Route path="*" element={<Navigate to="/" replace />} />
-          <Route path="/" element={<Dashboard />} />
-          <Route path="settings" element={<Settings />} />
+        <div className="home-pages-container">
+          <Header />
+          <Routes>
+            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="settings" element={<Settings />} />
 
-          {userType === "ADM" && <Route path="users" element={<Users />} />}
-          {userType === "ADM" && <Route path="configs" element={<Configs />} />}
-          {userType === "ADM" && (
-            <Route path="sessions" element={<Sessions />} />
-          )}
+            {userType === "ADMIN" && <Route path="users" element={<Users />} />}
+            {userType === "ADMIN" && (
+              <Route path="configs" element={<Configs />} />
+            )}
+            {userType === "ADMIN" && (
+              <Route path="sessions" element={<Sessions />} />
+            )}
 
-          {userType === "STU" && (
-            <Route path="new-request" element={<NewRequest />} />
-          )}
-          {userType === "STU" && (
-            <Route path="history" element={<RequestsHistory />} />
-          )}
+            {userType === "STU" && (
+              <Route path="new-request" element={<NewRequest />} />
+            )}
+            {userType === "STU" && (
+              <Route path="history" element={<RequestsHistory />} />
+            )}
 
-          {userType === "CA" && (
-            <Route path="approval" element={<Approval />} />
-          )}
-          {userType === "CA" && (
-            <Route path="approval-history" element={<ApprovalsHistory />} />
-          )}
-        </Routes>
+            {userType === "CA" && (
+              <Route path="approval" element={<Approval />} />
+            )}
+            {userType === "CA" && (
+              <Route path="approval-history" element={<ApprovalsHistory />} />
+            )}
+          </Routes>
+        </div>
       </div>
     </LoadingWrapper>
   );

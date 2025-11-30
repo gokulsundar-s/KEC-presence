@@ -233,7 +233,7 @@ export default function Configs() {
             {!editConfigs ? (
               <div>
                 <button
-                  className="secondary-button"
+                  className="primary-button"
                   onClick={() => setDeleteConfig(true)}
                 >
                   Delete
@@ -248,7 +248,7 @@ export default function Configs() {
             ) : (
               <div>
                 <button
-                  className="secondary-button"
+                  className="primary-button"
                   onClick={() => setEditConfigs(false)}
                 >
                   Back

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { UploadIcon, DeleteIcon } from "../../../../Assets/Icons";
+import { UploadIcon, DeleteIcon, DownloadIcon } from "../../../../Assets/Icons";
 import * as XLSX from "xlsx";
 import { showErrorToast } from "../../../../Components/Alerts/Alert";
 import "./AddBulkUser.css";
@@ -116,6 +116,7 @@ export default function AddBulkUser({ setBulkUserData }) {
       </div>
 
       <button className="primary-button" onClick={downloadTemplate}>
+        <DownloadIcon />
         Download Template
       </button>
     </div>

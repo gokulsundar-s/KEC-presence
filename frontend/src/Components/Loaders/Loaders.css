@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80%;
+  height: 65vh;
 }
 
 .loader-container p {

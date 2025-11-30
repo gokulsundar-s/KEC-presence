@@ -122,7 +122,7 @@ const createUser = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - Create User attempt failed: Authorization token is missing.`
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -448,7 +448,7 @@ const getAllUsers = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - Get all users attempt failed: Authorization token is missing.`
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -470,7 +470,16 @@ const getAllUsers = async (req) => {
     const { tokenUserID, tokenUserType } = await getTokenData(token);
 
     let usersData = await UserDetails.find();
+    let authData = await Auth.find();
     const userDeptData = await UserDepartmentDetails.find();
+
+    usersData = usersData.map((user) => {
+      const auth = authData.find((a) => a.userID === user.userID);
+      return {
+        ...user._doc,
+        isActive: auth ? auth.isActive : null,
+      };
+    });
 
     if (tokenUserType === "ADMIN") {
       usersData = usersData.filter((user) => user.userType !== "ADMIN");
@@ -658,7 +667,7 @@ const updateUserData = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - Update user data attempt failed: Authorization token is missing.`
       );
       return {
         status: statusCodes.UNAUTHORIZED,

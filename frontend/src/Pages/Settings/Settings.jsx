@@ -10,7 +10,7 @@ export default function Settings() {
 
   let userType = "";
   try {
-    const userDetailsToken = Cookies.get("userDetailsToken");
+    const userDetailsToken = Cookies.get("token");
     if (!userDetailsToken) {
       navigate("/login");
     } else {
@@ -25,7 +25,7 @@ export default function Settings() {
     <div className="page-container">
       <p className="page-header">User Settings</p>
 
-      {userType === "ADM" && <AdminSettings />}
+      {userType === "ADMIN" && <AdminSettings />}
       {userType === "STU" && <StudentSettings />}
     </div>
   );

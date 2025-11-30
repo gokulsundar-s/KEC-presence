@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const {
-  Auth,
   UserDetails,
   UserDepartmentDetails,
   UserSessions,
@@ -140,6 +139,27 @@ const getHoDData = async (req) => {
         message: "You do not have permission to access this resource.",
       };
     }
+
+    const userDepartment = await UserDepartmentDetails.findOne({
+      userID: tokenUserID,
+    });
+
+    const departmentData = await UserDepartmentDetails.find({
+      department: userDepartment.department,
+    });
+
+    const userTypeCount = departmentData.reduce((count, user) => {
+      count[user.userType] = (count[user.userType] ?? 0) + 1;
+      return count;
+    }, {});
+
+    return {
+      status: statusCodes.OK,
+      message: "Dashboard data retrieved successfully.",
+      data: {
+        userCountData: userTypeCount,
+      },
+    };
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error during getting dashboard data process:`,

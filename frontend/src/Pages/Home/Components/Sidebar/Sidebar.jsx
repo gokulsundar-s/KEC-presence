@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Logo from "../../../../assets/kec-logo.png";
 import {
   DashboardIcon,
@@ -6,7 +6,7 @@ import {
   HistoryIcon,
   SettingsIcon,
   UsersInfoIcon,
-  ConfigIcon,
+  GenericCodesIcon,
   SessionIcon,
 } from "../../../../Assets/Icons";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -17,10 +17,17 @@ import "./Sidebar.css";
 export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [activeTab, setActiveTab] = useState(location.pathname);
+
+  useEffect(() => {
+    setActiveTab(location.pathname);
+  }, [location.pathname]);
+
+  console.log("activeTab", activeTab);
 
   var userType = "";
   try {
-    userType = jwtDecode(Cookies.get("userDetailsToken")).userType;
+    userType = jwtDecode(Cookies.get("token")).userType;
   } catch (error) {
     navigate("/login");
   }
@@ -29,109 +36,110 @@ export default function Sidebar() {
     <div className="sidebar-container">
       <div className="sidebar-logo">
         <img src={Logo} alt="logo" />
-        <p>
-          {userType === "ADM"
-            ? "Admin"
-            : userType === "STU"
-            ? "Student"
-            : "Faculty"}
-        </p>
       </div>
 
-      <div className="sidebar-buttons">
+      <div className="sidebar-buttons-container">
         <button
-          onClick={() => {
-            navigate("/");
-            setActiveTab(0);
-          }}
+          className={`sidebar-button ${
+            activeTab === "/" ? "sidebar-active-button" : ""
+          }`}
+          onClick={() => navigate("/")}
         >
-          <DashboardIcon filled={location.pathname === "/"} />
+          <DashboardIcon />
           <p>Dashboard</p>
         </button>
 
-        {userType === "ADM" && (
+        {userType === "ADMIN" && (
           <button
-            onClick={() => {
-              navigate("/users");
-            }}
+            className={`sidebar-button ${
+              activeTab === "/users" ? "sidebar-active-button" : ""
+            }`}
+            onClick={() => navigate("/users")}
           >
-            <UsersInfoIcon filled={location.pathname === "/users"} />
-            <p>User Info</p>
+            <UsersInfoIcon />
+            <p>Users Info</p>
           </button>
         )}
 
-        {userType === "ADM" && (
+        {userType === "ADMIN" && (
           <button
-            onClick={() => {
-              navigate("/configs");
-            }}
+            className={`sidebar-button ${
+              activeTab === "/configs" ? "sidebar-active-button" : ""
+            }`}
+            onClick={() => navigate("/configs")}
           >
-            <ConfigIcon filled={location.pathname === "/configs"} />
-            <p>Configs</p>
+            <GenericCodesIcon />
+            <p>Generic Codes</p>
           </button>
         )}
 
-        {userType === "ADM" && (
+        {userType === "ADMIN" && (
           <button
-            onClick={() => {
-              navigate("/sessions");
-            }}
+            className={`sidebar-button ${
+              activeTab === "/sessions" ? "sidebar-active-button" : ""
+            }`}
+            onClick={() => navigate("/sessions")}
           >
-            <SessionIcon filled={location.pathname === "/sessions"} />
+            <SessionIcon />
             <p>Sessions</p>
           </button>
         )}
 
         {userType === "STU" && (
           <button
-            onClick={() => {
-              navigate("/new-request");
-            }}
+            className={`sidebar-button ${
+              activeTab === "/new-request" ? "sidebar-active-button" : ""
+            }`}
+            onClick={() => navigate("/new-request")}
           >
-            <NewRequestIcon filled={location.pathname === "/new-request"} />
+            <NewRequestIcon />
             <p>New Request</p>
           </button>
         )}
 
         {userType === "STU" && (
           <button
-            onClick={() => {
-              navigate("/history");
-            }}
+            className={`sidebar-button ${
+              activeTab === "/history" ? "sidebar-active-button" : ""
+            }`}
+            onClick={() => navigate("/history")}
           >
-            <HistoryIcon filled={location.pathname === "/history"} />
+            <HistoryIcon />
             <p>History</p>
           </button>
         )}
 
         {userType === "CA" && (
           <button
-            onClick={() => {
-              navigate("/approval");
-            }}
+            className={`sidebar-button ${
+              activeTab === "/approval" ? "sidebar-active-button" : ""
+            }`}
+            onClick={() => navigate("/approval")}
           >
-            <NewRequestIcon filled={location.pathname === "/approval"} />
+            <NewRequestIcon />
             <p>Approvals</p>
           </button>
         )}
 
         {userType === "CA" && (
           <button
-            onClick={() => {
-              navigate("/approval-history");
-            }}
+            className={`sidebar-button ${
+              activeTab === "/approval-history" ? "sidebar-active-button" : ""
+            }`}
+            onClick={() => navigate("/approval-history")}
           >
-            <HistoryIcon filled={location.pathname === "/approval-history"} />
+            <HistoryIcon />
             <p>History</p>
           </button>
         )}
 
         <button
-          onClick={() => {
-            navigate("/settings");
-          }}
+          className={`sidebar-button ${
+            activeTab === "/settings" ? "sidebar-active-button" : ""
+          }`}
+          onClick={() => navigate("/settings")}
         >
-          <SettingsIcon filled={location.pathname === "/settings"} />
+          <SettingsIcon />
           <p>Settings</p>
         </button>
       </div>

@@ -25,17 +25,14 @@ export default function Login() {
       });
 
       if (response.data.status === 200) {
-        Cookies.set("authToken", response.data.authToken);
-        Cookies.set("userDetailsToken", response.data.userDetailsToken);
+        Cookies.set("token", response.data.token);
         navigate("/");
-        setLoader(false);
       } else if (response.data.status === 500) {
-        setLoader(false);
         showErrorToast("An error occurred. Please contact administrator.");
       } else {
-        setLoader(false);
         showErrorToast(response.data.message);
       }
+      setLoader(false);
     } catch (error) {
       setLoader(false);
       showErrorToast("An error occurred. Please contact administrator.");

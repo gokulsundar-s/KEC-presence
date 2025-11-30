@@ -1,8 +1,21 @@
+:root {
+  --primary-color: #1f2937;
+  --secondary-color: #eeeeee;
+  --header-color: #444444;
+  --text-color: #111111;
+  --border-color: #cccccc;
+}
+
 * {
   font-family: "Poppins";
   margin: 0;
   padding: 0;
-  scrollbar-color: #ddd #f5f5f5;
+  scrollbar-color: #ddd transparent;
+}
+
+body {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
 }
 
 a {
@@ -11,8 +24,8 @@ a {
 }
 
 .page-container {
-  width: 100%;
-  padding: 2rem;
+  padding: 0 2rem;
+  padding-bottom: 2rem;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -20,54 +33,50 @@ a {
 .page-header {
   font-size: 1.75rem;
   font-weight: bold;
-  color: #555;
+  color: var(--primary-color);
   padding-bottom: 2rem;
 }
 
 /* ----- Form Styles ----- */
-
-.form-container {
+.form-input-container {
   display: flex;
-  flex-direction: column;
-}
-
-.form-row {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .form-input {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1rem;
 }
 
 .form-input p {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  color: var(--primary-color);
 }
 
 .form-input select,
 .form-input input,
 .form-input textarea {
+  color: var(--primary-color);
   padding: 0.5rem 0.75rem;
-  font-size: 1rem;
-  border: 2px solid #ccc;
-  border-radius: 6px;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   outline: none;
   transition: border-color 0.3s ease;
-  cursor: pointer;
-  resize: none;
+  cursor: text;
+  box-sizing: border-box;
 }
 
 .form-input select:focus,
 .form-input input:focus,
 .form-input textarea:focus {
-  border-color: #4061f2;
-  box-shadow: 0 0 2px rgba(64, 97, 242, 0.5);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 2px var(--primary-color);
 }
 
 .notes-input {
@@ -100,40 +109,27 @@ a {
 
 .primary-button {
   height: 2.5rem;
-  padding: 0.5rem 2rem;
-  font-size: 1rem;
+  padding: 0.5rem 1rem;
   border: none;
-  border-radius: 6px;
-  background-color: #4061f2;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background-color: var(--primary-color);
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
+}
+
+.primary-button svg {
+  height: 1.25rem;
+  width: 1.25rem;
 }
 
 .primary-button:hover {
-  background-color: #2646e2;
-}
-
-.secondary-button {
-  height: 2.5rem;
-  padding: 0.5rem 2rem;
-  font-size: 1rem;
-  border: 2px solid #4061f2;
-  border-radius: 6px;
-  background-color: #fff;
-  color: #4061f2;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.secondary-button:hover {
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .form-info p {
@@ -146,44 +142,75 @@ a {
 .view-info-inputs-container {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
+}
+
+.view-info-inputs-left-container {
+  display: flex;
+  align-items: center;
   gap: 1rem;
 }
 
-.view-info-input {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 1.5rem;
-}
-
-.view-info-input p {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #555;
-}
-
-.view-info-input input,
-.view-info-input select {
+.view-info-input input {
   padding: 0.5rem 0.75rem;
-  font-size: 1rem;
-  border: 2px solid #ccc;
-  border-radius: 6px;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   outline: none;
   transition: border-color 0.3s ease;
+  cursor: text;
+  box-sizing: border-box;
+}
+
+.view-info-input input:focus {
+  border-color: var(--primary-color);
+}
+
+.view-info-input-icon-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
   cursor: pointer;
 }
 
-.view-info-input button {
-  margin-bottom: 0.15rem;
+.view-info-input-icon-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.view-info-inputs-right-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.view-info-buttons-list {
+  display: flex;
+}
+
+.view-info-buttons-list-first-button {
+  border-radius: 8px 0 0 8px;
+}
+
+.view-info-buttons-list-middle-button {
+  border-inline: 0.5px #555 solid;
+  border-radius: 0;
+}
+
+.view-info-buttons-list-last-button {
+  border-radius: 0 8px 8px 0;
 }
 
 .view-info-table-container {
   width: 100%;
-  height: 65vh;
+  height: 100%;
   overflow-y: auto;
   border-radius: 6px;
   scrollbar-color: #ddd #f5f5f5;
+  margin-top: 2rem;
+  background-color: #fff;
 }
 
 .view-info-table {
@@ -191,35 +218,24 @@ a {
   border-collapse: collapse;
 }
 
+.view-info-table thead td,
+.view-info-table tbody td {
+  font-size: 0.9rem;
+  padding: 1rem 2rem;
+  text-align: left;
+  color: var(--primary-color);
+}
+
 .view-info-table thead td {
-  color: #555;
   font-weight: 600;
-  position: sticky;
-  top: 0;
-  background-color: #f7f7f7;
-  z-index: 2;
-  padding: 0.75rem 0;
-  text-align: center;
 }
 
 .view-info-table tbody td {
-  padding: 0.5rem 0;
-  text-align: center;
-  min-width: 120px;
+  border-top: 1px solid #ccc;
 }
 
 .view-info-table tbody tr:hover {
   background-color: #f5f7ff;
-}
-
-.details-button {
-  border: none;
-  color: #007bff;
-  background-color: transparent;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.85rem;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 /* ----- Toastify Styles (Overrided) ----- */

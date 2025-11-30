@@ -53,8 +53,8 @@ export default function AdminSettings() {
 
   useEffect(() => {
     try {
-      const authToken = Cookies.get("authToken");
-      const userDetailsToken = Cookies.get("userDetailsToken");
+      const authToken = Cookies.get("token");
+      const userDetailsToken = Cookies.get("token");
       if (!userDetailsToken) {
         navigate("/login");
         return;
@@ -71,7 +71,7 @@ export default function AdminSettings() {
 
   const handleLogout = async () => {
     try {
-      const tokenString = Cookies.get("authToken");
+      const tokenString = Cookies.get("token");
 
       if (!tokenString) {
         navigate("/login");
@@ -82,8 +82,8 @@ export default function AdminSettings() {
       const sessionID = decodedAuth?.sessionID;
 
       if (!sessionID) {
-        Cookies.remove("authToken");
-        Cookies.remove("userDetailsToken");
+        Cookies.remove("token");
+        Cookies.remove("token");
         navigate("/login");
         return;
       }
@@ -91,8 +91,8 @@ export default function AdminSettings() {
       const response = await axios.post(`${baseUrl}/logout`, { sessionID });
 
       if (response.status === 200) {
-        Cookies.remove("authToken");
-        Cookies.remove("userDetailsToken");
+        Cookies.remove("token");
+        Cookies.remove("token");
         navigate("/login");
       }
     } catch (error) {
@@ -229,7 +229,9 @@ export default function AdminSettings() {
 
               <div className="admin-settings-profile-item">
                 <SettingsUserIcon />
-                <p className="admin-settings-profile-item-header">Full Name :</p>
+                <p className="admin-settings-profile-item-header">
+                  Full Name :
+                </p>
                 <p>{settingsData?.userInfoData?.name ?? "-"}</p>
               </div>
               <div className="admin-settings-profile-item">
@@ -239,13 +241,17 @@ export default function AdminSettings() {
               </div>
               <div className="admin-settings-profile-item">
                 <SettingsPhoneIcon />
-                <p className="admin-settings-profile-item-header">Phone Number :</p>
+                <p className="admin-settings-profile-item-header">
+                  Phone Number :
+                </p>
                 <p>{settingsData?.userInfoData?.phoneNumber ?? "-"}</p>
               </div>
 
               <div className="admin-settings-profile-item">
                 <SettingsLastLoginIcon />
-                <p className="admin-settings-profile-item-header">Last Login :</p>
+                <p className="admin-settings-profile-item-header">
+                  Last Login :
+                </p>
                 <p>
                   {formatDateTime(settingsData?.loginData?.lastLogin) ?? "-"}
                 </p>
@@ -267,7 +273,7 @@ export default function AdminSettings() {
                 Update User Info
               </button>
               <button
-                className="secondary-button"
+                className="primary-button"
                 onClick={() => setShowChangePasswordModal(true)}
               >
                 Change Password
@@ -283,7 +289,9 @@ export default function AdminSettings() {
 
           <div className="setting-admin-privileges-container">
             <div className="setting-privileges-container">
-              <p className="admin-settings-privileges-title">Migrate Academic Year</p>
+              <p className="admin-settings-privileges-title">
+                Migrate Academic Year
+              </p>
               <p className="admin-settings-privileges-content">
                 This button promotes all students of a selected academic year to
                 the next year with a single click. This automates the yearly

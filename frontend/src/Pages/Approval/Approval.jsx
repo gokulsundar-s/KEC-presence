@@ -219,7 +219,7 @@ export default function NewRequest() {
             {!editRequest ? (
               <div>
                 <button
-                  className="secondary-button"
+                  className="primary-button"
                   onClick={() => setCancelRequest(true)}
                 >
                   Cancel Request
@@ -234,7 +234,7 @@ export default function NewRequest() {
             ) : (
               <div>
                 <button
-                  className="secondary-button"
+                  className="primary-button"
                   onClick={() => setEditRequest(false)}
                 >
                   Back

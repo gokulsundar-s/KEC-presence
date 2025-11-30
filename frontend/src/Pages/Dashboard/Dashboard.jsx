@@ -10,7 +10,7 @@ export default function Dashboard() {
   let userType = "";
 
   try {
-    const userDetailsToken = Cookies.get("userDetailsToken");
+    const userDetailsToken = Cookies.get("token");
     if (!userDetailsToken) {
       navigate("/login");
     } else {
@@ -21,11 +21,13 @@ export default function Dashboard() {
     navigate("/login");
   }
 
+  console.log(userType);
+  
   return (
     <div className="page-container">
       <p className="page-header">Welcome {name}🎉</p>
 
-      {userType === "ADM" && <AdminDashboard />}
+      {userType === "ADMIN" && <AdminDashboard />}
     </div>
   );
 }
