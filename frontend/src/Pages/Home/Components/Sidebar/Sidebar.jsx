@@ -23,8 +23,6 @@ export default function Sidebar() {
     setActiveTab(location.pathname);
   }, [location.pathname]);
 
-  console.log("activeTab", activeTab);
-
   var userType = "";
   try {
     userType = jwtDecode(Cookies.get("token")).userType;
@@ -64,9 +62,9 @@ export default function Sidebar() {
         {userType === "ADMIN" && (
           <button
             className={`sidebar-button ${
-              activeTab === "/configs" ? "sidebar-active-button" : ""
+              activeTab === "/generic-codes" ? "sidebar-active-button" : ""
             }`}
-            onClick={() => navigate("/configs")}
+            onClick={() => navigate("/generic-codes")}
           >
             <GenericCodesIcon />
             <p>Generic Codes</p>

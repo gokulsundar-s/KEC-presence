@@ -114,7 +114,7 @@ a {
   border-radius: 8px;
   font-size: 0.9rem;
   background-color: var(--primary-color);
-  color: #fff;
+  color: var(--secondary-color);
   cursor: pointer;
   transition: background-color 0.3s ease;
   display: flex;
@@ -130,6 +130,11 @@ a {
 
 .primary-button:hover {
   opacity: 0.9;
+}
+
+.disabled-button {
+  background-color: var(--border-color);
+  cursor: not-allowed;
 }
 
 .form-info p {
@@ -195,7 +200,7 @@ a {
 }
 
 .view-info-buttons-list-middle-button {
-  border-inline: 0.5px #555 solid;
+  border-inline: 0.5px var(--secondary-color) solid;
   border-radius: 0;
 }
 
@@ -219,7 +224,8 @@ a {
 }
 
 .view-info-table thead td,
-.view-info-table tbody td {
+.view-info-table tbody td,
+.view-info-table tfoot td {
   font-size: 0.9rem;
   padding: 1rem 2rem;
   text-align: left;
@@ -231,17 +237,48 @@ a {
 }
 
 .view-info-table tbody td {
-  border-top: 1px solid #ccc;
+  border-top: 1px solid var(--border-color);
 }
 
 .view-info-table tbody tr:hover {
   background-color: #f5f7ff;
 }
 
-/* ----- Toastify Styles (Overrided) ----- */
+.view-info-table tfoot td {
+  border-top: 1px solid var(--border-color);
+}
 
-.Toastify__toast-icon {
-  padding-right: 0.5rem;
+.view-info-table-footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: var(--header-color);
+}
+
+.view-info-table-footer-container p {
+  padding-right: 2rem;
+}
+
+.view-info-table-footer-container p span {
+  font-weight: 600;
+}
+
+.view-info-table-footer-container button {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: none;
+  font-size: 0.9rem;
+  background-color: transparent;
+  color: var(--primary-color);
+  cursor: pointer;
+  margin-left: 1rem;
+}
+
+.view-info-table-footer-container button svg {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 /* ----- Sidebar Form Styles ----- */
@@ -249,7 +286,7 @@ a {
 .sidebar-form-container {
   height: 80vh;
   overflow-y: auto;
-  scrollbar-color: #ddd #f5f5f5;
+  scrollbar-color: #ddd transparent;
 }
 
 .sidebar-form-form {
@@ -259,36 +296,28 @@ a {
 /* ----- Sidebar Details Styles ----- */
 
 .sidebar-info-container {
-  height: 80vh;
+  height: 90vh;
   overflow: auto;
-  scrollbar-color: #ddd #f5f5f5;
-}
-
-.sidebar-info-table-container {
-  margin-top: 1rem;
+  scrollbar-color: #ddd transparent;
 }
 
 .sidebar-info-table-container table {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid #ccc;
 }
 
 .sidebar-info-table-container th,
 .sidebar-info-table-container td {
-  font-size: 1rem;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.5rem;
   text-align: left;
+  color: var(--primary-color);
+  padding-block: 0.75rem;
 }
 
-.sidebar-info-table-container th {
-  color: #000;
-  font-weight: 300;
-}
-
-.sidebar-info-table-container td {
-  color: #555;
+.sidebar-info-table-container tr {
+  border-bottom: 1px solid var(--border-color);
 }
 
 .sidebar-buttons-container {
@@ -297,17 +326,10 @@ a {
   margin-top: 1rem;
 }
 
-.green-button {
-  color: #28a745;
-  border-color: #28a745;
-}
-
-.red-button {
+.inactive-text {
   color: #ff0000;
-  border-color: #ff0000;
 }
 
-.gray-button {
-  color: #6c757d;
-  border-color: #6c757d;
+.active-text {
+  color: #006217;
 }

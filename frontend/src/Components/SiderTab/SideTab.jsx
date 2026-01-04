@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { CloseIcon } from "../../Assets/Icons";
 import "./SideTab.css";
 

@@ -303,9 +303,9 @@ const getAllGenericCodes = async (req) => {
 };
 
 // Function to get generic codes by code type
-const getGenericCodeByCodeType = async (req) => {
+const getGenericCodeByCode = async (req) => {
   try {
-    const { codeType } = req.params;
+    const { code } = req.params;
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
@@ -332,7 +332,7 @@ const getGenericCodeByCodeType = async (req) => {
 
     const { tokenUserID } = await getTokenData(token);
 
-    const genericCodes = await GenericCode.find({ codeType: codeType });
+    const genericCodes = await GenericCode.findOne({ code: code });
 
     console.log(
       `[INFO] - [${new Date().toISOString()}] - Generic codes by code type fetched successfully by user ID: ${tokenUserID}`
@@ -455,6 +455,6 @@ module.exports = {
   createInitialGenericCodes,
   createGenericCode,
   getAllGenericCodes,
-  getGenericCodeByCodeType,
+  getGenericCodeByCode,
   updateGenericCode,
 };

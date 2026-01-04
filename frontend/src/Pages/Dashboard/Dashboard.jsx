@@ -21,8 +21,6 @@ export default function Dashboard() {
     navigate("/login");
   }
 
-  console.log(userType);
-  
   return (
     <div className="page-container">
       <p className="page-header">Welcome {name}🎉</p>

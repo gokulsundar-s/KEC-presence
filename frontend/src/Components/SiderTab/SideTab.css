@@ -14,7 +14,7 @@
   right: 0;
   width: 30%;
   height: 100%;
-  background: #f2f4f6;
+  background: var(--secondary-color);
   box-shadow: -3px 0 5px rgba(0, 0, 0, 0.2);
   transform: translateX(100%);
   transition: transform 0.3s ease-in-out;
@@ -40,6 +40,7 @@
   padding: 0.25rem;
   border-radius: 0.25rem;
 }
+
 .sidetab-header button:hover {
   background-color: rgba(255, 0, 0, 0.1);
 }

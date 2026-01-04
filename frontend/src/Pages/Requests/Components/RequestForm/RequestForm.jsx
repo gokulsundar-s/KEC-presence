@@ -1,6 +1,4 @@
 export default function RequestForm({ requestData = {}, setRequestData }) {
-  console.log("requestData", requestData);
-
   return (
     <div className="sidebar-form-container">
       <div className="sidebar-form-form">

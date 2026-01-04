@@ -6,11 +6,11 @@ import {
   showSuccessToast,
 } from "../../Components/Alerts/Alert";
 import { ConfirmModal, SuccessModal } from "../../Components/Modals/Modals";
-import ConfigsForm from "./Components/ConfigsForm/ConfigsForm";
-import ConfigDetails from "./Components/ConfigsDetails/ConfigsDetails";
+import ConfigsForm from "./Components/GenericCodeForm/GenericCodeForm";
+import ConfigDetails from "./Components/GenericCodeDetails/GenericCodeDetails";
 import SideTab from "../../Components/SiderTab/SideTab";
 import NoData from "../../Components/NoData/NoData";
-import Loaders from "../../Components/Loaders/Loaders";
+import { Loaders } from "../../Components/Loaders/Loaders";
 
 export default function Configs() {
   const [configsData, setConfigsData] = useState([]);
@@ -142,7 +142,7 @@ export default function Configs() {
 
   return (
     <div className="page-container">
-      <p className="page-header">Configurations</p>
+      <p className="page-header">Generic Codes</p>
 
       <div className="view-info-container">
         <div className="view-info-inputs-container">

@@ -10,6 +10,8 @@ export const showErrorToast = (message) => {
       backgroundColor: "#e74d3c",
       border: "1px solid #e74d3c",
       lineHeight: "1.5",
+      width: "fit-content",
+      maxWidth: "50wh",
     },
     icon: <ErrorAlertIcon />,
   });

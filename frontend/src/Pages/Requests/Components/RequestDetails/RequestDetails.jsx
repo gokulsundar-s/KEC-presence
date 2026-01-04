@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { baseUrl } from "../../../../Utils/Constants";
-import Loaders from "../../../../Components/Loaders/Loaders";
+import { Loaders } from "../../../../Components/Loaders/Loaders";
 import { showErrorToast } from "../../../../Components/Alerts/Alert";
 
 export default function RequestDetails({

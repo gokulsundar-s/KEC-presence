@@ -6,7 +6,11 @@ import { baseUrl } from "../../../../Utils/Constants";
 import { SidebarLoader } from "../../../../Components/Loaders/Loaders";
 import { showErrorToast } from "../../../../Components/Alerts/Alert";
 
-export default function UsersDetails({ userID, userData, setUserData }) {
+export default function GenericCodeDetails({
+  code,
+  genericCodeData,
+  setGenericCodeData,
+}) {
   const navigate = useNavigate();
 
   const [token, setToken] = useState("");
@@ -24,18 +28,18 @@ export default function UsersDetails({ userID, userData, setUserData }) {
 
   // useEffect to fetch user data when userID changes
   useEffect(() => {
-    const getUserData = async () => {
+    const getGenericCodeData = async () => {
       try {
-        if (userID) {
+        if (code) {
           setLoading(true);
-          const response = await axios.get(`${baseUrl}/users/${userID}`, {
+          const response = await axios.get(`${baseUrl}/generic-codes/${code}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
 
           if (response.data.status === 200) {
-            setUserData(response.data.data);
+            setGenericCodeData(response.data.data);
           } else {
             showErrorToast(response.data.message);
           }
@@ -47,10 +51,10 @@ export default function UsersDetails({ userID, userData, setUserData }) {
       }
     };
 
-    if (userID) {
-      getUserData();
+    if (code) {
+      getGenericCodeData();
     }
-  }, [userID]);
+  }, [code]);
 
   return (
     <div className="sidebar-info-container">
@@ -60,57 +64,33 @@ export default function UsersDetails({ userID, userData, setUserData }) {
         <div className="sidebar-info-table-container">
           <table>
             <tbody>
-              <tr ro>
-                <th>User ID</th>
-                <td>{userID ?? "-"}</td>
+              <tr>
+                <th>Code Type</th>
+                <td>{genericCodeData.codeType}</td>
               </tr>
               <tr>
-                <th>User Type</th>
-                <td>{userData.userType ?? "-"}</td>
+                <th>Code</th>
+                <td>{genericCodeData.code ?? "-"}</td>
               </tr>
               <tr>
-                <th>Department</th>
-                <td>{userData.department ?? "-"}</td>
+                <th>Description</th>
+                <td>{genericCodeData.codeDescription ?? "-"}</td>
               </tr>
               <tr>
-                <th>Name</th>
-                <td>{userData.name ?? "-"}</td>
+                <th>Created By</th>
+                <td>{genericCodeData.createdBy ?? "-"}</td>
               </tr>
               <tr>
-                <th>Year</th>
-                <td>{userData.year ?? "-"}</td>
+                <th>Created At</th>
+                <td>{genericCodeData.createdAt ?? "-"}</td>
               </tr>
               <tr>
-                <th>Section</th>
-                <td>{userData.section ?? "-"}</td>
+                <th>Updated By</th>
+                <td>{genericCodeData.updatedBy ?? "-"}</td>
               </tr>
               <tr>
-                <th>Kongu Mail ID</th>
-                <td>{userData.mail ?? "-"}</td>
-              </tr>
-              <tr>
-                <th>Phone Number</th>
-                <td>{userData.phoneNumber ?? "-"}</td>
-              </tr>
-              <tr>
-                <th>Parent Mail ID</th>
-                <td>{userData.parentMail ?? "-"}</td>
-              </tr>
-              <tr>
-                <th>Parent Phone Number</th>
-                <td>{userData.parentPhone ?? "-"}</td>
-              </tr>
-              <tr>
-                <th>User Status</th>
-                <td>
-                  <div
-                    className={
-                      userData.isActive ? "active-text" : "inactive-text"
-                    }
-                  >
-                    <p>{userData.isActive ? "Active" : "Expired"}</p>
-                  </div>
-                </td>
+                <th>Updated At</th>
+                <td>{genericCodeData.updatedAt ?? "-"}</td>
               </tr>
             </tbody>
           </table>

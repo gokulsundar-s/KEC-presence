@@ -8,3 +8,14 @@
 .loader-container p {
   color: #333;
 }
+
+.sidebar-loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.sidebar-loader-container p {
+  color: #333;
+}

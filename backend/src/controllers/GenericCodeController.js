@@ -10,8 +10,8 @@ const getAllGenericCodesController = async (req, res) => {
   res.status(200).json(result);
 };
 
-const getGenericCodeByCodeTypeController = async (req, res) => {
-  const result = await GenericCodeService.getGenericCodeByCodeType(req);
+const getGenericCodeByCodeController = async (req, res) => {
+  const result = await GenericCodeService.getGenericCodeByCode(req);
   res.status(200).json(result);
 };
 
@@ -23,6 +23,6 @@ const updateGenericCodeController = async (req, res) => {
 module.exports = {
   createGenericCodeController,
   getAllGenericCodesController,
-  getGenericCodeByCodeTypeController,
+  getGenericCodeByCodeController,
   updateGenericCodeController,
 };

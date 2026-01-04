@@ -1,18 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../../Utils/Constants";
-import {
-  showErrorToast,
-  showSuccessToast,
-} from "../../Components/Alerts/Alert";
+import { showErrorToast } from "../../Components/Alerts/Alert";
+import { Loaders } from "../../Components/Loaders/Loaders";
+import { ConfirmModal } from "../../Components/Modals/Modals";
 import SideTab from "../../Components/SiderTab/SideTab";
 import NoData from "../../Components/NoData/NoData";
-import Loaders from "../../Components/Loaders/Loaders";
 import UsersDetails from "./Components/UsersDetails/UsersDetails";
 import UsersForm from "./Components/UsersForm/UsersForm";
-import AddBulkUser from "./Components/AddBulkUser/AddBulkUser";
+import ExportUsersData from "./Components/ExportUsersData/ExportUsersData";
 import {
   FilterIcon,
   AddIcon,
@@ -21,33 +19,16 @@ import {
   InActivateIcon,
   ExportIcon,
   SubmitIcon,
-  BulkUsersIcon,
-  BackIcon,
+  LoadIcon,
 } from "../../Assets/Icons";
-import {
-  ConfirmModal,
-  SuccessModal,
-  BulkAddModal,
-} from "../../Components/Modals/Modals";
 
 export default function UserInfo() {
   const navigate = useNavigate();
 
+  // State variables for data handling
+  const [token, setToken] = useState("");
   const [usersData, setUsersData] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [openInfoSider, setOpenInfoSider] = useState(false);
-  const [openAddUserSider, setOpenAddUserSider] = useState(false);
-  const [openBulkAddUser, setOpenBulkAddUser] = useState(false);
-  const [editUserInfo, setEditUserInfo] = useState(false);
-  const [deleteUser, setDeleteUser] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [addLoading, setAddLoading] = useState(false);
-  const [editLoading, setEditLoading] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
-  const [addUserModal, setAddUserModal] = useState(false);
-  const [bulkAddUserModal, setBulkAddUserModal] = useState(false);
-  const [bulkUserData, setBulkUserData] = useState([]);
-  const [bulkUserDataRes, setBulkUserDataRes] = useState();
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [userData, setUserData] = useState({
     userType: "",
     department: "",
@@ -61,13 +42,54 @@ export default function UserInfo() {
     parentPhone: "",
   });
 
-  var token = "";
-  try {
-    token = Cookies.get("token");
-  } catch {
-    navigate("/login");
-  }
+  // State variable for controlling drawer visibility
+  const [openAddUserSider, setOpenAddUserSider] = useState(false);
+  const [openUserInfoSider, setOpenUserInfoSider] = useState(false);
+  const [openEditUserSider, setOpenEditUserSider] = useState(false);
+  const [openExportDataSider, setOpenExportDataSider] = useState(false);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
+  // State variable for loaders
+  const [loading, setLoading] = useState(false);
+  const [addLoading, setAddLoading] = useState(false);
+
+  // useEffect to check authentication token and fetch user data
+  useEffect(() => {
+    const tokenValue = Cookies.get("token");
+    if (!tokenValue) {
+      navigate("/login");
+      return;
+    }
+    setToken(tokenValue);
+  }, [navigate]);
+
+  // Fetch user data when token is set
+  useEffect(() => {
+    if (token) {
+      getUserData();
+    }
+  }, [token]);
+
+  // Function to update the selected users list
+  const handleSelectUser = (userID) => {
+    if (selectedUsers.includes(userID)) {
+      setSelectedUsers(selectedUsers.filter((id) => id !== userID));
+    } else {
+      setSelectedUsers([...selectedUsers, userID]);
+    }
+  };
+
+  // Function to select or deselect all users
+  const handleSelectAllUsers = () => {
+    if (selectedUsers.length === usersData.length) {
+      setSelectedUsers([]);
+    } else {
+      const allUserIDs = usersData.map((user) => user.userID);
+      setSelectedUsers(allUserIDs);
+    }
+  };
+
+  // Function to fetch all the users info
   const getUserData = async () => {
     try {
       setLoading(true);
@@ -88,6 +110,7 @@ export default function UserInfo() {
     }
   };
 
+  // State variables for adding user
   const handleAddUser = async () => {
     try {
       setAddLoading(true);
@@ -119,123 +142,6 @@ export default function UserInfo() {
     }
   };
 
-  const handleEditUser = async () => {
-    try {
-      setEditLoading(true);
-      const response = await axios.put(
-        `${baseUrl}/users/${selectedUser}`,
-        userData
-      );
-      if (response.data.status === 200) {
-        getUserData();
-        setOpenInfoSider(false);
-        setEditUserInfo(false);
-        setSelectedUser(null);
-        setEditLoading(false);
-        setUserData({
-          userType: "",
-          department: "",
-          name: "",
-          rollNumber: "",
-          year: "",
-          section: "",
-          mail: "",
-          phoneNumber: "",
-          parentMail: "",
-          parentPhone: "",
-        });
-        showSuccessToast(response.data.message);
-      } else {
-        showErrorToast(response.data.message);
-        setEditLoading(false);
-      }
-    } catch (error) {
-      setEditLoading(false);
-      showErrorToast("An error occurred. Please contact administrator.");
-    }
-  };
-
-  const handleDeleteUser = async () => {
-    try {
-      setDeleteLoading(true);
-      const response = await axios.delete(`${baseUrl}/users/${selectedUser}`);
-      if (response.data.status === 200) {
-        showSuccessToast(response.data.message);
-        getUserData();
-        setDeleteUser(false);
-        setOpenInfoSider(false);
-        setSelectedUser(null);
-        setDeleteLoading(false);
-      } else {
-        setDeleteLoading(false);
-        showErrorToast(response.data.message);
-      }
-    } catch (error) {
-      setDeleteLoading(false);
-      showErrorToast("An error occurred. Please contact administrator.");
-    }
-  };
-
-  const handleAddBulkUser = async () => {
-    try {
-      if (bulkUserData.length === 0) {
-        showErrorToast("Please upload a file to continue.");
-        return;
-      }
-      setAddLoading(true);
-      const response = await axios.post(
-        `${baseUrl}/users/bulk-users`,
-        bulkUserData
-      );
-      setBulkUserDataRes(response.data.data);
-      setAddLoading(false);
-      setOpenAddUserSider(false);
-      setBulkAddUserModal(true);
-    } catch {
-      setAddLoading(false);
-      showErrorToast("An error occurred. Please contact administrator.");
-    }
-  };
-
-  useEffect(() => {
-    getUserData();
-  }, []);
-
-  useEffect(() => {
-    setEditUserInfo(!openInfoSider);
-    setOpenBulkAddUser(!openAddUserSider);
-    if (!openInfoSider) {
-      setUserData({
-        userType: "",
-        department: "",
-        name: "",
-        rollNumber: "",
-        year: "",
-        section: "",
-        mail: "",
-        phoneNumber: "",
-        parentMail: "",
-        parentPhone: "",
-      });
-      setSelectedUser(null);
-    }
-    if (openAddUserSider) {
-      setUserData({
-        userType: "",
-        department: "",
-        name: "",
-        rollNumber: "",
-        year: "",
-        section: "",
-        mail: "",
-        phoneNumber: "",
-        parentMail: "",
-        parentPhone: "",
-      });
-      setBulkUserDataRes(null);
-    }
-  }, [openInfoSider, openAddUserSider]);
-
   return (
     <div className="page-container">
       <p className="page-header">Users Information</p>
@@ -253,26 +159,46 @@ export default function UserInfo() {
 
           <div className="view-info-inputs-right-container">
             <div className="view-info-buttons-list">
-              <button className="primary-button view-info-buttons-list-first-button">
+              <button
+                onClick={() => {
+                  selectedUsers.length === 1 && setOpenUserInfoSider(true);
+                }}
+                className={`primary-button view-info-buttons-list-first-button${
+                  selectedUsers.length !== 1 ? " disabled-button" : ""
+                }`}
+              >
                 <InfoIcon />
               </button>
-              <button className="primary-button view-info-buttons-list-middle-button">
+              <button
+                onClick={() => {
+                  selectedUsers.length === 1 && setOpenEditUserSider(true);
+                }}
+                className={`primary-button view-info-buttons-list-middle-button${
+                  selectedUsers.length !== 1 ? " disabled-button" : ""
+                }`}
+              >
                 <EditIcon />
               </button>
-              <button className="primary-button view-info-buttons-list-last-button">
+              <button
+                onClick={() => setOpenConfirmModal(true)}
+                className={`primary-button view-info-buttons-list-last-button${
+                  selectedUsers.length < 1 ? " disabled-button" : ""
+                }`}
+              >
                 <InActivateIcon />
               </button>
             </div>
 
             <div className="view-info-input">
               <button
+                onClick={() => setOpenExportDataSider(true)}
                 className="primary-button"
-                onClick={() => setOpenAddUserSider(true)}
               >
                 <ExportIcon />
                 Export Data
               </button>
             </div>
+
             <div className="view-info-input">
               <button
                 className="primary-button"
@@ -295,7 +221,11 @@ export default function UserInfo() {
               <thead>
                 <tr>
                   <td>
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      onChange={handleSelectAllUsers}
+                      checked={selectedUsers.length === usersData.length}
+                    />
                   </td>
                   <td>User ID</td>
                   <td>User Type</td>
@@ -308,7 +238,11 @@ export default function UserInfo() {
                 {usersData.map((user) => (
                   <tr key={user.userID}>
                     <td>
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        onChange={() => handleSelectUser(user.userID)}
+                        checked={selectedUsers.includes(user.userID)}
+                      />
                     </td>
                     <td>{user.userID}</td>
                     <td>{user.userType === "STU" ? "Student" : "Admin"}</td>
@@ -328,161 +262,95 @@ export default function UserInfo() {
                   </tr>
                 ))}
               </tbody>
+
+              <tfoot>
+                <tr>
+                  <td colSpan="6">
+                    <div className="view-info-table-footer-container">
+                      <button className="">
+                        <LoadIcon />
+                        Load More
+                      </button>
+                      <p>
+                        Showing <span>{usersData.length}</span> User Entries
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         )}
       </div>
 
+      {/* Side tab for adding new user */}
       <SideTab
-        open={openInfoSider}
-        setOpen={setOpenInfoSider}
-        title={editUserInfo ? "Edit User Information" : "User Information"}
+        open={openAddUserSider || openEditUserSider}
+        setOpen={openAddUserSider ? setOpenAddUserSider : setOpenEditUserSider}
+        title={openAddUserSider ? "Add New User" : "Edit User Information"}
         footer={
-          <>
-            {!editUserInfo ? (
-              <div>
-                <button
-                  className="primary-button"
-                  onClick={() => setDeleteUser(true)}
-                >
-                  Delete
-                </button>
-                <button
-                  className="primary-button"
-                  onClick={() => setEditUserInfo(true)}
-                >
-                  Edit
-                </button>
-              </div>
+          <button
+            className="primary-button"
+            onClick={handleAddUser}
+            disabled={addLoading}
+          >
+            {addLoading ? (
+              <span className="login-button-loader"></span>
             ) : (
-              <div>
-                <button
-                  className="primary-button"
-                  onClick={() => setEditUserInfo(false)}
-                >
-                  Back
-                </button>
-                <button
-                  className="primary-button"
-                  onClick={handleEditUser}
-                  disabled={editLoading}
-                >
-                  {editLoading ? (
-                    <span className="login-button-loader"></span>
-                  ) : (
-                    "Update"
-                  )}
-                </button>
-              </div>
+              <>
+                Submit
+                <SubmitIcon />
+              </>
             )}
-          </>
+          </button>
         }
       >
-        {editUserInfo ? (
-          <UsersForm userData={userData} setUserData={setUserData} />
-        ) : (
-          <UsersDetails
-            userID={selectedUser}
-            userData={userData}
-            setUserData={setUserData}
-          />
-        )}
+        <UsersForm userData={userData} setUserData={setUserData} />
       </SideTab>
 
+      {/* Side tab for editing user information*/}
       <SideTab
-        open={openAddUserSider}
-        setOpen={setOpenAddUserSider}
-        title={openBulkAddUser ? "Add Bulk Users" : "Add New User"}
+        open={openUserInfoSider}
+        setOpen={setOpenUserInfoSider}
+        title="View User Information"
+      >
+        <UsersDetails
+          userID={openUserInfoSider && selectedUsers && selectedUsers[0]}
+          userData={userData}
+          setUserData={setUserData}
+        />
+      </SideTab>
+
+      {/* Side tab for exporting user data */}
+      <SideTab
+        open={openExportDataSider}
+        setOpen={setOpenExportDataSider}
+        title="Export Users Data"
         footer={
-          <>
-            {openBulkAddUser ? (
-              <div>
-                <button
-                  className="primary-button"
-                  onClick={() => setOpenBulkAddUser(false)}
-                >
-                  <BackIcon />
-                  Back
-                </button>
-
-                <button
-                  className="primary-button"
-                  onClick={handleAddBulkUser}
-                  disabled={addLoading}
-                >
-                  {addLoading ? (
-                    <span className="login-button-loader"></span>
-                  ) : (
-                    <>
-                      Submit
-                      <SubmitIcon />
-                    </>
-                  )}
-                </button>
-              </div>
+          <button className="primary-button" onClick={{}} disabled={{}}>
+            {addLoading ? (
+              <span className="login-button-loader"></span>
             ) : (
-              <div>
-                <button
-                  className="primary-button"
-                  onClick={() => setOpenBulkAddUser(true)}
-                >
-                  <AddIcon />
-                  Bulk Users
-                </button>
-
-                <button
-                  className="primary-button"
-                  onClick={handleAddUser}
-                  disabled={addLoading}
-                >
-                  {addLoading ? (
-                    <span className="login-button-loader"></span>
-                  ) : (
-                    <>
-                      Submit
-                      <SubmitIcon />
-                    </>
-                  )}
-                </button>
-              </div>
+              <>
+                Export
+                <ExportIcon />
+              </>
             )}
-          </>
+          </button>
         }
       >
-        {openBulkAddUser ? (
-          <AddBulkUser setBulkUserData={setBulkUserData} />
-        ) : (
-          <UsersForm userData={userData} setUserData={setUserData} />
-        )}
+        <ExportUsersData />
       </SideTab>
 
-      {deleteUser && (
-        <ConfirmModal
-          title="Confirm Deletion"
-          message="Are you sure you want to delete this user?"
-          onConfirm={handleDeleteUser}
-          onClose={() => setDeleteUser(false)}
-          loading={deleteLoading}
-        />
-      )}
-
-      {addUserModal && (
-        <SuccessModal
-          message={"Your new user has been added successfully."}
-          onClose={() => {
-            setAddUserModal(false);
-          }}
-        />
-      )}
-
-      {bulkAddUserModal && (
-        <BulkAddModal
-          data={bulkUserDataRes}
-          onClose={() => {
-            setBulkAddUserModal(false);
-          }}
-        />
-      )}
+      {/* Confirm Modal to inactivate selected users */}
+      <ConfirmModal
+        open={openConfirmModal}
+        title={"Inactivate Users"}
+        message={"Are you sure to inactivate the selected users?"}
+        onClose={() => setOpenConfirmModal(false)}
+        onConfirm={{}}
+        loading={false}
+      />
     </div>
   );
 }

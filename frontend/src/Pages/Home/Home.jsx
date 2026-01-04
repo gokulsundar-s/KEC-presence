@@ -5,7 +5,7 @@ import Sidebar from "./Components/Sidebar/Sidebar";
 import Dashboard from "../Dashboard/Dashboard";
 import Settings from "../Settings/Settings";
 import Users from "../Users/Users";
-import Configs from "../Configs/Configs";
+import GenericCodes from "../GenericCodes/GenericCodes";
 import Sessions from "../Sessions/Sessions";
 import NewRequest from "../Requests/NewRequest";
 import RequestsHistory from "../Requests/RequestsHistory";
@@ -38,7 +38,7 @@ export default function Home() {
 
             {userType === "ADMIN" && <Route path="users" element={<Users />} />}
             {userType === "ADMIN" && (
-              <Route path="configs" element={<Configs />} />
+              <Route path="generic-codes" element={<GenericCodes />} />
             )}
             {userType === "ADMIN" && (
               <Route path="sessions" element={<Sessions />} />

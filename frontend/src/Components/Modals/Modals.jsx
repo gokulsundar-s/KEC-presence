@@ -9,12 +9,14 @@ import {
 import "./Modals.css";
 
 export const ConfirmModal = ({
+  open,
   title,
   message,
   onClose,
   onConfirm,
   loading,
 }) => {
+  if (!open) return null;
   return (
     <div className="modal-container">
       <div className="modal-box">
@@ -24,15 +26,13 @@ export const ConfirmModal = ({
         </div>
         <p className="modal-content">{message}</p>
         <div className="modal-button">
-          <button
-            onClick={onConfirm}
-            disabled={loading}
-            className="modal-red-button"
-          >
-            {loading ? <span className="modal-button-loader"></span> : "Yes"}
-          </button>
-          <button onClick={onClose} className="modal-blue-button">
-            No
+          <button onClick={onClose}>Cancel</button>
+          <button onClick={onConfirm} disabled={loading}>
+            {loading ? (
+              <span className="modal-button-loader"></span>
+            ) : (
+              "Confirm"
+            )}
           </button>
         </div>
       </div>

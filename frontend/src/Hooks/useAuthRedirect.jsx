@@ -12,8 +12,6 @@ const useAuthRedirect = () => {
     const checkAuth = async () => {
       const tokenString = Cookies.get("token");
 
-      console.log("tokenString", tokenString);
-
       if (!tokenString) {
         navigate("/login");
         return;

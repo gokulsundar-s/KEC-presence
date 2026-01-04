@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import SideTab from "../../Components/SiderTab/SideTab";
 import RequestDetails from "./Components/RequestDetails/RequestDetails";
-import Loaders from "../../Components/Loaders/Loaders";
+import { Loaders } from "../../Components/Loaders/Loaders";
 import NoData from "../../Components/NoData/NoData";
 import { showErrorToast } from "../../Components/Alerts/Alert";
 

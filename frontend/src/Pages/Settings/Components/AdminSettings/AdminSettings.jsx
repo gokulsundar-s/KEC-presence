@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Loaders from "../../../../Components/Loaders/Loaders";
+import { Loaders } from "../../../../Components/Loaders/Loaders";
 import {
   SettingsUserIcon,
   SettingsMailIcon,

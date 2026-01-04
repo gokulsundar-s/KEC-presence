@@ -21,18 +21,18 @@ const mailerService = (to, subject, text) => {
     text: text,
   };
 
-  transporter.sendMail(mailOptions, (error) => {
-    if (error) {
-      console.log(
-        `[ERROR] - [${new Date().toISOString()}] - Error in sending mail:`,
-        error
-      );
-    } else {
-      console.log(
-        `[INFO] - [${new Date().toISOString()}] - Email sent successfully to ${to}.`
-      );
-    }
-  });
+  // transporter.sendMail(mailOptions, (error) => {
+  //   if (error) {
+  //     console.log(
+  //       `[ERROR] - [${new Date().toISOString()}] - Error in sending mail:`,
+  //       error
+  //     );
+  //   } else {
+  //     console.log(
+  //       `[INFO] - [${new Date().toISOString()}] - Email sent successfully to ${to}.`
+  //     );
+  //   }
+  // });
 };
 
 module.exports = { mailerService };

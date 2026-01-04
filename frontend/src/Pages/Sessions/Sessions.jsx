@@ -3,7 +3,7 @@ import axios from "axios";
 import { baseUrl } from "../../Utils/Constants";
 import { showErrorToast } from "../../Components/Alerts/Alert";
 import NoData from "../../Components/NoData/NoData";
-import Loaders from "../../Components/Loaders/Loaders";
+import { Loaders } from "../../Components/Loaders/Loaders";
 import { formatDateTime } from "../../Utils/Formatters";
 import "./Sessions.css";
 
