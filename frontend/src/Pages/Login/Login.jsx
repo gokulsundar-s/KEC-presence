@@ -88,11 +88,7 @@ export default function Login() {
                 onClick={handleLogin}
                 disabled={loader}
               >
-                {loader ? (
-                  <span className="login-button-loader"></span>
-                ) : (
-                  "Login"
-                )}
+                {loader ? <span className="button-loader"></span> : "Login"}
               </button>
             </div>
           </div>

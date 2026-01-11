@@ -267,6 +267,7 @@ const getAllGenericCodes = async (req) => {
     }
 
     const { tokenUserID, tokenUserType } = await getTokenData(token);
+    const { pageNumber, pageSize } = req.query;
 
     if (tokenUserType !== "ADMIN") {
       console.log(
@@ -278,7 +279,13 @@ const getAllGenericCodes = async (req) => {
       };
     }
 
-    const genericCodes = await GenericCode.find({});
+    let genericCodes = await GenericCode.find().sort({ createdAt: -1 });
+
+    const startIndex = (Number(pageNumber) - 1) * Number(pageSize);
+    const endIndex = startIndex + Number(pageSize);
+    const totalRecords = genericCodes.length;
+
+    genericCodes = genericCodes.slice(startIndex, endIndex);
 
     console.log(
       `[INFO] - [${new Date().toISOString()}] - Generic codes fetched successfully by user ID: ${tokenUserID}`
@@ -287,7 +294,7 @@ const getAllGenericCodes = async (req) => {
     return {
       status: statusCodes.OK,
       message: "Generic codes fetched successfully.",
-      data: genericCodes,
+      data: { total: totalRecords, data: genericCodes },
     };
   } catch (error) {
     console.error(
@@ -356,11 +363,63 @@ const getGenericCodeByCode = async (req) => {
   }
 };
 
+// Function to get generic codes by code type
+const getGenericCodeByCodeType = async (codeType) => {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (!token) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Authorization token is missing.",
+      };
+    }
+
+    const tokenVerification = await verifyToken(token);
+    if (!tokenVerification) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Your session has expired. Please log in again.",
+      };
+    }
+
+    const { tokenUserID } = await getTokenData(token);
+    const { codeType } = req.params;
+
+    const genericCodes = await GenericCode.find({ codeType: codeType });
+
+    console.log(
+      `[INFO] - [${new Date().toISOString()}] - Generic codes by code type fetched successfully by user ID: ${tokenUserID}`
+    );
+
+    return {
+      status: statusCodes.OK,
+      message: "Generic codes fetched successfully.",
+      data: genericCodes,
+    };
+  } catch (error) {
+    console.error(
+      `[ERROR] - [${new Date().toISOString()}] - Error fetching generic codes by code type:`,
+      error
+    );
+    return {
+      status: statusCodes.INTERNAL_SERVER_ERROR,
+      message:
+        "Internal server error. Please report this issue to the administrator.",
+    };
+  }
+};
+
 // Function to update the generic code
 const updateGenericCode = async (req) => {
   try {
-    const { code } = req.params;
-    const { codeDescription } = req.body;
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
@@ -386,6 +445,8 @@ const updateGenericCode = async (req) => {
     }
 
     const { tokenUserID, tokenUserType } = await getTokenData(token);
+    const { code } = req.params;
+    const { codeDescription } = req.body;
 
     if (tokenUserType !== "ADMIN") {
       console.log(
@@ -416,6 +477,16 @@ const updateGenericCode = async (req) => {
       return {
         status: statusCodes.NOT_FOUND,
         message: "Generic code not found.",
+      };
+    }
+
+    if (genericCodeData.createdBy === "SYSTEM") {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - Generic code update failed: System defined codes cannot be updated.`
+      );
+      return {
+        status: statusCodes.FORBIDDEN,
+        message: "System defined codes cannot be updated.",
       };
     }
 
@@ -451,10 +522,98 @@ const updateGenericCode = async (req) => {
   }
 };
 
+// Function to delete a generic code
+const deleteGenericCode = async (req) => {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (!token) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - Delete generic code failed: Authorization token is missing.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Authorization token is missing.",
+      };
+    }
+
+    const tokenVerification = await verifyToken(token);
+    if (!tokenVerification) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - Delete generic code failed: Expired token.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Your session has expired. Please log in again.",
+      };
+    }
+
+    const { tokenUserID, tokenUserType } = await getTokenData(token);
+    const { code } = req.params;
+
+    if (tokenUserType !== "ADMIN") {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - Unauthorized generic code deletion attempt by user ID: ${tokenUserID}`
+      );
+      return {
+        status: statusCodes.FORBIDDEN,
+        message: "You do not have permission to perform this action.",
+      };
+    }
+
+    const codes = code.split(",").map((c) => c.trim());
+
+    const genericCodeData = await GenericCode.find({ code: { $in: codes } });
+
+    if (genericCodeData.length === 0) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - Generic code delete failed: Codes '${code}' not found.`
+      );
+      return {
+        status: statusCodes.NOT_FOUND,
+        message: "Generic code not found.",
+      };
+    }
+
+    if (genericCodeData.some((item) => item.createdBy === "SYSTEM")) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - Generic code delete failed: System defined codes cannot be deleted.`
+      );
+      return {
+        status: statusCodes.FORBIDDEN,
+        message: "System defined codes cannot be deleted.",
+      };
+    }
+
+    await GenericCode.deleteMany({ code: { $in: codes } });
+    console.log(
+      `[INFO] - [${new Date().toISOString()}] - Generic codes deleted successfully by user ID: ${tokenUserID}`
+    );
+
+    return {
+      status: statusCodes.OK,
+      message: "Generic codes deleted successfully.",
+    };
+  } catch (error) {
+    console.error(
+      `[ERROR] - [${new Date().toISOString()}] - Error deleting generic code:`,
+      error
+    );
+    return {
+      status: statusCodes.INTERNAL_SERVER_ERROR,
+      message:
+        "Internal server error. Please report this issue to the administrator.",
+    };
+  }
+};
+
 module.exports = {
   createInitialGenericCodes,
   createGenericCode,
   getAllGenericCodes,
   getGenericCodeByCode,
+  getGenericCodeByCodeType,
   updateGenericCode,
+  deleteGenericCode,
 };

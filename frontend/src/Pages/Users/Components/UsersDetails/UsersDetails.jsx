@@ -60,7 +60,7 @@ export default function UsersDetails({ userID, userData, setUserData }) {
         <div className="sidebar-info-table-container">
           <table>
             <tbody>
-              <tr ro>
+              <tr>
                 <th>User ID</th>
                 <td>{userID ?? "-"}</td>
               </tr>
@@ -75,6 +75,10 @@ export default function UsersDetails({ userID, userData, setUserData }) {
               <tr>
                 <th>Name</th>
                 <td>{userData.name ?? "-"}</td>
+              </tr>
+              <tr>
+                <th>Roll Number</th>
+                <td>{userData.rollNumber ?? "-"}</td>
               </tr>
               <tr>
                 <th>Year</th>
@@ -108,7 +112,7 @@ export default function UsersDetails({ userID, userData, setUserData }) {
                       userData.isActive ? "active-text" : "inactive-text"
                     }
                   >
-                    <p>{userData.isActive ? "Active" : "Expired"}</p>
+                    <p>{userData.isActive ? "Active" : "Inactive"}</p>
                   </div>
                 </td>
               </tr>

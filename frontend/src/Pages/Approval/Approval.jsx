@@ -245,7 +245,7 @@ export default function NewRequest() {
                   disabled={editLoading}
                 >
                   {editLoading ? (
-                    <span className="login-button-loader"></span>
+                    <span className="button-loader"></span>
                   ) : (
                     "Update"
                   )}

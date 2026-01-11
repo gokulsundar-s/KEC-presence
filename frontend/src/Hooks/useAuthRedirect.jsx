@@ -22,25 +22,21 @@ const useAuthRedirect = () => {
 
       if (!token.exp || token.exp < currentTime) {
         try {
-          if (token.sessionID) {
+          if (token) {
             const response = await axios.post(`${baseUrl}/logout`, {
-              sessionID: token.sessionID,
+              token: token,
             });
 
             if (response.status === 200) {
               Cookies.remove("authToken");
-              Cookies.remove("userDetailsToken");
               navigate("/login");
             }
           } else {
             Cookies.remove("authToken");
-            Cookies.remove("userDetailsToken");
             navigate("/login");
           }
-        } catch (error) {
-          console.error("Logout error:", error);
+        } catch {
           Cookies.remove("authToken");
-          Cookies.remove("userDetailsToken");
           navigate("/login");
         }
       }

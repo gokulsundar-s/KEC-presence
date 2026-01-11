@@ -79,10 +79,6 @@ a {
   box-shadow: 0 0 2px var(--primary-color);
 }
 
-.notes-input {
-  margin-top: 1rem;
-}
-
 .disabled-form-input {
   background-color: #f0f0f0;
   border-color: #ccc;
@@ -135,6 +131,17 @@ a {
 .disabled-button {
   background-color: var(--border-color);
   cursor: not-allowed;
+}
+
+.button-loader {
+  width: 18px;
+  height: 18px;
+  border: 3px solid var(--secondary-color);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
 }
 
 .form-info p {
@@ -248,6 +255,17 @@ a {
   border-top: 1px solid var(--border-color);
 }
 
+.view-info-table-data-loader {
+  width: 18px;
+  height: 18px;
+  border: 3px solid var(--primary-color);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
 .view-info-table-footer-container {
   display: flex;
   justify-content: space-between;
@@ -256,15 +274,7 @@ a {
   color: var(--header-color);
 }
 
-.view-info-table-footer-container p {
-  padding-right: 2rem;
-}
-
-.view-info-table-footer-container p span {
-  font-weight: 600;
-}
-
-.view-info-table-footer-container button {
+.view-info-table-footer-left-container-button {
   display: flex;
   align-items: center;
   gap: 0.25rem;
@@ -276,9 +286,52 @@ a {
   margin-left: 1rem;
 }
 
-.view-info-table-footer-container button svg {
+.view-info-table-footer-left-container button svg {
   width: 1.25rem;
   height: 1.25rem;
+}
+
+.view-info-table-footer-left-container-button-disabled {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: none;
+  font-size: 0.9rem;
+  background-color: transparent;
+  color: var(--primary-color);
+  cursor: pointer;
+  margin-left: 1rem;
+  cursor: not-allowed;
+  color: var(--border-color);
+}
+
+.view-info-table-footer-left-container-button-disabled svg {
+  opacity: 0.2;
+}
+
+.view-info-table-footer-right-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.view-info-table-footer-right-container select {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.view-info-table-footer-right-container p {
+  padding-right: 2rem;
+}
+
+.view-info-table-footer-right-container p span {
+  font-weight: 600;
 }
 
 /* ----- Sidebar Form Styles ----- */
@@ -332,4 +385,13 @@ a {
 
 .active-text {
   color: #006217;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

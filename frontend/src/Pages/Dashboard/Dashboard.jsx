@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -6,20 +7,29 @@ import AdminDashboard from "./Components/AdminDashboard/AdminDashboard";
 export default function Dashboard() {
   const navigate = useNavigate();
 
-  let name = "";
-  let userType = "";
+  // State variables for data handling
+  const [token, setToken] = useState("");
+  const [name, setName] = useState("");
+  const [userType, setUserType] = useState("");
 
-  try {
-    const userDetailsToken = Cookies.get("token");
-    if (!userDetailsToken) {
+  // useEffect to check authentication token and fetch user data
+  useEffect(() => {
+    const tokenValue = Cookies.get("token");
+    if (!tokenValue) {
       navigate("/login");
-    } else {
-      name = jwtDecode(userDetailsToken).name;
-      userType = jwtDecode(userDetailsToken).userType;
+      return;
     }
-  } catch (error) {
-    navigate("/login");
-  }
+    setToken(tokenValue);
+  }, [navigate]);
+
+  // useEffect to decode token and set user information
+  useEffect(() => {
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setName(decodedToken.name);
+      setUserType(decodedToken.userType);
+    }
+  }, [token]);
 
   return (
     <div className="page-container">

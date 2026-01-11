@@ -178,7 +178,12 @@ const login = async (req) => {
     const userDetails = await UserDetails.findOne({ userID: user.userID });
 
     const authToken = jwt.sign(
-      { userID: userDetails.userID, userType: userDetails.userType },
+      {
+        userID: userDetails.userID,
+        userType: userDetails.userType,
+        name: userDetails.name,
+        mail: userDetails.mail,
+      },
       process.env.JWT_KEY,
       {
         expiresIn: process.env.JWT_TOKEN_EXPIRY,
@@ -253,6 +258,7 @@ const logout = async (req) => {
     session.isActive = false;
     session.updatedAt = new Date().toISOString();
     session.updatedBy = session.userID;
+    session.token = null;
     await session.save();
 
     console.log(
@@ -518,7 +524,6 @@ const changePassword = async (req) => {
 // Function for user to change password after login
 const userChangePassword = async (req) => {
   try {
-    const { currentPassword, newPassword, confirmPassword } = req.body;
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
@@ -544,8 +549,17 @@ const userChangePassword = async (req) => {
     }
 
     const { tokenUserID } = await getTokenData(token);
+    const { userID, currentPassword, newPassword, confirmPassword } = req.body;
 
-    if (!currentPassword) {
+    if (userID !== tokenUserID) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Unauthorized userID in request body.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "You are not authorized to change this password.",
+      };
+    } else if (!currentPassword) {
       console.log(
         `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Current password is required.`
       );

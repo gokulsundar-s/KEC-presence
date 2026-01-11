@@ -3,7 +3,7 @@ import LoadingWrapper from "../../Components/LoadingWrapper/LoadingWrapper";
 import Header from "./Components/Header/Header";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import Dashboard from "../Dashboard/Dashboard";
-import Settings from "../Settings/Settings";
+import Profile from "../Profile/Profile";
 import Users from "../Users/Users";
 import GenericCodes from "../GenericCodes/GenericCodes";
 import Sessions from "../Sessions/Sessions";
@@ -34,7 +34,7 @@ export default function Home() {
           <Routes>
             <Route path="*" element={<Navigate to="/" replace />} />
             <Route path="/" element={<Dashboard />} />
-            <Route path="settings" element={<Settings />} />
+            <Route path="profile" element={<Profile />} />
 
             {userType === "ADMIN" && <Route path="users" element={<Users />} />}
             {userType === "ADMIN" && (

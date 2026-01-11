@@ -7,7 +7,7 @@ import {
   showErrorToast,
   showSuccessToast,
 } from "../../Components/Alerts/Alert";
-import { ConfirmModal, SuccessModal } from "../../Components/Modals/Modals";
+import { ConfirmModal } from "../../Components/Modals/Modals";
 import { Loaders } from "../../Components/Loaders/Loaders";
 import GenericCodeForm from "./Components/GenericCodeForm/GenericCodeForm";
 import GenericCodeDetails from "./Components/GenericCodeDetails/GenericCodeDetails";
@@ -30,21 +30,27 @@ export default function Configs() {
   const [token, setToken] = useState("");
   const [genericCodesData, setGenericCodesData] = useState([]);
   const [selectedGenericCodes, setSelectedGenericCodes] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [genericCodeData, setGenericCodeData] = useState({
     codeType: "",
     code: "",
-    description: "",
+    codeDescription: "",
   });
 
   // State variable for controlling drawer visibility
   const [openAddCodeSider, setOpenAddCodeSider] = useState(false);
   const [openCodeInfoSider, setOpenCodeInfoSider] = useState(false);
+  const [openEditCodeSider, setOpenEditCodeSider] = useState(false);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
   // State variable for loaders
   const [loading, setLoading] = useState(false);
-  const [addLoading, setAddLoading] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const [rowLoading, setRowLoading] = useState(false);
 
-  // useEffect to check authentication token and fetch user data
+  // useEffect to check authentication token and fetch generic code data
   useEffect(() => {
     const tokenValue = Cookies.get("token");
     if (!tokenValue) {
@@ -59,7 +65,17 @@ export default function Configs() {
     if (token) {
       getGenericCodesData();
     }
-  }, [token]);
+  }, [token, pageNumber, pageSize]);
+
+  // Reset generic code data form when add/edit sider is closed
+  useEffect(() => {
+    if (!openEditCodeSider && !openCodeInfoSider && !openAddCodeSider)
+      setGenericCodeData({
+        codeType: "",
+        code: "",
+        codeDescription: "",
+      });
+  }, [openAddCodeSider, openEditCodeSider, openCodeInfoSider]);
 
   // Function to update the selected generic codes list
   const handleSelectGenericCode = (code) => {
@@ -80,24 +96,144 @@ export default function Configs() {
     }
   };
 
+  // Function to load more generic codes
+  const handleLoadGenericCodes = () => {
+    setPageNumber(pageNumber + 1);
+  };
+
+  // Refresh generic codes data
+  const refreshGenericCodesData = async () => {
+    const response = await axios.get(`${baseUrl}/generic-codes`, {
+      params: {
+        pageNumber: 1,
+        pageSize: pageSize,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.data.status === 200) {
+      setGenericCodesData(response.data.data.data);
+      setTotalRecords(response.data.data.total);
+    }
+  };
+
   // Function to fetch all the generic codes info
   const getGenericCodesData = async () => {
     try {
-      setLoading(true);
+      if (genericCodesData.length > 0) {
+        setRowLoading(true);
+      } else {
+        setLoading(true);
+      }
       const response = await axios.get(`${baseUrl}/generic-codes`, {
+        params: {
+          pageNumber: pageNumber,
+          pageSize: pageSize,
+        },
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       if (response.data.status === 200) {
-        setGenericCodesData(response.data.data);
+        setGenericCodesData([...genericCodesData, ...response.data.data.data]);
+        setTotalRecords(response.data.data.total);
       } else {
         showErrorToast(response.data.message);
       }
       setLoading(false);
+      setRowLoading(false);
     } catch {
       showErrorToast("An error occurred. Please contact administrator.");
       setLoading(false);
+      setRowLoading(false);
+    }
+  };
+
+  // Function to handle adding new generic code
+  const handleAddGenericCode = async () => {
+    try {
+      setButtonLoading(true);
+      const response = await axios.post(
+        `${baseUrl}/generic-codes`,
+        genericCodeData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.status === 201) {
+        setGenericCodesData([]);
+        setSelectedGenericCodes([]);
+        setOpenAddCodeSider(false);
+        refreshGenericCodesData();
+        showSuccessToast(response.data.message);
+      } else {
+        showErrorToast(response.data.message);
+      }
+      setButtonLoading(false);
+    } catch {
+      showErrorToast("An error occurred. Please contact administrator.");
+      setButtonLoading(false);
+    }
+  };
+
+  // Function to handle editing existing generic code
+  const handleEditGenericCode = async () => {
+    try {
+      setButtonLoading(true);
+      const response = await axios.put(
+        `${baseUrl}/generic-codes/${selectedGenericCodes[0]}`,
+        genericCodeData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.status === 200) {
+        setGenericCodesData([]);
+        setSelectedGenericCodes([]);
+        setOpenEditCodeSider(false);
+        refreshGenericCodesData();
+        showSuccessToast(response.data.message);
+      } else {
+        showErrorToast(response.data.message);
+      }
+      setButtonLoading(false);
+    } catch {
+      showErrorToast("An error occurred. Please contact administrator.");
+      setButtonLoading(false);
+    }
+  };
+
+  // Function to handle deleting selected generic codes
+  const handleDeleteGenericCodes = async () => {
+    try {
+      setButtonLoading(true);
+      const response = await axios.delete(
+        `${baseUrl}/generic-codes/${selectedGenericCodes}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.status === 200) {
+        setGenericCodesData([]);
+        setSelectedGenericCodes([]);
+        setOpenConfirmModal(false);
+        refreshGenericCodesData();
+        showSuccessToast(response.data.message);
+      } else {
+        setOpenConfirmModal(false);
+        showErrorToast(response.data.message);
+      }
+      setButtonLoading(false);
+    } catch {
+      showErrorToast("An error occurred. Please contact administrator.");
+      setButtonLoading(false);
     }
   };
 
@@ -110,9 +246,9 @@ export default function Configs() {
             <div className="view-info-input">
               <input type="text" placeholder="Search" />
             </div>
-            <button className="view-info-input-icon-button">
+            {/* <button className="view-info-input-icon-button">
               <FilterIcon />
-            </button>
+            </button> */}
           </div>
 
           <div className="view-info-inputs-right-container">
@@ -129,6 +265,10 @@ export default function Configs() {
                 <InfoIcon />
               </button>
               <button
+                onClick={() => {
+                  selectedGenericCodes.length === 1 &&
+                    setOpenEditCodeSider(true);
+                }}
                 className={`primary-button view-info-buttons-list-middle-button${
                   selectedGenericCodes.length !== 1 ? " disabled-button" : ""
                 }`}
@@ -136,6 +276,9 @@ export default function Configs() {
                 <EditIcon />
               </button>
               <button
+                onClick={() => {
+                  selectedGenericCodes.length >= 1 && setOpenConfirmModal(true);
+                }}
                 className={`primary-button view-info-buttons-list-last-button${
                   selectedGenericCodes.length < 1 ? " disabled-button" : ""
                 }`}
@@ -195,20 +338,52 @@ export default function Configs() {
                     <td>{code.codeDescription}</td>
                   </tr>
                 ))}
+                {rowLoading && (
+                  <tr>
+                    <td colSpan="6" style={{ textAlign: "center" }}>
+                      <span className="view-info-table-data-loader"></span>
+                    </td>
+                  </tr>
+                )}
               </tbody>
 
               <tfoot>
                 <tr>
                   <td colSpan="6">
                     <div className="view-info-table-footer-container">
-                      <button className="">
-                        <LoadIcon />
-                        Load More
-                      </button>
-                      <p>
-                        Showing <span>{genericCodesData.length}</span> User
-                        Entries
-                      </p>
+                      <div className="view-info-table-footer-left-container">
+                        <button
+                          onClick={handleLoadGenericCodes}
+                          className={
+                            genericCodesData.length >= totalRecords
+                              ? "view-info-table-footer-left-container-button-disabled"
+                              : "view-info-table-footer-left-container-button"
+                          }
+                        >
+                          <LoadIcon />
+                          Load More
+                        </button>
+                      </div>
+                      <div className="view-info-table-footer-right-container">
+                        <p>
+                          Showing <span>{genericCodesData.length}</span> Generic
+                          Code Entries
+                        </p>
+                        <select
+                          type="number"
+                          value={pageSize}
+                          onChange={() => {
+                            setPageSize(event.target.value);
+                            setPageNumber(1);
+                            setGenericCodesData([]);
+                          }}
+                        >
+                          <option value="10">10</option>
+                          <option value="25">25</option>
+                          <option value="50">50</option>
+                          <option value="100">100</option>
+                        </select>
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -220,13 +395,19 @@ export default function Configs() {
 
       {/* Side tab for adding new generic code */}
       <SideTab
-        open={openAddCodeSider}
-        setOpen={setOpenAddCodeSider}
-        title={"Add New Generic Code"}
+        open={openAddCodeSider || openEditCodeSider}
+        setOpen={openAddCodeSider ? setOpenAddCodeSider : setOpenEditCodeSider}
+        title={openAddCodeSider ? "Add New Generic Code" : "Edit Generic Code"}
         footer={
-          <button className="primary-button" onClick={{}} disabled={addLoading}>
-            {addLoading ? (
-              <span className="login-button-loader"></span>
+          <button
+            className="primary-button"
+            onClick={
+              openAddCodeSider ? handleAddGenericCode : handleEditGenericCode
+            }
+            disabled={buttonLoading}
+          >
+            {buttonLoading ? (
+              <span className="button-loader"></span>
             ) : (
               <>
                 Submit
@@ -237,6 +418,7 @@ export default function Configs() {
         }
       >
         <GenericCodeForm
+          code={openEditCodeSider ? selectedGenericCodes[0] : null}
           genericCodeData={genericCodeData}
           setGenericCodeData={setGenericCodeData}
         />
@@ -256,6 +438,16 @@ export default function Configs() {
           setGenericCodeData={setGenericCodeData}
         />
       </SideTab>
+
+      {/* Confirm Modal to delete the selected generic code */}
+      <ConfirmModal
+        open={openConfirmModal}
+        title={"Delete Generic Codes"}
+        message={"Are you sure to delete the generic codes?"}
+        onClose={() => setOpenConfirmModal(false)}
+        onConfirm={handleDeleteGenericCodes}
+        loading={buttonLoading}
+      />
     </div>
   );
 }

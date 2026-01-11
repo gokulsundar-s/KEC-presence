@@ -1,16 +1,17 @@
-export default function ExportUsersData({ userData = {} }) {
+import { Exporter } from "../../../../Utils/Exporter";
+export default function ExportUsersData({ exportData = {}, setExportData }) {
   return (
     <div className="sidebar-form-container">
       <div className="sidebar-form-form">
         <div className="form-input">
           <p>User Type</p>
           <select
-            value={userData.userType}
+            value={exportData.userType}
             onChange={(e) =>
-              setUserData({ ...userData, userType: e.target.value })
+              setExportData({ ...exportData, userType: e.target.value })
             }
           >
-            <option value="">Select User Type</option>
+            <option value="">All</option>
             <option value="ADM">Admin</option>
             <option value="STU">Student</option>
             <option value="CA">Class Advisor</option>
@@ -22,12 +23,12 @@ export default function ExportUsersData({ userData = {} }) {
         <div className="form-input">
           <p>Department</p>
           <select
-            value={userData.department}
+            value={exportData.department}
             onChange={(e) =>
-              setUserData({ ...userData, department: e.target.value })
+              setExportData({ ...exportData, department: e.target.value })
             }
           >
-            <option value="">Select Department</option>
+            <option value="">All</option>
             <option value="CSE">Computer Science and Engineering</option>
             <option value="EEE">Electrical and Electronics Engineering</option>
             <option value="ME">Mechanical Engineering</option>
@@ -37,10 +38,12 @@ export default function ExportUsersData({ userData = {} }) {
         <div className="form-input">
           <p>Year</p>
           <select
-            value={userData.year}
-            onChange={(e) => setUserData({ ...userData, year: e.target.value })}
+            value={exportData.year}
+            onChange={(e) =>
+              setExportData({ ...exportData, year: e.target.value })
+            }
           >
-            <option value="">Select Year</option>
+            <option value="">All</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -51,12 +54,12 @@ export default function ExportUsersData({ userData = {} }) {
         <div className="form-input">
           <p>Section</p>
           <select
-            value={userData.section}
+            value={exportData.section}
             onChange={(e) =>
-              setUserData({ ...userData, section: e.target.value })
+              setExportData({ ...exportData, section: e.target.value })
             }
           >
-            <option value="">Select Section</option>
+            <option value="">All</option>
             <option value="A">A</option>
             <option value="B">B</option>
             <option value="C">C</option>
@@ -67,12 +70,12 @@ export default function ExportUsersData({ userData = {} }) {
         <div className="form-input">
           <p>User Status</p>
           <select
-            value={userData.section}
+            value={exportData.status}
             onChange={(e) =>
-              setUserData({ ...userData, section: e.target.value })
+              setExportData({ ...exportData, status: e.target.value })
             }
           >
-            <option value="">Select User Status</option>
+            <option value="">All</option>
             <option value="A">Active</option>
             <option value="B">Inactive</option>
           </select>

@@ -3,7 +3,10 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../../Utils/Constants";
-import { showErrorToast } from "../../Components/Alerts/Alert";
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "../../Components/Alerts/Alert";
 import { Loaders } from "../../Components/Loaders/Loaders";
 import { ConfirmModal } from "../../Components/Modals/Modals";
 import SideTab from "../../Components/SiderTab/SideTab";
@@ -11,6 +14,7 @@ import NoData from "../../Components/NoData/NoData";
 import UsersDetails from "./Components/UsersDetails/UsersDetails";
 import UsersForm from "./Components/UsersForm/UsersForm";
 import ExportUsersData from "./Components/ExportUsersData/ExportUsersData";
+import { Exporter } from "../../Utils/Exporter";
 import {
   FilterIcon,
   AddIcon,
@@ -29,6 +33,9 @@ export default function UserInfo() {
   const [token, setToken] = useState("");
   const [usersData, setUsersData] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalRecords, setTotalRecords] = useState(0);
   const [userData, setUserData] = useState({
     userType: "",
     department: "",
@@ -41,6 +48,13 @@ export default function UserInfo() {
     parentMail: "",
     parentPhone: "",
   });
+  const [exportData, setExportData] = useState({
+    userType: "",
+    department: "",
+    year: "",
+    section: "",
+    status: "",
+  });
 
   // State variable for controlling drawer visibility
   const [openAddUserSider, setOpenAddUserSider] = useState(false);
@@ -51,7 +65,8 @@ export default function UserInfo() {
 
   // State variable for loaders
   const [loading, setLoading] = useState(false);
-  const [addLoading, setAddLoading] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const [rowLoading, setRowLoading] = useState(false);
 
   // useEffect to check authentication token and fetch user data
   useEffect(() => {
@@ -68,7 +83,35 @@ export default function UserInfo() {
     if (token) {
       getUserData();
     }
-  }, [token]);
+  }, [token, pageNumber, pageSize]);
+
+  // Reset user data form when add/edit sider is closed
+  useEffect(() => {
+    if (!openEditUserSider && !openUserInfoSider && !openAddUserSider)
+      setUserData({
+        userType: "",
+        department: "",
+        name: "",
+        rollNumber: "",
+        year: "",
+        section: "",
+        mail: "",
+        phoneNumber: "",
+        parentMail: "",
+        parentPhone: "",
+      });
+  }, [openAddUserSider, openEditUserSider, openUserInfoSider]);
+
+  // Reset export data filters when export sider is closed
+  useEffect(() => {
+    setExportData({
+      userType: "",
+      department: "",
+      year: "",
+      section: "",
+      status: "",
+    });
+  }, [openExportDataSider]);
 
   // Function to update the selected users list
   const handleSelectUser = (userID) => {
@@ -89,55 +132,167 @@ export default function UserInfo() {
     }
   };
 
+  // Function to load more users based on pagination
+  const handleLoadUsers = () => {
+    setPageNumber(pageNumber + 1);
+  };
+
+  // Refresh users data
+  const refreshUsersData = async () => {
+    const response = await axios.get(`${baseUrl}/users`, {
+      params: {
+        pageNumber: 1,
+        pageSize: pageSize,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.data.status === 200) {
+      setUsersData(response.data.data.data);
+      setTotalRecords(response.data.data.total);
+    }
+  };
+
   // Function to fetch all the users info
   const getUserData = async () => {
     try {
-      setLoading(true);
+      if (usersData.length > 0) {
+        setRowLoading(true);
+      } else {
+        setLoading(true);
+      }
       const response = await axios.get(`${baseUrl}/users`, {
+        params: {
+          pageNumber: pageNumber,
+          pageSize: pageSize,
+        },
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       if (response.data.status === 200) {
-        setUsersData(response.data.data);
+        setUsersData([...usersData, ...response.data.data.data]);
+        setTotalRecords(response.data.data.total);
       } else {
         showErrorToast(response.data.message);
       }
       setLoading(false);
+      setRowLoading(false);
     } catch {
       showErrorToast("An error occurred. Please contact administrator.");
       setLoading(false);
+      setRowLoading(false);
     }
   };
 
-  // State variables for adding user
+  // Function to add a new user
   const handleAddUser = async () => {
     try {
-      setAddLoading(true);
-      const response = await axios.post(`${baseUrl}/users`, userData);
-      if (response.data.status === 200) {
-        getUserData();
+      setButtonLoading(true);
+      const response = await axios.post(`${baseUrl}/users`, userData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.data.status === 201) {
+        setUsersData([]);
+        setSelectedUsers([]);
+        refreshUsersData();
         setOpenAddUserSider(false);
-        setAddLoading(false);
-        setAddUserModal(true);
-        setUserData({
-          userType: "",
-          department: "",
-          name: "",
-          rollNumber: "",
-          year: "",
-          section: "",
-          mail: "",
-          phoneNumber: "",
-          parentMail: "",
-          parentPhone: "",
+        showSuccessToast(response.data.message);
+      } else {
+        showErrorToast(response.data.message);
+      }
+      setButtonLoading(false);
+    } catch {
+      setButtonLoading(false);
+      showErrorToast("An error occurred. Please contact administrator.");
+    }
+  };
+
+  // Function to edit a user information
+  const handleEditUser = async () => {
+    try {
+      setButtonLoading(true);
+      const response = await axios.put(
+        `${baseUrl}/users/${userData.userID}`,
+        userData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.status === 200) {
+        setUsersData([]);
+        setSelectedUsers([]);
+        refreshUsersData();
+        setOpenEditUserSider(false);
+        setButtonLoading(false);
+        showSuccessToast(response.data.message);
+      } else {
+        showErrorToast(response.data.message);
+        setButtonLoading(false);
+      }
+    } catch {
+      setButtonLoading(false);
+      showErrorToast("An error occurred. Please contact administrator.");
+    }
+  };
+
+  // Function to inactivate selected users
+  const handleInactivateUsers = async () => {
+    try {
+      const response = await axios.put(
+        `${baseUrl}/users/inactivate`,
+        { userID: selectedUsers },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.status === 200) {
+        setUsersData([]);
+        setSelectedUsers([]);
+        refreshUsersData();
+        setOpenConfirmModal(false);
+        setButtonLoading(false);
+        showSuccessToast(response.data.message);
+      } else {
+        showErrorToast(response.data.message);
+        setButtonLoading(false);
+      }
+    } catch {
+      setButtonLoading(false);
+      showErrorToast("An error occurred. Please contact administrator.");
+    }
+  };
+
+  // Function to export users data based on filters
+  const handleExportData = async () => {
+    try {
+      setButtonLoading(true);
+      const response = await axios.get(`${baseUrl}/users/export`, {
+        params: exportData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.data.status === 200) {
+        setOpenExportDataSider2ider(false);
+        setButtonLoading(false);
+        Exporter({
+          fileName: "Users_Data",
+          data: response.data.data,
         });
       } else {
         showErrorToast(response.data.message);
-        setAddLoading(false);
+        setButtonLoading(false);
       }
     } catch {
-      setAddLoading(false);
+      setButtonLoading(false);
       showErrorToast("An error occurred. Please contact administrator.");
     }
   };
@@ -152,9 +307,9 @@ export default function UserInfo() {
             <div className="view-info-input">
               <input type="text" placeholder="Search" />
             </div>
-            <button className="view-info-input-icon-button">
+            {/* <button className="view-info-input-icon-button">
               <FilterIcon />
-            </button>
+            </button> */}
           </div>
 
           <div className="view-info-inputs-right-container">
@@ -180,7 +335,9 @@ export default function UserInfo() {
                 <EditIcon />
               </button>
               <button
-                onClick={() => setOpenConfirmModal(true)}
+                onClick={() => {
+                  selectedUsers.length >= 1 && setOpenConfirmModal(true);
+                }}
                 className={`primary-button view-info-buttons-list-last-button${
                   selectedUsers.length < 1 ? " disabled-button" : ""
                 }`}
@@ -253,27 +410,61 @@ export default function UserInfo() {
                     </td>
                     <td>{user.name}</td>
                     <td>
-                      {user.isActive ? (
-                        <p style={{ color: "green" }}>Active</p>
-                      ) : (
-                        <p style={{ color: "red" }}>Inactive</p>
-                      )}
+                      <p
+                        className={
+                          user.isActive ? "active-text" : "inactive-text"
+                        }
+                      >
+                        {user.isActive ? "Active" : "Inactive"}
+                      </p>
                     </td>
                   </tr>
                 ))}
+                {rowLoading && (
+                  <tr>
+                    <td colSpan="6" style={{ textAlign: "center" }}>
+                      <span className="view-info-table-data-loader"></span>
+                    </td>
+                  </tr>
+                )}
               </tbody>
 
               <tfoot>
                 <tr>
                   <td colSpan="6">
                     <div className="view-info-table-footer-container">
-                      <button className="">
-                        <LoadIcon />
-                        Load More
-                      </button>
-                      <p>
-                        Showing <span>{usersData.length}</span> User Entries
-                      </p>
+                      <div className="view-info-table-footer-left-container">
+                        <button
+                          onClick={handleLoadUsers}
+                          className={
+                            usersData.length >= totalRecords
+                              ? "view-info-table-footer-left-container-button-disabled"
+                              : "view-info-table-footer-left-container-button"
+                          }
+                        >
+                          <LoadIcon />
+                          Load More
+                        </button>
+                      </div>
+                      <div className="view-info-table-footer-right-container">
+                        <p>
+                          Showing <span>{usersData.length}</span> User Entries
+                        </p>
+                        <select
+                          type="number"
+                          value={pageSize}
+                          onChange={() => {
+                            setPageSize(event.target.value);
+                            setPageNumber(1);
+                            setUsersData([]);
+                          }}
+                        >
+                          <option value="10">10</option>
+                          <option value="25">25</option>
+                          <option value="50">50</option>
+                          <option value="100">100</option>
+                        </select>
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -291,11 +482,11 @@ export default function UserInfo() {
         footer={
           <button
             className="primary-button"
-            onClick={handleAddUser}
-            disabled={addLoading}
+            onClick={openAddUserSider ? handleAddUser : handleEditUser}
+            disabled={buttonLoading}
           >
-            {addLoading ? (
-              <span className="login-button-loader"></span>
+            {buttonLoading ? (
+              <span className="button-loader"></span>
             ) : (
               <>
                 Submit
@@ -305,7 +496,11 @@ export default function UserInfo() {
           </button>
         }
       >
-        <UsersForm userData={userData} setUserData={setUserData} />
+        <UsersForm
+          userID={openEditUserSider ? selectedUsers[0] : null}
+          userData={userData}
+          setUserData={setUserData}
+        />
       </SideTab>
 
       {/* Side tab for editing user information*/}
@@ -327,19 +522,26 @@ export default function UserInfo() {
         setOpen={setOpenExportDataSider}
         title="Export Users Data"
         footer={
-          <button className="primary-button" onClick={{}} disabled={{}}>
-            {addLoading ? (
-              <span className="login-button-loader"></span>
+          <button
+            className="primary-button"
+            onClick={handleExportData}
+            disabled={buttonLoading}
+          >
+            {buttonLoading ? (
+              <span className="button-loader"></span>
             ) : (
               <>
-                Export
-                <ExportIcon />
+                Export Data
+                <SubmitIcon />
               </>
             )}
           </button>
         }
       >
-        <ExportUsersData />
+        <ExportUsersData
+          exportData={exportData}
+          setExportData={setExportData}
+        />
       </SideTab>
 
       {/* Confirm Modal to inactivate selected users */}
@@ -348,8 +550,8 @@ export default function UserInfo() {
         title={"Inactivate Users"}
         message={"Are you sure to inactivate the selected users?"}
         onClose={() => setOpenConfirmModal(false)}
-        onConfirm={{}}
-        loading={false}
+        onConfirm={handleInactivateUsers}
+        loading={buttonLoading}
       />
     </div>
   );

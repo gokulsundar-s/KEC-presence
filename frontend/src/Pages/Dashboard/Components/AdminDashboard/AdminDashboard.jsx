@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import axios from "axios";
 import { baseUrl } from "../../../../Utils/Constants";
 import { Loaders } from "../../../../Components/Loaders/Loaders";
@@ -11,22 +13,43 @@ import { formatDateTime } from "../../.././../Utils/Formatters";
 import "./AdminDashboard.css";
 
 export default function AdminDashboard() {
+  const navigate = useNavigate();
+
+  // State variables for data handling
+  const [token, setToken] = useState("");
   const [dashboardData, setDashboardData] = useState(null);
+
+  // State variable for loading state
   const [loading, setLoading] = useState(false);
 
+  // useEffect to check authentication token and fetch user data
   useEffect(() => {
-    const getDashboardData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`${baseUrl}/dashboard/admin`);
-        setDashboardData(response.data);
-      } catch (err) {
-        console.error("Failed to fetch dashboard data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const tokenValue = Cookies.get("token");
+    if (!tokenValue) {
+      navigate("/login");
+      return;
+    }
+    setToken(tokenValue);
+  }, [navigate]);
 
+  // Function to fetch dashboard data
+  const getDashboardData = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${baseUrl}/dashboard/admin`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setDashboardData(response.data);
+      setLoading(false);
+    } catch {
+      console.error("Failed to fetch dashboard data");
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     getDashboardData();
   }, []);
 

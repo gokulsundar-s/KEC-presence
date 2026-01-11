@@ -10,7 +10,7 @@ const {
 } = require("../controllers/AuthController");
 
 router.post("/login", loginController);
-router.delete("/logout", logoutController);
+router.put("/logout", logoutController);
 router.put("/forget-password", forgetPasswordController);
 router.put("/verify-otp", verifyOtpController);
 router.put("/change-password", changePasswordController);

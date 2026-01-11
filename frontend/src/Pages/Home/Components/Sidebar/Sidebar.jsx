@@ -130,16 +130,6 @@ export default function Sidebar() {
             <p>History</p>
           </button>
         )}
-
-        <button
-          className={`sidebar-button ${
-            activeTab === "/settings" ? "sidebar-active-button" : ""
-          }`}
-          onClick={() => navigate("/settings")}
-        >
-          <SettingsIcon />
-          <p>Settings</p>
-        </button>
       </div>
     </div>
   );

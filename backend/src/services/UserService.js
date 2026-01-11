@@ -5,6 +5,7 @@ const {
   UserDetails,
   UserDepartmentDetails,
   UserContacts,
+  UserSessions,
 } = require("../models/UsersModel");
 const { verifyToken, getTokenData } = require("./TokenVerificationService");
 const statusCodes = require("../utils/statusCodes");
@@ -12,6 +13,18 @@ const MailerService = require("./MailerService");
 
 dotenv.config();
 const saltRounds = 10;
+
+// Helper function to validate email format
+function isValidEmail(email) {
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return regex.test(email);
+}
+
+// Helper function to validate phone number format
+function isValidPhone(phone) {
+  const regex = /^[6-9]\d{9}$/;
+  return regex.test(phone);
+}
 
 // Function to create an admin user if none exists
 const createAdminUser = async () => {
@@ -143,7 +156,7 @@ const createUser = async (req) => {
 
     const { tokenUserID, tokenUserType } = await getTokenData(token);
 
-    if (tokenUserType !== "ADMIN") {
+    if (tokenUserType !== "ADMIN" && tokenUserID !== userID) {
       console.log(
         `[INFO] - [${new Date().toISOString()}] - User creation attempt failed: Insufficient permissions.`
       );
@@ -382,64 +395,6 @@ const createUser = async (req) => {
   }
 };
 
-// Function to create multiple users in bulk
-const createBulkUsers = async (req) => {
-  try {
-    const { userDataList } = req.body;
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
-
-    if (!token) {
-      console.log(
-        `[INFO] - [${new Date().toISOString()}] - Bulk user creation attempt failed: Authorization token is missing.`
-      );
-      return {
-        status: statusCodes.UNAUTHORIZED,
-        message: "Authorization token is missing.",
-      };
-    }
-
-    const tokenVerification = await verifyToken(token);
-    if (!tokenVerification) {
-      console.log(
-        `[INFO] - [${new Date().toISOString()}] - Bulk user creation attempt failed: Expired token.`
-      );
-      return {
-        status: statusCodes.UNAUTHORIZED,
-        message: "Your session has expired. Please log in again.",
-      };
-    }
-
-    const userCreateResults = [];
-
-    for (const userData of userDataList) {
-      req.body = userData;
-      const result = await createUser(req);
-      userCreateResults.push(result);
-    }
-
-    console.log(
-      `[INFO] - [${new Date().toISOString()}] - Bulk user creation process completed by admin.`
-    );
-
-    return {
-      status: statusCodes.OK,
-      message: "Bulk user creation process completed.",
-      results: userCreateResults,
-    };
-  } catch (error) {
-    console.error(
-      `[ERROR] - [${new Date().toISOString()}] - Error creating users in bulk:`,
-      error
-    );
-    return {
-      status: statusCodes.INTERNAL_SERVER_ERROR,
-      message:
-        "Internal server error. Please report this issue to the administrator.",
-    };
-  }
-};
-
 // Function to get all users
 const getAllUsers = async (req) => {
   try {
@@ -468,10 +423,13 @@ const getAllUsers = async (req) => {
     }
 
     const { tokenUserID, tokenUserType } = await getTokenData(token);
+    const { pageNumber, pageSize } = req.query;
 
-    let usersData = await UserDetails.find();
-    let authData = await Auth.find();
-    const userDeptData = await UserDepartmentDetails.find();
+    let usersData = await UserDetails.find().sort({ createdAt: -1 });
+    let authData = await Auth.find().sort({ createdAt: -1 });
+    const userDeptData = await UserDepartmentDetails.find().sort({
+      createdAt: -1,
+    });
 
     usersData = usersData.map((user) => {
       const auth = authData.find((a) => a.userID === user.userID);
@@ -530,6 +488,12 @@ const getAllUsers = async (req) => {
       };
     }
 
+    const startIndex = (Number(pageNumber) - 1) * Number(pageSize);
+    const endIndex = startIndex + Number(pageSize);
+    const totalRecords = usersData.length;
+
+    usersData = usersData.slice(startIndex, endIndex);
+
     console.log(
       `[INFO] - [${new Date().toISOString()}] - Users data fetched by user: ${tokenUserID}`
     );
@@ -537,7 +501,7 @@ const getAllUsers = async (req) => {
     return {
       status: statusCodes.OK,
       message: "Users fetched successfully",
-      data: usersData,
+      data: { total: totalRecords, data: usersData },
     };
   } catch (error) {
     console.error(
@@ -555,7 +519,6 @@ const getAllUsers = async (req) => {
 // Function to get user data by ID
 const getUserDataByID = async (req) => {
   try {
-    const { userID } = req.params;
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
@@ -581,8 +544,9 @@ const getUserDataByID = async (req) => {
     }
 
     const { tokenUserID, tokenUserType } = await getTokenData(token);
+    const { userID } = req.params;
 
-    if (tokenUserType === "STUDENT" || tokenUserID === userID) {
+    if (tokenUserType !== "ADMIN" && tokenUserID !== userID) {
       console.log(
         `[INFO] - [${new Date().toISOString()}] - User data fetch attempt failed: Insufficient permissions.`
       );
@@ -649,19 +613,6 @@ const getUserDataByID = async (req) => {
 // Function to update user data
 const updateUserData = async (req) => {
   try {
-    const {
-      userType,
-      department,
-      name,
-      rollNumber,
-      year,
-      section,
-      mail,
-      phoneNumber,
-      parentMail,
-      parentPhone,
-    } = req.body;
-    const { userID } = req.params;
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
@@ -686,27 +637,32 @@ const updateUserData = async (req) => {
       };
     }
 
-    const { tokenUserID } = await getTokenData(token);
+    const {
+      userType,
+      department,
+      name,
+      rollNumber,
+      year,
+      section,
+      mail,
+      phoneNumber,
+      parentMail,
+      parentPhone,
+    } = req.body;
+    const { userID } = req.params;
+    const { tokenUserID, tokenUserType } = await getTokenData(token);
 
-    if (userID !== tokenUserID) {
+    if (tokenUserType !== "ADMIN" && userID !== tokenUserID) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User update attempt failed: Users cannot update other user's data.`
+        `[INFO] - [${new Date().toISOString()}] - User update attempt failed: Insufficient permissions.`
       );
       return {
         status: statusCodes.FORBIDDEN,
-        message: "You do not have permission to update other user's data.",
+        message: "You do not have permission to update user data.",
       };
     }
 
-    const userData = await UserDetails.find({ mail: mail });
-    const duplicateUsers = userData.filter((user) => user.userID !== userID);
-
-    if (duplicateUsers.length > 0) {
-      console.log(
-        `[INFO] - [${new Date().toISOString()}] - User update attempt failed: Duplicate mail ID found.`
-      );
-      return { status: 400, message: "User already exists with same Mail ID" };
-    } else if (!userType) {
+    if (!userType) {
       console.log(
         `[INFO] - [${new Date().toISOString()}] - User update attempt failed: User Type is required.`
       );
@@ -861,7 +817,6 @@ const updateUserData = async (req) => {
 // Function to inactivate a user
 const inactivateUser = async (req) => {
   try {
-    const { userID } = req.params;
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
@@ -887,6 +842,8 @@ const inactivateUser = async (req) => {
     }
 
     const { tokenUserID, tokenUserType } = await getTokenData(token);
+    const { userID } = req.body;
+
     if (tokenUserType !== "ADMIN") {
       console.log(
         `[INFO] - [${new Date().toISOString()}] - User inactivation attempt failed: Insufficient permissions.`
@@ -897,8 +854,18 @@ const inactivateUser = async (req) => {
       };
     }
 
-    await Auth.updateOne(
-      { userID: userID },
+    if (userID.includes(tokenUserID)) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User inactivation attempt failed: Admin cannot inactivate themselves.`
+      );
+      return {
+        status: statusCodes.BAD_REQUEST,
+        message: "Admin cannot inactivate themselves.",
+      };
+    }
+
+    await Auth.updateMany(
+      { userID: { $in: userID } },
       {
         isActive: false,
         updatedBy: tokenUserID,
@@ -912,7 +879,7 @@ const inactivateUser = async (req) => {
 
     return {
       status: statusCodes.OK,
-      message: "User inactivated successfully",
+      message: "Users inactivated successfully",
     };
   } catch (error) {
     console.error(
@@ -927,24 +894,346 @@ const inactivateUser = async (req) => {
   }
 };
 
-// Helper function to validate email format
-function isValidEmail(email) {
-  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return regex.test(email);
-}
+// Function to export user data
+const exportUserData = async (req) => {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
 
-// Helper function to validate phone number format
-function isValidPhone(phone) {
-  const regex = /^[6-9]\d{9}$/;
-  return regex.test(phone);
-}
+    if (!token) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - Export user data failed: Authorization token is missing.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Authorization token is missing.",
+      };
+    }
+
+    const tokenVerification = await verifyToken(token);
+    if (!tokenVerification) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - Export user data failed: Expired token.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Your session has expired. Please log in again.",
+      };
+    }
+
+    const { tokenUserID, tokenUserType } = await getTokenData(token);
+    const { userType, department, year, section, status } = req.query;
+
+    const authQuery = {
+      ...(status && { isActive: status === "ACTIVE" }),
+    };
+
+    const usersQuery = {
+      ...(userType && { userType }),
+    };
+
+    const userDeptQuery = {
+      ...(department && { department }),
+      ...(year && { year }),
+      ...(section && { section }),
+    };
+
+    const authData = await Auth.find(authQuery);
+    const usersData = await UserDetails.find(usersQuery);
+    const userDeptData = await UserDepartmentDetails.find(userDeptQuery);
+    const userContactData = await UserContacts.find();
+
+    let filteredUsers = [];
+
+    if (tokenUserType === "ADMIN") {
+      filteredUsers = authData
+        .map((auth) => {
+          const user = usersData.find((user) => user.userID === auth.userID);
+
+          const dept = userDeptData.find((dept) => dept.userID === auth.userID);
+
+          const contact = userContactData.find(
+            (contact) => contact.userID === auth.userID
+          );
+
+          if (!user || !dept || !contact) return null;
+
+          return {
+            userID: user.userID,
+            userType: user.userType,
+            name: user.name,
+            mail: user.mail,
+            rollNumber: dept.rollNumber,
+            year: dept.year,
+            section: dept.section,
+            department: dept.department,
+            phoneNumber: contact.phoneNumber,
+            parentMail: contact.parentMail,
+            parentPhone: contact.parentPhone,
+            isActive: auth.isActive,
+          };
+        })
+        .filter(Boolean);
+    } else {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - Export user data failed: Insufficient permissions.`
+      );
+      return {
+        status: statusCodes.FORBIDDEN,
+        message: "You do not have permission to export users.",
+      };
+    }
+    if (filteredUsers.length === 0) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - No users found matching the given criteria.`
+      );
+
+      return {
+        status: statusCodes.BAD_REQUEST,
+        message: "No users found matching the given criteria",
+      };
+    }
+
+    console.log(
+      `[INFO] - [${new Date().toISOString()}] - Users data exported by user: ${tokenUserID}`
+    );
+
+    return {
+      status: statusCodes.OK,
+      message: "Users data exported successfully",
+      data: filteredUsers,
+    };
+  } catch (error) {
+    console.error(
+      `[ERROR] - [${new Date().toISOString()}] - Error fetching users:`,
+      error
+    );
+    return {
+      status: statusCodes.INTERNAL_SERVER_ERROR,
+      message:
+        "Internal server error. Please report this issue to the administrator.",
+    };
+  }
+};
+
+// Function to get all the user sessions
+const getUserSessionData = async (req) => {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (!token) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User inactivation attempt failed: Authorization token is missing.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Authorization token is missing.",
+      };
+    }
+
+    const tokenVerification = await verifyToken(token);
+    if (!tokenVerification) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User inactivation attempt failed: Expired token.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Your session has expired. Please log in again.",
+      };
+    }
+
+    const { tokenUserID, tokenUserType } = await getTokenData(token);
+    const { pageNumber, pageSize } = req.query;
+
+    if (tokenUserType !== "ADMIN") {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User inactivation attempt failed: Insufficient permissions.`
+      );
+      return {
+        status: statusCodes.FORBIDDEN,
+        message: "You do not have permission to inactivate users.",
+      };
+    }
+
+    let sessionsData = await UserSessions.find()
+      .select("-token")
+      .sort({ createdAt: -1 });
+
+    console.log(
+      `[INFO] - [${new Date().toISOString()}] - User sessions fetched by admin: ${tokenUserID}`
+    );
+
+    const startIndex = (Number(pageNumber) - 1) * Number(pageSize);
+    const endIndex = startIndex + Number(pageSize);
+    const totalRecords = sessionsData.length;
+
+    sessionsData = sessionsData.slice(startIndex, endIndex);
+
+    return {
+      status: statusCodes.OK,
+      message: "User sessions fetched successfully",
+      data: { total: totalRecords, data: sessionsData },
+    };
+  } catch (error) {
+    console.error(
+      `[ERROR] - [${new Date().toISOString()}] - Error fetching user sessions:`,
+      error
+    );
+    return {
+      status: statusCodes.INTERNAL_SERVER_ERROR,
+      message:
+        "Internal server error. Please report this issue to the administrator.",
+    };
+  }
+};
+
+// Function to inactive the user session
+const inactivateUserSession = async (req) => {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (!token) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User inactivation attempt failed: Authorization token is missing.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Authorization token is missing.",
+      };
+    }
+
+    const tokenVerification = await verifyToken(token);
+    if (!tokenVerification) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User inactivation attempt failed: Expired token.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Your session has expired. Please log in again.",
+      };
+    }
+
+    const { tokenUserID, tokenUserType } = await getTokenData(token);
+    const { sessionID } = req.body;
+
+    if (tokenUserType !== "ADMIN") {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User inactivation attempt failed: Insufficient permissions.`
+      );
+      return {
+        status: statusCodes.FORBIDDEN,
+        message: "You do not have permission to inactivate users.",
+      };
+    }
+    await UserSessions.updateMany(
+      { _id: { $in: sessionID } },
+      {
+        isActive: false,
+        token: null,
+        logoutTime: new Date().toISOString(),
+        updatedBy: tokenUserID,
+        updatedAt: new Date().toISOString(),
+      }
+    );
+    return {
+      status: statusCodes.OK,
+      message: "User sessions inactivated successfully",
+    };
+  } catch (error) {
+    console.error(
+      `[ERROR] - [${new Date().toISOString()}] - Error inactivating user session:`,
+      error
+    );
+    return {
+      status: statusCodes.INTERNAL_SERVER_ERROR,
+      message:
+        "Internal server error. Please report this issue to the administrator.",
+    };
+  }
+};
+
+// Function to inactivate all sessions of a user
+const inActiveAllUserSessions = async (req) => {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (!token) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User inactivation attempt failed: Authorization token is missing.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Authorization token is missing.",
+      };
+    }
+
+    const tokenVerification = await verifyToken(token);
+    if (!tokenVerification) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User inactivation attempt failed: Expired token.`
+      );
+      return {
+        status: statusCodes.UNAUTHORIZED,
+        message: "Your session has expired. Please log in again.",
+      };
+    }
+
+    const { tokenUserID, tokenUserType } = await getTokenData(token);
+
+    if (tokenUserType !== "ADMIN") {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - User inactivation attempt failed: Insufficient permissions.`
+      );
+      return {
+        status: statusCodes.FORBIDDEN,
+        message: "You do not have permission to inactivate users.",
+      };
+    }
+
+    await UserSessions.updateMany(
+      { isActive: true, token: { $ne: token } },
+      {
+        isActive: false,
+        token: null,
+        logoutTime: new Date().toISOString(),
+        updatedBy: tokenUserID,
+        updatedAt: new Date().toISOString(),
+      }
+    );
+
+    console.log(
+      `[INFO] - [${new Date().toISOString()}] - All user sessions inactivated by admin: ${tokenUserID}`
+    );
+
+    return {
+      status: statusCodes.OK,
+      message: "All user sessions inactivated successfully",
+    };
+  } catch (error) {
+    console.error(
+      `[ERROR] - [${new Date().toISOString()}] - Error inactivating all user sessions:`,
+      error
+    );
+    return {
+      status: statusCodes.INTERNAL_SERVER_ERROR,
+      message:
+        "Internal server error. Please report this issue to the administrator.",
+    };
+  }
+};
 
 module.exports = {
   createAdminUser,
   createUser,
-  createBulkUsers,
   getAllUsers,
   getUserDataByID,
   updateUserData,
   inactivateUser,
+  exportUserData,
+  getUserSessionData,
+  inactivateUserSession,
+  inActiveAllUserSessions,
 };

@@ -292,7 +292,7 @@ export default function NewRequest() {
                   disabled={editLoading}
                 >
                   {editLoading ? (
-                    <span className="login-button-loader"></span>
+                    <span className="button-loader"></span>
                   ) : (
                     "Update"
                   )}
@@ -326,11 +326,7 @@ export default function NewRequest() {
             onClick={handleAddRequest}
             disabled={addLoading}
           >
-            {addLoading ? (
-              <span className="login-button-loader"></span>
-            ) : (
-              "Submit"
-            )}
+            {addLoading ? <span className="button-loader"></span> : "Submit"}
           </button>
         }
       >
