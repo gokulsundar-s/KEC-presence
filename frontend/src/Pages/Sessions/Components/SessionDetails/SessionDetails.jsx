@@ -1,3 +1,4 @@
+import { formatDateTime, formatTags } from "../../../../Utils/Formatters";
 export default function SessionDetails({ sessionData }) {
   return (
     <div className="sidebar-info-container">
@@ -23,21 +24,17 @@ export default function SessionDetails({ sessionData }) {
               </tr>
               <tr>
                 <th>Login Time</th>
-                <td>{sessionData.loginTime ?? "-"}</td>
+                <td>{formatDateTime(sessionData.loginTime ?? "-")}</td>
               </tr>
               <tr>
                 <th>Logout Time</th>
-                <td>{sessionData.logoutTime ?? "-"}</td>
+                <td>{formatDateTime(sessionData.logoutTime ?? "-")}</td>
               </tr>
               <tr>
                 <th>Is Active</th>
                 <td>
-                  <p
-                    className={
-                      sessionData.isActive ? "active-text" : "inactive-text"
-                    }
-                  >
-                    {sessionData.isActive ? "Active" : "Inactive"}
+                  <p>
+                    {formatTags(sessionData.isActive ? "Active" : "Inactive")}
                   </p>
                 </td>
               </tr>

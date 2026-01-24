@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 const mailerService = (to, subject, text) => {
   console.log(
-    `[INFO] - [${new Date().toISOString()}] - New email initiated to ${to}.`
+    `[INFO] - [${new Date().toISOString()}] - New email initiated to ${to}.`,
   );
   const mailOptions = {
     from: process.env.MAIL,
@@ -25,11 +25,11 @@ const mailerService = (to, subject, text) => {
   //   if (error) {
   //     console.log(
   //       `[ERROR] - [${new Date().toISOString()}] - Error in sending mail:`,
-  //       error
+  //       error,
   //     );
   //   } else {
   //     console.log(
-  //       `[INFO] - [${new Date().toISOString()}] - Email sent successfully to ${to}.`
+  //       `[INFO] - [${new Date().toISOString()}] - Email sent successfully to ${to}.`,
   //     );
   //   }
   // });

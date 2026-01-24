@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../../../../Utils/Constants";
 import { SidebarLoader } from "../../../../Components/Loaders/Loaders";
 import { showErrorToast } from "../../../../Components/Alerts/Alert";
+import { formatDateTime } from "../../../../Utils/Formatters";
 
 export default function GenericCodeDetails({
   code,
@@ -82,7 +83,7 @@ export default function GenericCodeDetails({
               </tr>
               <tr>
                 <th>Created At</th>
-                <td>{genericCodeData.createdAt ?? "-"}</td>
+                <td>{formatDateTime(genericCodeData.createdAt ?? "-")}</td>
               </tr>
               <tr>
                 <th>Updated By</th>
@@ -90,7 +91,7 @@ export default function GenericCodeDetails({
               </tr>
               <tr>
                 <th>Updated At</th>
-                <td>{genericCodeData.updatedAt ?? "-"}</td>
+                <td>{formatDateTime(genericCodeData.updatedAt ?? "-")}</td>
               </tr>
             </tbody>
           </table>

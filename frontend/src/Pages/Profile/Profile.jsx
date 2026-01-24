@@ -12,6 +12,7 @@ import { Loaders } from "../../Components/Loaders/Loaders";
 import SideTab from "../../Components/SiderTab/SideTab";
 import EditUserInfoForm from "./EditUserInfo/EditUserInfoForm";
 import ChangePassword from "./ChangePassword/ChangePassword";
+import { getGenericCodeNameByValue } from "../../Utils/GenericCodeServices";
 import {
   EditIcon,
   PasswordIcon,
@@ -123,7 +124,7 @@ export default function Profile() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (response.data.status === 200) {
         getUserData();
@@ -153,7 +154,7 @@ export default function Profile() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (response.data.status === 200) {
         setOpenChangePasswordSider(false);
@@ -245,7 +246,7 @@ export default function Profile() {
                       User Type
                     </p>
                     <p className="user-profile-detail-info-card-content-value">
-                      {userData.userType || "-"}
+                      {getGenericCodeNameByValue(userData.userType) || "-"}
                     </p>
                   </div>
                 </div>
@@ -263,7 +264,7 @@ export default function Profile() {
                       Department
                     </p>
                     <p className="user-profile-detail-info-card-content-value">
-                      {userData.department || "-"}
+                      {getGenericCodeNameByValue(userData.department) || "-"}
                     </p>
                   </div>
                   <div className="user-profile-detail-info-card-content-row">

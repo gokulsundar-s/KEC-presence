@@ -2,21 +2,57 @@ const { GenericCode } = require("../models/GenericCodeModel");
 const { verifyToken, getTokenData } = require("./TokenVerificationService");
 const statusCodes = require("../utils/statusCodes");
 
+// Function to create initail generic coode
 const createInitialGenericCodes = async () => {
   try {
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Starting creation of initial generic codes.`
+      `[INFO] - [${new Date().toISOString()}] - Starting creation of initial generic codes.`,
     );
 
     const genericCodeData = await GenericCode.find({});
     if (genericCodeData.length > 0) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Initial generic codes already exist. Skipping creation.`
+        `[INFO] - [${new Date().toISOString()}] - Initial generic codes already exist. Skipping creation.`,
       );
       return;
     }
 
     const initialCodes = [
+      {
+        codeType: "GENERICCODETYPE",
+        code: "USERTYPE",
+        codeDescription: "User Type",
+      },
+      {
+        codeType: "GENERICCODETYPE",
+        code: "REQUESTTYPE",
+        codeDescription: "Request Type",
+      },
+      {
+        codeType: "GENERICCODETYPE",
+        code: "REQUESTSTATUS",
+        codeDescription: "Request Status",
+      },
+      {
+        codeType: "GENERICCODETYPE",
+        code: "SESSIONTYPE",
+        codeDescription: "Session Type",
+      },
+      {
+        codeType: "GENERICCODETYPE",
+        code: "DEPARTMENT",
+        codeDescription: "Department",
+      },
+      {
+        codeType: "GENERICCODETYPE",
+        code: "YEAR",
+        codeDescription: "Year",
+      },
+      {
+        codeType: "GENERICCODETYPE",
+        code: "SECTION",
+        codeDescription: "Section",
+      },
       {
         codeType: "USERTYPE",
         code: "ADMIN",
@@ -87,6 +123,16 @@ const createInitialGenericCodes = async () => {
         code: "FN",
         codeDescription: "Forenoon",
       },
+      {
+        codeType: "USERSTATUS",
+        code: "ACTIVE",
+        codeDescription: "Active",
+      },
+      {
+        codeType: "USERSTATUS",
+        code: "INACTIVE",
+        codeDescription: "Inactive",
+      },
     ];
 
     for (const codeData of initialCodes) {
@@ -108,20 +154,20 @@ const createInitialGenericCodes = async () => {
         console.log(
           `[INFO] - [${new Date().toISOString()}] - Initial generic code '${
             codeData.code
-          }' of type '${codeData.codeType}' created successfully.`
+          }' of type '${codeData.codeType}' created successfully.`,
         );
       } else {
         console.log(
           `[INFO] - [${new Date().toISOString()}] - Initial generic code '${
             codeData.code
-          }' of type '${codeData.codeType}' already exists. Skipping creation.`
+          }' of type '${codeData.codeType}' already exists. Skipping creation.`,
         );
       }
     }
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error creating initial generic codes:`,
-      error
+      error,
     );
   }
 };
@@ -135,7 +181,7 @@ const createGenericCode = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -146,7 +192,7 @@ const createGenericCode = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -158,7 +204,7 @@ const createGenericCode = async (req) => {
 
     if (tokenUserType !== "ADMIN") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Unauthorized generic code creation attempt by user ID: ${tokenUserID}`
+        `[INFO] - [${new Date().toISOString()}] - Unauthorized generic code creation attempt by user ID: ${tokenUserID}`,
       );
       return {
         status: statusCodes.FORBIDDEN,
@@ -168,7 +214,7 @@ const createGenericCode = async (req) => {
 
     if (!codeType) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Generic code creation failed: 'codeType' is required.`
+        `[INFO] - [${new Date().toISOString()}] - Generic code creation failed: 'codeType' is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -176,7 +222,7 @@ const createGenericCode = async (req) => {
       };
     } else if (!code) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Generic code creation failed: 'code' is required.`
+        `[INFO] - [${new Date().toISOString()}] - Generic code creation failed: 'code' is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -184,7 +230,7 @@ const createGenericCode = async (req) => {
       };
     } else if (!codeDescription) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Generic code creation failed: 'codeDescription' is required.`
+        `[INFO] - [${new Date().toISOString()}] - Generic code creation failed: 'codeDescription' is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -199,7 +245,7 @@ const createGenericCode = async (req) => {
 
     if (genericCodeData) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Generic code creation failed: Code '${code}' already exists.`
+        `[INFO] - [${new Date().toISOString()}] - Generic code creation failed: Code '${code}' already exists.`,
       );
       return {
         status: statusCodes.CONFLICT,
@@ -219,7 +265,7 @@ const createGenericCode = async (req) => {
     await newGenericCode.save();
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Generic code created successfully by user ID: ${tokenUserID}`
+      `[INFO] - [${new Date().toISOString()}] - Generic code created successfully by user ID: ${tokenUserID}`,
     );
 
     return {
@@ -229,7 +275,7 @@ const createGenericCode = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error creating generic code:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -247,7 +293,7 @@ const getAllGenericCodes = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -258,7 +304,7 @@ const getAllGenericCodes = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -271,7 +317,7 @@ const getAllGenericCodes = async (req) => {
 
     if (tokenUserType !== "ADMIN") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Unauthorized generic code creation attempt by user ID: ${tokenUserID}`
+        `[INFO] - [${new Date().toISOString()}] - Unauthorized generic code creation attempt by user ID: ${tokenUserID}`,
       );
       return {
         status: statusCodes.FORBIDDEN,
@@ -281,6 +327,17 @@ const getAllGenericCodes = async (req) => {
 
     let genericCodes = await GenericCode.find().sort({ createdAt: -1 });
 
+    if (pageNumber < 0 || pageSize < 0) {
+      console.log(
+        `[INFO] - [${new Date().toISOString()}] - Generic codes fetched successfully by user ID: ${tokenUserID}`,
+      );
+      return {
+        status: statusCodes.OK,
+        message: "Generic codes fetched successfully.",
+        data: { total: genericCodes.length, data: genericCodes },
+      };
+    }
+
     const startIndex = (Number(pageNumber) - 1) * Number(pageSize);
     const endIndex = startIndex + Number(pageSize);
     const totalRecords = genericCodes.length;
@@ -288,7 +345,7 @@ const getAllGenericCodes = async (req) => {
     genericCodes = genericCodes.slice(startIndex, endIndex);
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Generic codes fetched successfully by user ID: ${tokenUserID}`
+      `[INFO] - [${new Date().toISOString()}] - Generic codes fetched successfully by user ID: ${tokenUserID}`,
     );
 
     return {
@@ -299,7 +356,7 @@ const getAllGenericCodes = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error fetching generic codes:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -318,7 +375,7 @@ const getGenericCodeByCode = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -329,7 +386,7 @@ const getGenericCodeByCode = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -342,7 +399,7 @@ const getGenericCodeByCode = async (req) => {
     const genericCodes = await GenericCode.findOne({ code: code });
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Generic codes by code type fetched successfully by user ID: ${tokenUserID}`
+      `[INFO] - [${new Date().toISOString()}] - Generic codes by code type fetched successfully by user ID: ${tokenUserID}`,
     );
 
     return {
@@ -353,61 +410,7 @@ const getGenericCodeByCode = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error fetching generic codes by code type:`,
-      error
-    );
-    return {
-      status: statusCodes.INTERNAL_SERVER_ERROR,
-      message:
-        "Internal server error. Please report this issue to the administrator.",
-    };
-  }
-};
-
-// Function to get generic codes by code type
-const getGenericCodeByCodeType = async (codeType) => {
-  try {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
-
-    if (!token) {
-      console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
-      );
-      return {
-        status: statusCodes.UNAUTHORIZED,
-        message: "Authorization token is missing.",
-      };
-    }
-
-    const tokenVerification = await verifyToken(token);
-    if (!tokenVerification) {
-      console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
-      );
-      return {
-        status: statusCodes.UNAUTHORIZED,
-        message: "Your session has expired. Please log in again.",
-      };
-    }
-
-    const { tokenUserID } = await getTokenData(token);
-    const { codeType } = req.params;
-
-    const genericCodes = await GenericCode.find({ codeType: codeType });
-
-    console.log(
-      `[INFO] - [${new Date().toISOString()}] - Generic codes by code type fetched successfully by user ID: ${tokenUserID}`
-    );
-
-    return {
-      status: statusCodes.OK,
-      message: "Generic codes fetched successfully.",
-      data: genericCodes,
-    };
-  } catch (error) {
-    console.error(
-      `[ERROR] - [${new Date().toISOString()}] - Error fetching generic codes by code type:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -425,7 +428,7 @@ const updateGenericCode = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -436,7 +439,7 @@ const updateGenericCode = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -450,7 +453,7 @@ const updateGenericCode = async (req) => {
 
     if (tokenUserType !== "ADMIN") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Unauthorized generic code creation attempt by user ID: ${tokenUserID}`
+        `[INFO] - [${new Date().toISOString()}] - Unauthorized generic code creation attempt by user ID: ${tokenUserID}`,
       );
       return {
         status: statusCodes.FORBIDDEN,
@@ -460,7 +463,7 @@ const updateGenericCode = async (req) => {
 
     if (!codeDescription) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Generic code update failed: 'codeDescription' is required.`
+        `[INFO] - [${new Date().toISOString()}] - Generic code update failed: 'codeDescription' is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -472,7 +475,7 @@ const updateGenericCode = async (req) => {
 
     if (!genericCodeData) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Generic code update failed: Code '${code}' not found.`
+        `[INFO] - [${new Date().toISOString()}] - Generic code update failed: Code '${code}' not found.`,
       );
       return {
         status: statusCodes.NOT_FOUND,
@@ -482,7 +485,7 @@ const updateGenericCode = async (req) => {
 
     if (genericCodeData.createdBy === "SYSTEM") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Generic code update failed: System defined codes cannot be updated.`
+        `[INFO] - [${new Date().toISOString()}] - Generic code update failed: System defined codes cannot be updated.`,
       );
       return {
         status: statusCodes.FORBIDDEN,
@@ -498,11 +501,11 @@ const updateGenericCode = async (req) => {
           updatedAt: new Date().toISOString(),
           updatedBy: tokenUserID,
         },
-      }
+      },
     );
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Generic code updated successfully by user ID: ${tokenUserID}`
+      `[INFO] - [${new Date().toISOString()}] - Generic code updated successfully by user ID: ${tokenUserID}`,
     );
 
     return {
@@ -512,7 +515,7 @@ const updateGenericCode = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error updating generic code:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -530,7 +533,7 @@ const deleteGenericCode = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Delete generic code failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - Delete generic code failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -541,7 +544,7 @@ const deleteGenericCode = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Delete generic code failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - Delete generic code failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -554,7 +557,7 @@ const deleteGenericCode = async (req) => {
 
     if (tokenUserType !== "ADMIN") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Unauthorized generic code deletion attempt by user ID: ${tokenUserID}`
+        `[INFO] - [${new Date().toISOString()}] - Unauthorized generic code deletion attempt by user ID: ${tokenUserID}`,
       );
       return {
         status: statusCodes.FORBIDDEN,
@@ -568,7 +571,7 @@ const deleteGenericCode = async (req) => {
 
     if (genericCodeData.length === 0) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Generic code delete failed: Codes '${code}' not found.`
+        `[INFO] - [${new Date().toISOString()}] - Generic code delete failed: Codes '${code}' not found.`,
       );
       return {
         status: statusCodes.NOT_FOUND,
@@ -578,7 +581,7 @@ const deleteGenericCode = async (req) => {
 
     if (genericCodeData.some((item) => item.createdBy === "SYSTEM")) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Generic code delete failed: System defined codes cannot be deleted.`
+        `[INFO] - [${new Date().toISOString()}] - Generic code delete failed: System defined codes cannot be deleted.`,
       );
       return {
         status: statusCodes.FORBIDDEN,
@@ -588,7 +591,7 @@ const deleteGenericCode = async (req) => {
 
     await GenericCode.deleteMany({ code: { $in: codes } });
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Generic codes deleted successfully by user ID: ${tokenUserID}`
+      `[INFO] - [${new Date().toISOString()}] - Generic codes deleted successfully by user ID: ${tokenUserID}`,
     );
 
     return {
@@ -598,7 +601,7 @@ const deleteGenericCode = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error deleting generic code:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -613,7 +616,6 @@ module.exports = {
   createGenericCode,
   getAllGenericCodes,
   getGenericCodeByCode,
-  getGenericCodeByCodeType,
   updateGenericCode,
   deleteGenericCode,
 };

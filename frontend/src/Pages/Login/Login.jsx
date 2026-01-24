@@ -9,6 +9,7 @@ import { showErrorToast } from "../../Components/Alerts/Alert";
 import "./Login.css";
 
 export default function Login() {
+  document.title = "KEC Presence | Login";
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);

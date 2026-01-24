@@ -15,7 +15,7 @@ const getAdminData = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -26,7 +26,7 @@ const getAdminData = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -38,7 +38,7 @@ const getAdminData = async (req) => {
 
     if (tokenUserType !== "ADMIN") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Unauthorized dashboard data access attempt by user ID: ${tokenUserID}`
+        `[INFO] - [${new Date().toISOString()}] - Unauthorized dashboard data access attempt by user ID: ${tokenUserID}`,
       );
       return {
         status: statusCodes.FORBIDDEN,
@@ -47,51 +47,31 @@ const getAdminData = async (req) => {
     }
 
     const userDetailsData = await UserDetails.find({});
-    const userDeptData = await UserDepartmentDetails.find({});
-    const userSessionsData = await UserSessions.find().limit(20);
+    const sessionsData = await UserSessions.find()
+      .sort({ loginTime: -1 })
+      .limit(20);
 
-    const userTypeCount = userDetailsData.reduce((count, user) => {
+    const countsData = userDetailsData.reduce((count, user) => {
       count[user.userType] = (count[user.userType] ?? 0) + 1;
       return count;
     }, {});
 
-    const deptCount = userDeptData.reduce((count, dept) => {
-      if (!dept.department) return count;
-      count[dept.department] = (count[dept.department] ?? 0) + 1;
-      return count;
-    }, {});
-
-    const deptUserCount = userDeptData.reduce((count, dept) => {
-      if (!dept.department) return count;
-      const userType = userDetailsData.find(
-        (user) => user.userID === dept.userID
-      )?.userType;
-      if (userType) {
-        count[dept.department] = count[dept.department] || {};
-        count[dept.department][userType] =
-          (count[dept.department][userType] ?? 0) + 1;
-      }
-      return count;
-    }, {});
-
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Admin dashboard data retrieved successfully by user ID: ${tokenUserID}`
+      `[INFO] - [${new Date().toISOString()}] - Admin dashboard data retrieved successfully by user ID: ${tokenUserID}`,
     );
 
     return {
       status: statusCodes.OK,
       message: "Dashboard data retrieved successfully.",
       data: {
-        userCountData: userTypeCount,
-        departmentCountData: deptCount,
-        departmentUserTypeCountData: deptUserCount,
-        recentUserSessions: userSessionsData,
+        countsData: countsData,
+        sessionData: sessionsData,
       },
     };
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error during getting dashboard data process:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -109,7 +89,7 @@ const getHoDData = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -120,7 +100,7 @@ const getHoDData = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -132,7 +112,7 @@ const getHoDData = async (req) => {
 
     if (tokenUserType !== "HOD") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Unauthorized dashboard data access attempt by user ID: ${tokenUserID}`
+        `[INFO] - [${new Date().toISOString()}] - Unauthorized dashboard data access attempt by user ID: ${tokenUserID}`,
       );
       return {
         status: statusCodes.FORBIDDEN,
@@ -163,7 +143,7 @@ const getHoDData = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error during getting dashboard data process:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -181,7 +161,7 @@ const getInchargeData = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -192,7 +172,7 @@ const getInchargeData = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -204,7 +184,7 @@ const getInchargeData = async (req) => {
 
     if (tokenUserType !== "INCHARGE") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Unauthorized dashboard data access attempt by user ID: ${tokenUserID}`
+        `[INFO] - [${new Date().toISOString()}] - Unauthorized dashboard data access attempt by user ID: ${tokenUserID}`,
       );
       return {
         status: statusCodes.FORBIDDEN,
@@ -214,7 +194,7 @@ const getInchargeData = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error during getting dashboard data process:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -232,7 +212,7 @@ const getAdvisorData = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -243,7 +223,7 @@ const getAdvisorData = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -255,7 +235,7 @@ const getAdvisorData = async (req) => {
 
     if (tokenUserType !== "ADVISOR") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Unauthorized dashboard data access attempt by user ID: ${tokenUserID}`
+        `[INFO] - [${new Date().toISOString()}] - Unauthorized dashboard data access attempt by user ID: ${tokenUserID}`,
       );
       return {
         status: statusCodes.FORBIDDEN,
@@ -265,7 +245,7 @@ const getAdvisorData = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error during getting dashboard data process:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -283,7 +263,7 @@ const getStudentData = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -294,7 +274,7 @@ const getStudentData = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -306,7 +286,7 @@ const getStudentData = async (req) => {
 
     if (tokenUserType !== "STUDENT") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Unauthorized dashboard data access attempt by user ID: ${tokenUserID}`
+        `[INFO] - [${new Date().toISOString()}] - Unauthorized dashboard data access attempt by user ID: ${tokenUserID}`,
       );
       return {
         status: statusCodes.FORBIDDEN,
@@ -316,7 +296,7 @@ const getStudentData = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error during getting dashboard data process:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,

@@ -6,7 +6,14 @@
   height: 65vh;
 }
 
+.no-data-container svg {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+}
+
 .no-data-text {
-  font-size: 1rem;
+  font-size: 1.25rem;
   text-align: center;
+  color: var(--primary-color);
 }

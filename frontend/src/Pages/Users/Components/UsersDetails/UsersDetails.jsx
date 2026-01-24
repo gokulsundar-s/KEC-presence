@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../../../../Utils/Constants";
 import { SidebarLoader } from "../../../../Components/Loaders/Loaders";
 import { showErrorToast } from "../../../../Components/Alerts/Alert";
+import { getGenericCodeNameByValue } from "../../../../Utils/GenericCodeServices";
+import { formatDateTime, formatTags } from "../../../../Utils/Formatters";
 
 export default function UsersDetails({ userID, userData, setUserData }) {
   const navigate = useNavigate();
@@ -66,11 +68,15 @@ export default function UsersDetails({ userID, userData, setUserData }) {
               </tr>
               <tr>
                 <th>User Type</th>
-                <td>{userData.userType ?? "-"}</td>
+                <td>{getGenericCodeNameByValue(userData.userType)}</td>
               </tr>
               <tr>
                 <th>Department</th>
-                <td>{userData.department ?? "-"}</td>
+                <td>
+                  {getGenericCodeNameByValue(userData.department) != ""
+                    ? getGenericCodeNameByValue(userData.department)
+                    : "-"}
+                </td>
               </tr>
               <tr>
                 <th>Name</th>
@@ -78,15 +84,17 @@ export default function UsersDetails({ userID, userData, setUserData }) {
               </tr>
               <tr>
                 <th>Roll Number</th>
-                <td>{userData.rollNumber ?? "-"}</td>
+                <td>
+                  {userData.rollNumber !== "" ? userData.rollNumber : "-"}
+                </td>
               </tr>
               <tr>
                 <th>Year</th>
-                <td>{userData.year ?? "-"}</td>
+                <td>{userData.year !== null ? userData.year : "-"}</td>
               </tr>
               <tr>
                 <th>Section</th>
-                <td>{userData.section ?? "-"}</td>
+                <td>{userData.section !== "" ? userData.section : "-"}</td>
               </tr>
               <tr>
                 <th>Kongu Mail ID</th>
@@ -98,21 +106,23 @@ export default function UsersDetails({ userID, userData, setUserData }) {
               </tr>
               <tr>
                 <th>Parent Mail ID</th>
-                <td>{userData.parentMail ?? "-"}</td>
+                <td>
+                  {userData.parentMail !== "" ? userData.parentMail : "-"}
+                </td>
               </tr>
               <tr>
                 <th>Parent Phone Number</th>
-                <td>{userData.parentPhone ?? "-"}</td>
+                <td>
+                  {userData.parentPhone !== "" ? userData.parentPhone : "-"}
+                </td>
               </tr>
               <tr>
                 <th>User Status</th>
                 <td>
-                  <div
-                    className={
-                      userData.isActive ? "active-text" : "inactive-text"
-                    }
-                  >
-                    <p>{userData.isActive ? "Active" : "Inactive"}</p>
+                  <div>
+                    <p>
+                      {formatTags(userData.isActive ? "Active" : "Inactive")}
+                    </p>
                   </div>
                 </td>
               </tr>

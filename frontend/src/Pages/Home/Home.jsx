@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import LoadingWrapper from "../../Components/LoadingWrapper/LoadingWrapper";
 import Header from "./Components/Header/Header";
@@ -16,15 +17,26 @@ import { jwtDecode } from "jwt-decode";
 import "./Home.css";
 
 export default function Home() {
+  document.title = "KEC Presence";
   const navigate = useNavigate();
-  var userType = "";
 
-  try {
-    userType = jwtDecode(Cookies.get("token")).userType;
-  } catch (error) {
-    navigate("/login");
-  }
+  // State variables for data handling
+  const [token, setToken] = useState("");
+  const [userType, setUserType] = useState("");
 
+  // useEffect to check authentication token and fetch user data
+  useEffect(() => {
+    const tokenValue = Cookies.get("token");
+    const decodedToken = tokenValue ? jwtDecode(tokenValue) : null;
+    if (decodedToken && decodedToken.userType) {
+      setUserType(decodedToken.userType);
+    }
+    if (!tokenValue) {
+      navigate("/login");
+      return;
+    }
+    setToken(tokenValue);
+  }, [navigate]);
   return (
     <LoadingWrapper>
       <div className="home-container">

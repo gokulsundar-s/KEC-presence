@@ -1,0 +1,39 @@
+.dashboard-count-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-count-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-count-card svg {
+  width: 12.5rem;
+  height: 12.5rem;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  position: absolute;
+  right: -3rem;
+  top: 60%;
+  transform: translateY(-50%);
+  opacity: 0.05;
+}
+
+.dashboard-count-card-count-text {
+  font-size: 5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  line-height: 1.15;
+}
+
+.dashboard-count-card-heading-text {
+  font-size: 1.25rem;
+}

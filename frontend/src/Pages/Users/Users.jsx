@@ -14,7 +14,9 @@ import NoData from "../../Components/NoData/NoData";
 import UsersDetails from "./Components/UsersDetails/UsersDetails";
 import UsersForm from "./Components/UsersForm/UsersForm";
 import ExportUsersData from "./Components/ExportUsersData/ExportUsersData";
-import { Exporter } from "../../Utils/Exporter";
+import { DataExporter } from "../../Utils/DataExporter";
+import { getGenericCodeNameByValue } from "../../Utils/GenericCodeServices";
+import { formatTags } from "../../Utils/Formatters";
 import {
   FilterIcon,
   AddIcon,
@@ -222,7 +224,7 @@ export default function UserInfo() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (response.data.status === 200) {
         setUsersData([]);
@@ -251,7 +253,7 @@ export default function UserInfo() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (response.data.status === 200) {
         setUsersData([]);
@@ -281,9 +283,9 @@ export default function UserInfo() {
         },
       });
       if (response.data.status === 200) {
-        setOpenExportDataSider2ider(false);
+        setOpenExportDataSider(false);
         setButtonLoading(false);
-        Exporter({
+        DataExporter({
           fileName: "Users_Data",
           data: response.data.data,
         });
@@ -384,10 +386,10 @@ export default function UserInfo() {
                       checked={selectedUsers.length === usersData.length}
                     />
                   </td>
+                  <td>Name</td>
                   <td>User ID</td>
                   <td>User Type</td>
-                  <td>Department</td>
-                  <td>Name</td>
+                  <td>Kongu Mail</td>
                   <td>Status</td>
                 </tr>
               </thead>
@@ -401,22 +403,22 @@ export default function UserInfo() {
                         checked={selectedUsers.includes(user.userID)}
                       />
                     </td>
-                    <td>{user.userID}</td>
-                    <td>{user.userType === "STU" ? "Student" : "Admin"}</td>
                     <td>
-                      {user.department === "CSE"
-                        ? "Computer Science and Engineering"
-                        : "Information Technology"}
+                      {user.name.length > 30
+                        ? user.name.slice(0, 30) + "..."
+                        : user.name}
                     </td>
-                    <td>{user.name}</td>
+                    <td>{user.userID}</td>
                     <td>
-                      <p
-                        className={
-                          user.isActive ? "active-text" : "inactive-text"
-                        }
-                      >
-                        {user.isActive ? "Active" : "Inactive"}
-                      </p>
+                      {formatTags(getGenericCodeNameByValue(user.userType))}
+                    </td>
+                    <td>
+                      {user.mail.length > 35
+                        ? `${user.mail.substring(0, 15)}...${user.mail.substring(user.mail.length - 12)}`
+                        : user.mail}
+                    </td>
+                    <td>
+                      <p>{formatTags(user.isActive ? "Active" : "Inactive")}</p>
                     </td>
                   </tr>
                 ))}

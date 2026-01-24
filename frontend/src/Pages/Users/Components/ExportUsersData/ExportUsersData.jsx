@@ -1,4 +1,5 @@
-import { Exporter } from "../../../../Utils/Exporter";
+import { getGenericCodeByType } from "../../../../Utils/GenericCodeServices";
+
 export default function ExportUsersData({ exportData = {}, setExportData }) {
   return (
     <div className="sidebar-form-container">
@@ -12,11 +13,11 @@ export default function ExportUsersData({ exportData = {}, setExportData }) {
             }
           >
             <option value="">All</option>
-            <option value="ADM">Admin</option>
-            <option value="STU">Student</option>
-            <option value="CA">Class Advisor</option>
-            <option value="YI">Year Incharge</option>
-            <option value="HOD">Head of Department</option>
+            {getGenericCodeByType("USERTYPE").map((code) => (
+              <option key={code.code} value={code.code}>
+                {code.codeDescription}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -29,9 +30,11 @@ export default function ExportUsersData({ exportData = {}, setExportData }) {
             }
           >
             <option value="">All</option>
-            <option value="CSE">Computer Science and Engineering</option>
-            <option value="EEE">Electrical and Electronics Engineering</option>
-            <option value="ME">Mechanical Engineering</option>
+            {getGenericCodeByType("DEPARTMENT").map((code) => (
+              <option key={code.code} value={code.code}>
+                {code.codeDescription}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -44,10 +47,11 @@ export default function ExportUsersData({ exportData = {}, setExportData }) {
             }
           >
             <option value="">All</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
+            {getGenericCodeByType("YEAR").map((code) => (
+              <option key={code.code} value={code.code}>
+                {code.codeDescription}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -60,10 +64,11 @@ export default function ExportUsersData({ exportData = {}, setExportData }) {
             }
           >
             <option value="">All</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
+            {getGenericCodeByType("SECTION").map((code) => (
+              <option key={code.code} value={code.code}>
+                {code.codeDescription}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -76,8 +81,11 @@ export default function ExportUsersData({ exportData = {}, setExportData }) {
             }
           >
             <option value="">All</option>
-            <option value="A">Active</option>
-            <option value="B">Inactive</option>
+            {getGenericCodeByType("USERSTATUS").map((code) => (
+              <option key={code.code} value={code.code}>
+                {code.codeDescription}
+              </option>
+            ))}
           </select>
         </div>
       </div>

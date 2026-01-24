@@ -13,6 +13,7 @@ import NoData from "../../Components/NoData/NoData";
 import { ConfirmModal } from "../../Components/Modals/Modals";
 import SideTab from "../../Components/SiderTab/SideTab";
 import SesssioDetails from "./Components/SessionDetails/SessionDetails";
+import { formatTags } from "../../Utils/Formatters";
 import {
   FilterIcon,
   InfoIcon,
@@ -145,7 +146,7 @@ export default function Sessions() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (response.data.status === 200) {
         setSessionsData([]);
@@ -174,7 +175,7 @@ export default function Sessions() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (response.data.status === 200) {
         setSessionsData([]);
@@ -282,12 +283,8 @@ export default function Sessions() {
                     <td>{formatDateTime(session.loginTime)}</td>
                     <td>{formatDateTime(session.logoutTime)}</td>
                     <td>
-                      <p
-                        className={
-                          session.isActive ? "active-text" : "inactive-text"
-                        }
-                      >
-                        {session.isActive ? "Active" : "Inactive"}
+                      <p>
+                        {formatTags(session.isActive ? "Active" : "Inactive")}
                       </p>
                     </td>
                   </tr>

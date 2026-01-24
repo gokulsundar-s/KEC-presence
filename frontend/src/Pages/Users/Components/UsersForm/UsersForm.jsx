@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../../../../Utils/Constants";
 import { SidebarLoader } from "../../../../Components/Loaders/Loaders";
 import { showErrorToast } from "../../../../Components/Alerts/Alert";
+import { getGenericCodeByType } from "../../../../Utils/GenericCodeServices";
 
 export default function UsersForm({ userID, userData = {}, setUserData }) {
   const navigate = useNavigate();
@@ -65,22 +66,26 @@ export default function UsersForm({ userID, userData = {}, setUserData }) {
               onChange={(e) =>
                 setUserData({ ...userData, userType: e.target.value })
               }
+              className={!!userID ? "disabled-form-input" : ""}
+              disabled={!!userID}
             >
               <option value="">Select User Type</option>
-              <option value="ADMIN">Admin</option>
-              <option value="STUDENT">Student</option>
-              <option value="CLASSADVISOR">Class Advisor</option>
-              <option value="YEARINCHARGE">Year Incharge</option>
-              <option value="HOD">Head of Department</option>
+              {getGenericCodeByType("USERTYPE").map((code) => (
+                <option key={code.code} value={code.code}>
+                  {code.codeDescription}
+                </option>
+              ))}
             </select>
           </div>
 
           <div className="form-input">
             <p>Department</p>
             <select
-              disabled={userData.userType === "ADMIN"}
+              disabled={userData.userType && userData.userType === "ADMIN"}
               className={
-                userData.userType === "ADMIN" ? "disabled-form-input" : ""
+                userData.userType && userData.userType === "ADMIN"
+                  ? "disabled-form-input"
+                  : ""
               }
               value={userData.department}
               onChange={(e) =>
@@ -88,11 +93,11 @@ export default function UsersForm({ userID, userData = {}, setUserData }) {
               }
             >
               <option value="">Select Department</option>
-              <option value="CSE">Computer Science and Engineering</option>
-              <option value="EEE">
-                Electrical and Electronics Engineering
-              </option>
-              <option value="ME">Mechanical Engineering</option>
+              {getGenericCodeByType("DEPARTMENT").map((code) => (
+                <option key={code.code} value={code.code}>
+                  {code.codeDescription}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -111,9 +116,11 @@ export default function UsersForm({ userID, userData = {}, setUserData }) {
           <div className="form-input">
             <p>Roll Number</p>
             <input
-              disabled={userData.userType !== "STUDENT"}
+              disabled={userData.userType && userData.userType !== "STUDENT"}
               className={
-                userData.userType !== "STUDENT" ? "disabled-form-input" : ""
+                userData.userType && userData.userType !== "STUDENT"
+                  ? "disabled-form-input"
+                  : ""
               }
               value={userData.rollNumber}
               type="text"
@@ -128,10 +135,12 @@ export default function UsersForm({ userID, userData = {}, setUserData }) {
             <p>Year</p>
             <select
               disabled={
-                userData.userType === "ADMIN" || userData.userType === "HOD"
+                userData.userType &&
+                (userData.userType === "ADMIN" || userData.userType === "HOD")
               }
               className={
-                userData.userType === "ADMIN" || userData.userType === "HOD"
+                userData.userType &&
+                (userData.userType === "ADMIN" || userData.userType === "HOD")
                   ? "disabled-form-input"
                   : ""
               }
@@ -141,10 +150,11 @@ export default function UsersForm({ userID, userData = {}, setUserData }) {
               }
             >
               <option value="">Select Year</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
+              {getGenericCodeByType("YEAR").map((code) => (
+                <option key={code.code} value={code.code}>
+                  {code.codeDescription}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -152,10 +162,12 @@ export default function UsersForm({ userID, userData = {}, setUserData }) {
             <p>Section</p>
             <select
               disabled={
+                userData.userType &&
                 userData.userType !== "STUDENT" &&
                 userData.userType !== "CLASSADVISOR"
               }
               className={
+                userData.userType &&
                 userData.userType !== "STUDENT" &&
                 userData.userType !== "CLASSADVISOR"
                   ? "disabled-form-input"
@@ -201,9 +213,11 @@ export default function UsersForm({ userID, userData = {}, setUserData }) {
           <div className="form-input">
             <p>Parent Mail ID</p>
             <input
-              disabled={userData.userType !== "STUDENT"}
+              disabled={userData.userType && userData.userType !== "STUDENT"}
               className={
-                userData.userType !== "STUDENT" ? "disabled-form-input" : ""
+                userData.userType && userData.userType !== "STUDENT"
+                  ? "disabled-form-input"
+                  : ""
               }
               value={userData.parentMail}
               type="text"
@@ -217,9 +231,11 @@ export default function UsersForm({ userID, userData = {}, setUserData }) {
           <div className="form-input">
             <p>Parent Phone Number</p>
             <input
-              disabled={userData.userType !== "STUDENT"}
+              disabled={userData.userType && userData.userType !== "STUDENT"}
               className={
-                userData.userType !== "STUDENT" ? "disabled-form-input" : ""
+                userData.userType && userData.userType !== "STUDENT"
+                  ? "disabled-form-input"
+                  : ""
               }
               value={userData.parentPhone}
               type="text"

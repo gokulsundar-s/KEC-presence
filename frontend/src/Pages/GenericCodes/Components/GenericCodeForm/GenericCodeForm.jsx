@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../../../../Utils/Constants";
 import { SidebarLoader } from "../../../../Components/Loaders/Loaders";
 import { showErrorToast } from "../../../../Components/Alerts/Alert";
+import { getGenericCodeByType } from "../../../../Utils/GenericCodeServices";
 
 export default function GenericCodeForm({
   code,
@@ -80,11 +81,11 @@ export default function GenericCodeForm({
               }}
             >
               <option value="">Select Code Type</option>
-              <option value="RTYPE">Request Type</option>
-              <option value="ROLE">Role</option>
-              <option value="DEPT">Department</option>
-              <option value="YEAR">Year</option>
-              <option value="SECTION">Section</option>
+              {getGenericCodeByType("GENERICCODETYPE").map((codeTypeItem) => (
+                <option key={codeTypeItem.code} value={codeTypeItem.code}>
+                  {codeTypeItem.codeDescription}
+                </option>
+              ))}
             </select>
           </div>
 

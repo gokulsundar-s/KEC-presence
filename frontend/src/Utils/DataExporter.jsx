@@ -1,7 +1,7 @@
 import Excel from "exceljs";
 import { saveAs } from "file-saver";
 
-export const Exporter = async ({ fileName, data }) => {
+export const DataExporter = async ({ fileName, data }) => {
   if (!data || !data.length) return;
 
   const workbook = new Excel.Workbook();
@@ -9,7 +9,7 @@ export const Exporter = async ({ fileName, data }) => {
     const worksheet = workbook.addWorksheet(fileName);
 
     const allKeys = Array.from(
-      new Set(data.flatMap((item) => Object.keys(item)))
+      new Set(data.flatMap((item) => Object.keys(item))),
     );
 
     worksheet.columns = allKeys.map((key) => ({

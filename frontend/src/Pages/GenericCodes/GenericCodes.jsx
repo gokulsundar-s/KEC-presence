@@ -161,7 +161,7 @@ export default function Configs() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (response.data.status === 201) {
         setGenericCodesData([]);
@@ -190,7 +190,7 @@ export default function Configs() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (response.data.status === 200) {
         setGenericCodesData([]);
@@ -218,7 +218,7 @@ export default function Configs() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       if (response.data.status === 200) {
         setGenericCodesData([]);
