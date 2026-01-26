@@ -6,7 +6,7 @@ import { baseUrl } from "../../../../Utils/Constants";
 import { SidebarLoader } from "../../../../Components/Loaders/Loaders";
 import { showErrorToast } from "../../../../Components/Alerts/Alert";
 import { getGenericCodeNameByValue } from "../../../../Utils/GenericCodeServices";
-import { formatDateTime, formatTags } from "../../../../Utils/Formatters";
+import { formatTags } from "../../../../Utils/Formatters";
 
 export default function UsersDetails({ userID, userData, setUserData }) {
   const navigate = useNavigate();
@@ -121,7 +121,7 @@ export default function UsersDetails({ userID, userData, setUserData }) {
                 <td>
                   <div>
                     <p>
-                      {formatTags(userData.isActive ? "Active" : "Inactive")}
+                      {formatTags(userData.isActive ? "ACTIVE" : "INACTIVE")}
                     </p>
                   </div>
                 </td>

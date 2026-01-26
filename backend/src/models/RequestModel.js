@@ -6,7 +6,7 @@ dotenv.config();
 const conn = mongoose.createConnection(process.env.MONGODB_URL);
 const requests = conn.useDb("requests");
 
-const requestUserMapSchema = mongoose.Schema({
+const requestUserMapSchema = new mongoose.Schema({
   requestID: String,
   userID: String,
   isActiveRequest: Boolean,
@@ -16,7 +16,7 @@ const requestUserMapSchema = mongoose.Schema({
   updatedBy: String,
 });
 
-const requestSchema = mongoose.Schema({
+const requestSchema = new mongoose.Schema({
   requestID: String,
   requestType: String,
   reason: String,
@@ -31,7 +31,7 @@ const requestSchema = mongoose.Schema({
   updatedBy: String,
 });
 
-const statusSchema = mongoose.Schema({
+const statusSchema = new mongoose.Schema({
   requestID: String,
   advisorStatus: String,
   inchargeStatus: String,
@@ -41,7 +41,7 @@ const statusSchema = mongoose.Schema({
   updatedBy: String,
 });
 
-const notesSchema = mongoose.Schema({
+const notesSchema = new mongoose.Schema({
   requestID: String,
   advisorNote: String,
   inchargeNote: String,
@@ -51,7 +51,7 @@ const notesSchema = mongoose.Schema({
   updatedBy: String,
 });
 
-const proofsSchema = mongoose.Schema({
+const proofsSchema = new mongoose.Schema({
   requestID: String,
   proofLink: String,
   createdAt: Date,

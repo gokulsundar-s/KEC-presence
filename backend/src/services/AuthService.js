@@ -23,12 +23,12 @@ const saltRounds = 10;
 const createAdminUser = async () => {
   try {
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Admin user setup process started.`
+      `[INFO] - [${new Date().toISOString()}] - Admin user setup process started.`,
     );
     const userCount = await Auth.countDocuments();
     if (userCount === 0) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - No existing users found. Creating a new admin user.`
+        `[INFO] - [${new Date().toISOString()}] - No existing users found. Creating a new admin user.`,
       );
       const charset =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
@@ -82,13 +82,13 @@ const createAdminUser = async () => {
       console.log(
         `[INFO] - [${new Date().toISOString()}] - Admin user created with email: ${
           process.env.MAIL
-        }`
+        }`,
       );
 
       MailerService.mailerService(
         process.env.MAIL,
         "Admin Account Created",
-        `Dear Admin,\n\nWe are pleased to inform you that your admin account for the KEC Presence portal has been successfully created. You can now access your account using the following login credentials:\n\nMail ID: ${process.env.MAIL}\nPassword: ${password}\n\nFor security purposes, we recommend that you change your password upon your first login.\n\nThanks & Regards,\nKEC Presence Team`
+        `Dear Admin,\n\nWe are pleased to inform you that your admin account for the KEC Presence portal has been successfully created. You can now access your account using the following login credentials:\n\nMail ID: ${process.env.MAIL}\nPassword: ${password}\n\nFor security purposes, we recommend that you change your password upon your first login.\n\nThanks & Regards,\nKEC Presence Team`,
       );
 
       await newAuth.save();
@@ -97,13 +97,13 @@ const createAdminUser = async () => {
       await newUserContacts.save();
     } else {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Admin user setup process completed. User already exists.`
+        `[INFO] - [${new Date().toISOString()}] - Admin user setup process completed. User already exists.`,
       );
     }
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error creating admin user:`,
-      error
+      error,
     );
   }
 };
@@ -115,7 +115,7 @@ const login = async (req) => {
 
     if (!mail) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Login attempt failed: Mail is required.`
+        `[INFO] - [${new Date().toISOString()}] - Login attempt failed: Mail is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -125,7 +125,7 @@ const login = async (req) => {
 
     if (!isValidEmail(mail)) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Login attempt failed: Invalid mail format.`
+        `[INFO] - [${new Date().toISOString()}] - Login attempt failed: Invalid mail format.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -135,7 +135,7 @@ const login = async (req) => {
 
     if (!password) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Login attempt failed: Password is required.`
+        `[INFO] - [${new Date().toISOString()}] - Login attempt failed: Password is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -144,7 +144,7 @@ const login = async (req) => {
     }
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Login attempt initiated for mail: ${mail}`
+      `[INFO] - [${new Date().toISOString()}] - Login attempt initiated for mail: ${mail}`,
     );
 
     const user = await UserDetails.findOne({ mail: mail });
@@ -152,7 +152,7 @@ const login = async (req) => {
       console.log(
         `[INFO] - [${new Date().toISOString()}] - Login attempt failed: User not found for mail: ${
           req.mail
-        }`
+        }`,
       );
       return {
         status: statusCodes.NOT_FOUND,
@@ -163,11 +163,11 @@ const login = async (req) => {
     const userPassword = await Auth.findOne({ userID: user.userID });
     const isPasswordValid = await bcrypt.compare(
       password,
-      userPassword.password
+      userPassword.password,
     );
     if (!isPasswordValid) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Login attempt failed: Invalid password for mail: ${mail}`
+        `[INFO] - [${new Date().toISOString()}] - Login attempt failed: Invalid password for mail: ${mail}`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -177,7 +177,7 @@ const login = async (req) => {
 
     const userDetails = await UserDetails.findOne({ userID: user.userID });
 
-    const authToken = jwt.sign(
+    const token = jwt.sign(
       {
         userID: userDetails.userID,
         userType: userDetails.userType,
@@ -187,7 +187,7 @@ const login = async (req) => {
       process.env.JWT_KEY,
       {
         expiresIn: process.env.JWT_TOKEN_EXPIRY,
-      }
+      },
     );
     const newUserSession = new UserSessions({
       userID: userDetails.userID,
@@ -203,7 +203,7 @@ const login = async (req) => {
       ipAddress: req.ip || req.connection.remoteAddress,
       loginTime: new Date().toISOString(),
       logoutTime: null,
-      token: authToken,
+      token: token,
       isActive: true,
       createdAt: new Date().toISOString(),
       createdBy: userDetails.userID,
@@ -213,18 +213,18 @@ const login = async (req) => {
     await newUserSession.save();
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Login successful for mail: ${mail}`
+      `[INFO] - [${new Date().toISOString()}] - Login successful for mail: ${mail}`,
     );
 
     return {
       status: statusCodes.OK,
       message: "Login successful.",
-      token: authToken,
+      token: token,
     };
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error during login process:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -246,7 +246,7 @@ const logout = async (req) => {
     });
     if (!session) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Logout attempt failed: No active session found for token: ${token}`
+        `[INFO] - [${new Date().toISOString()}] - Logout attempt failed: No active session found for token: ${token}`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -264,7 +264,7 @@ const logout = async (req) => {
     console.log(
       `[INFO] - [${new Date().toISOString()}] - Logout successful for userID: ${
         session.userID
-      }`
+      }`,
     );
 
     await session.save();
@@ -273,7 +273,7 @@ const logout = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error during logout process:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -288,7 +288,7 @@ const forgetPassword = async (req) => {
 
     if (!mail) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Forget password attempt failed: Mail is required.`
+        `[INFO] - [${new Date().toISOString()}] - Forget password attempt failed: Mail is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -299,7 +299,7 @@ const forgetPassword = async (req) => {
 
     if (!isValidEmail(mail)) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Forget password attempt failed: Invalid mail format.`
+        `[INFO] - [${new Date().toISOString()}] - Forget password attempt failed: Invalid mail format.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -311,7 +311,7 @@ const forgetPassword = async (req) => {
     const userData = await UserDetails.findOne({ mail: mail });
     if (!userData) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Forget password attempt failed: User not found for mail: ${mail}`
+        `[INFO] - [${new Date().toISOString()}] - Forget password attempt failed: User not found for mail: ${mail}`,
       );
       return {
         status: statusCodes.NOT_FOUND,
@@ -324,7 +324,7 @@ const forgetPassword = async (req) => {
     MailerService.mailerService(
       mail,
       "Password Reset OTP",
-      `Dear ${userData.name},\n\nWe received a request to reset your password. Please use the following One-Time Password (OTP) to proceed with resetting your password:\n\nOTP: ${generatedOtp}\n\nIf you did not request a password reset, please ignore this email.\n\nThanks & Regards,\nKEC Presence Team`
+      `Dear ${userData.name},\n\nWe received a request to reset your password. Please use the following One-Time Password (OTP) to proceed with resetting your password:\n\nOTP: ${generatedOtp}\n\nIf you did not request a password reset, please ignore this email.\n\nThanks & Regards,\nKEC Presence Team`,
     );
 
     const newOTP = new PasswordOtp({
@@ -340,7 +340,7 @@ const forgetPassword = async (req) => {
     await newOTP.save();
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - OTP sent successfully to mail: ${mail}`
+      `[INFO] - [${new Date().toISOString()}] - OTP sent successfully to mail: ${mail}`,
     );
     return {
       status: statusCodes.OK,
@@ -349,7 +349,7 @@ const forgetPassword = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error during forget password process:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -366,7 +366,7 @@ const verifyOtp = async (req) => {
 
     if (!otp) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - OTP verification attempt failed: OTP is required.`
+        `[INFO] - [${new Date().toISOString()}] - OTP verification attempt failed: OTP is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -383,7 +383,7 @@ const verifyOtp = async (req) => {
 
     if (userMail.createdAt < new Date(Date.now() - 10 * 60 * 1000)) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - OTP verification attempt failed: OTP expired for mail: ${mail}`
+        `[INFO] - [${new Date().toISOString()}] - OTP verification attempt failed: OTP expired for mail: ${mail}`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -393,7 +393,7 @@ const verifyOtp = async (req) => {
 
     if (userMail.otp !== otp) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - OTP verification attempt failed: Invalid OTP for mail: ${mail}`
+        `[INFO] - [${new Date().toISOString()}] - OTP verification attempt failed: Invalid OTP for mail: ${mail}`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -410,11 +410,11 @@ const verifyOtp = async (req) => {
           updatedBy: userData.userID,
           __v: userMail.__v + 1,
         },
-      }
+      },
     );
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - OTP verified successfully for mail: ${mail}`
+      `[INFO] - [${new Date().toISOString()}] - OTP verified successfully for mail: ${mail}`,
     );
     return {
       status: statusCodes.OK,
@@ -423,7 +423,7 @@ const verifyOtp = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error during OTP verification process:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -439,7 +439,7 @@ const changePassword = async (req) => {
     const { mail, otp, newPassword, confirmPassword } = req.body;
     if (!newPassword || !confirmPassword) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Change password attempt failed: Missing required fields.`
+        `[INFO] - [${new Date().toISOString()}] - Change password attempt failed: Missing required fields.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -449,7 +449,7 @@ const changePassword = async (req) => {
 
     if (newPassword !== confirmPassword) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Change password attempt failed: Passwords do not match for mail: ${mail}`
+        `[INFO] - [${new Date().toISOString()}] - Change password attempt failed: Passwords do not match for mail: ${mail}`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -468,7 +468,7 @@ const changePassword = async (req) => {
 
     if (!optData || !optData.isVerified) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Change password attempt failed: OTP not verified for mail: ${mail}`
+        `[INFO] - [${new Date().toISOString()}] - Change password attempt failed: OTP not verified for mail: ${mail}`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -478,7 +478,7 @@ const changePassword = async (req) => {
 
     if (!isStrongPassword(newPassword).valid) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Change password attempt failed: Weak new password for mail: ${mail}`
+        `[INFO] - [${new Date().toISOString()}] - Change password attempt failed: Weak new password for mail: ${mail}`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -498,11 +498,11 @@ const changePassword = async (req) => {
           updatedBy: userData.userID,
           __v: authData.__v + 1,
         },
-      }
+      },
     );
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Password changed successfully for mail: ${mail}`
+      `[INFO] - [${new Date().toISOString()}] - Password changed successfully for mail: ${mail}`,
     );
     return {
       status: statusCodes.OK,
@@ -511,7 +511,7 @@ const changePassword = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error during change password process:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -529,7 +529,7 @@ const userChangePassword = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -540,7 +540,7 @@ const userChangePassword = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -553,7 +553,7 @@ const userChangePassword = async (req) => {
 
     if (userID !== tokenUserID) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Unauthorized userID in request body.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Unauthorized userID in request body.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -561,7 +561,7 @@ const userChangePassword = async (req) => {
       };
     } else if (!currentPassword) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Current password is required.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Current password is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -569,7 +569,7 @@ const userChangePassword = async (req) => {
       };
     } else if (!newPassword || !confirmPassword) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: New password and confirm password are required.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: New password and confirm password are required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -577,7 +577,7 @@ const userChangePassword = async (req) => {
       };
     } else if (newPassword !== confirmPassword) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Passwords do not match for user ID: ${tokenUserID}`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Passwords do not match for user ID: ${tokenUserID}`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -589,11 +589,11 @@ const userChangePassword = async (req) => {
 
     const isOldPasswordSame = await bcrypt.compare(
       newPassword,
-      passwordData.password
+      passwordData.password,
     );
     if (isOldPasswordSame) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: New password cannot be the same as the old password for user ID: ${tokenUserID}`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: New password cannot be the same as the old password for user ID: ${tokenUserID}`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -603,11 +603,11 @@ const userChangePassword = async (req) => {
 
     const isMatch = await bcrypt.compare(
       currentPassword,
-      passwordData.password
+      passwordData.password,
     );
     if (!isMatch) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Incorrect current password for user ID: ${tokenUserID}`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Incorrect current password for user ID: ${tokenUserID}`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -617,7 +617,7 @@ const userChangePassword = async (req) => {
 
     if (!isStrongPassword(newPassword).valid) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Weak new password for user ID: ${tokenUserID}`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Weak new password for user ID: ${tokenUserID}`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -635,11 +635,11 @@ const userChangePassword = async (req) => {
           updatedBy: tokenUserID,
           __v: passwordData.__v + 1,
         },
-      }
+      },
     );
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - User change password successful for user ID: ${tokenUserID}`
+      `[INFO] - [${new Date().toISOString()}] - User change password successful for user ID: ${tokenUserID}`,
     );
     return {
       status: statusCodes.OK,
@@ -648,7 +648,7 @@ const userChangePassword = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error during user change password process:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,

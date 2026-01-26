@@ -315,16 +315,6 @@ const getAllGenericCodes = async (req) => {
     const { tokenUserID, tokenUserType } = await getTokenData(token);
     const { pageNumber, pageSize } = req.query;
 
-    if (tokenUserType !== "ADMIN") {
-      console.log(
-        `[INFO] - [${new Date().toISOString()}] - Unauthorized generic code creation attempt by user ID: ${tokenUserID}`,
-      );
-      return {
-        status: statusCodes.FORBIDDEN,
-        message: "You do not have permission to perform this action.",
-      };
-    }
-
     let genericCodes = await GenericCode.find().sort({ createdAt: -1 });
 
     if (pageNumber < 0 || pageSize < 0) {

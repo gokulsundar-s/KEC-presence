@@ -284,7 +284,7 @@ export default function Sessions() {
                     <td>{formatDateTime(session.logoutTime)}</td>
                     <td>
                       <p>
-                        {formatTags(session.isActive ? "Active" : "Inactive")}
+                        {formatTags(session.isActive ? "ACTIVE" : "INACTIVE")}
                       </p>
                     </td>
                   </tr>

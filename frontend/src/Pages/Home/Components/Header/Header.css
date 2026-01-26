@@ -27,6 +27,16 @@
 }
 
 .header-profile-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.header-profile-icon {
   background-color: var(--primary-color);
   color: var(--secondary-color);
   width: 35px;
@@ -39,14 +49,22 @@
   border: none;
 }
 
+.header-profile-name {
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
 .header-dropdown-wrapper {
   position: relative;
+  z-index: 1000;
 }
 
 .header-dropdown-container {
   opacity: 0;
   transform: translateY(-10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .header-dropdown-container.open {

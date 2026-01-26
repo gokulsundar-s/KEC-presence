@@ -1,24 +1,44 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
 import { baseUrl } from "../../../../Utils/Constants";
-import { Loaders } from "../../../../Components/Loaders/Loaders";
+import { SidebarLoader } from "../../../../Components/Loaders/Loaders";
 import { showErrorToast } from "../../../../Components/Alerts/Alert";
+import { getGenericCodeNameByValue } from "../../../../Utils/GenericCodeServices";
+import { formatTags } from "../../../../Utils/Formatters";
 
 export default function RequestDetails({
-  selectedRequest,
+  requestID,
   setRequestData,
   requestData,
 }) {
+  const navigate = useNavigate();
+
+  const [token, setToken] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // useEffect to check authentication token and fetch user data
+  useEffect(() => {
+    const tokenValue = Cookies.get("token");
+    if (!tokenValue) {
+      navigate("/login");
+      return;
+    }
+    setToken(tokenValue);
+  }, [navigate]);
+
+  // useEffect to fetch request data when selectedRequest changes
   useEffect(() => {
     const getUserData = async () => {
       try {
-        if (selectedRequest) {
+        if (requestID) {
           setLoading(true);
-          const response = await axios.get(
-            `${baseUrl}/requests/${selectedRequest}`
-          );
+          const response = await axios.get(`${baseUrl}/requests/${requestID}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
           if (response.data.status === 200) {
             setRequestData(response.data.data);
@@ -34,23 +54,23 @@ export default function RequestDetails({
     };
 
     getUserData();
-  }, [selectedRequest]);
+  }, [requestID]);
 
   return (
     <div className="sidebar-info-container">
       {loading ? (
-        <Loaders />
+        <SidebarLoader />
       ) : (
         <div className="sidebar-info-table-container">
           <table>
             <tbody>
               <tr>
                 <th>Request ID</th>
-                <td>{selectedRequest ?? "-"}</td>
+                <td>{requestID ?? "-"}</td>
               </tr>
               <tr>
                 <th>Request Type</th>
-                <td>{requestData.reqType ?? "-"}</td>
+                <td>{formatTags(requestData.requestType)}</td>
               </tr>
               <tr>
                 <th>From Date</th>
@@ -58,15 +78,19 @@ export default function RequestDetails({
               </tr>
               <tr>
                 <th>From Session</th>
-                <td>{requestData.fromSession ?? "-"}</td>
+                <td>
+                  {getGenericCodeNameByValue(requestData.fromSession) ?? "-"}
+                </td>
               </tr>
               <tr>
-                <th>To Session</th>
+                <th>To Date</th>
                 <td>{requestData.toDate ?? "-"}</td>
               </tr>
               <tr>
                 <th>To Session</th>
-                <td>{requestData.toSession ?? "-"}</td>
+                <td>
+                  {getGenericCodeNameByValue(requestData.toSession) ?? "-"}
+                </td>
               </tr>
               <tr>
                 <th>Total Days</th>
@@ -90,12 +114,7 @@ export default function RequestDetails({
               </tr>
               <tr>
                 <th>Class Advisor Status</th>
-                <td>
-                  {requestData.advisorStatus
-                    ? requestData.advisorStatus.charAt(0).toUpperCase() +
-                      requestData.advisorStatus.slice(1)
-                    : "-"}
-                </td>
+                <td>{formatTags(requestData.advisorStatus)}</td>
               </tr>
               <tr>
                 <th>Class Advisor Notes</th>
@@ -103,12 +122,7 @@ export default function RequestDetails({
               </tr>
               <tr>
                 <th>Year Incharge Status</th>
-                <td>
-                  {requestData.inchargeStatus
-                    ? requestData.inchargeStatus.charAt(0).toUpperCase() +
-                      requestData.inchargeStatus.slice(1)
-                    : "-"}
-                </td>
+                <td>{formatTags(requestData.inchargeStatus)}</td>
               </tr>
               <tr>
                 <th>Year Incharge Notes</th>

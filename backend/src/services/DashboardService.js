@@ -47,14 +47,84 @@ const getAdminData = async (req) => {
     }
 
     const userDetailsData = await UserDetails.find({});
+    const userDepartmentDetailsData = await UserDepartmentDetails.find({});
     const sessionsData = await UserSessions.find()
       .sort({ loginTime: -1 })
       .limit(20);
+    const loginCountData = await UserSessions.find({});
 
     const countsData = userDetailsData.reduce((count, user) => {
       count[user.userType] = (count[user.userType] ?? 0) + 1;
       return count;
     }, {});
+
+    const userTypeMap = userDetailsData.reduce((map, user) => {
+      map[user.userID] = user.userType;
+      return map;
+    }, {});
+
+    const departmentUserTypeCounts = userDepartmentDetailsData.reduce(
+      (acc, user) => {
+        const department = user.department;
+        if (!department) return acc;
+        const userType = userTypeMap[user.userID];
+
+        acc[department] ??= {};
+        acc[department][userType] = (acc[department][userType] ?? 0) + 1;
+
+        return acc;
+      },
+      {},
+    );
+
+    const hourLoginCounts = {};
+    for (let i = 0; i < 24; i++) {
+      const label =
+        i === 0
+          ? "12 AM"
+          : i < 12
+            ? `${i.toString().padStart(2, "0")} AM`
+            : i === 12
+              ? "12 PM"
+              : `${(i - 12).toString().padStart(2, "0")} PM`;
+
+      hourLoginCounts[label] = 0;
+    }
+
+    const now = new Date();
+    const startOfDay = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      0,
+      0,
+      0,
+      0,
+    );
+
+    const endOfDay = new Date(startOfDay);
+    endOfDay.setDate(endOfDay.getDate() + 1);
+
+    loginCountData.forEach((session) => {
+      if (!session.loginTime) return;
+
+      const loginDate = new Date(session.loginTime);
+
+      if (loginDate >= startOfDay && loginDate < endOfDay) {
+        const hour = loginDate.getHours();
+
+        const label =
+          hour === 0
+            ? "12 AM"
+            : hour < 12
+              ? `${hour.toString().padStart(2, "0")} AM`
+              : hour === 12
+                ? "12 PM"
+                : `${(hour - 12).toString().padStart(2, "0")} PM`;
+
+        hourLoginCounts[label]++;
+      }
+    });
 
     console.log(
       `[INFO] - [${new Date().toISOString()}] - Admin dashboard data retrieved successfully by user ID: ${tokenUserID}`,
@@ -66,6 +136,8 @@ const getAdminData = async (req) => {
       data: {
         countsData: countsData,
         sessionData: sessionsData,
+        departmentUserTypeCounts: departmentUserTypeCounts,
+        hourLoginCounts: hourLoginCounts,
       },
     };
   } catch (error) {
@@ -293,6 +365,12 @@ const getStudentData = async (req) => {
         message: "You do not have permission to access this resource.",
       };
     }
+
+    return {
+      status: statusCodes.OK,
+      message: "Dashboard data retrieved successfully.",
+      data: {},
+    };
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error during getting dashboard data process:`,

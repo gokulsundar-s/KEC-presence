@@ -32,7 +32,7 @@ const createRequest = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -43,7 +43,7 @@ const createRequest = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -55,7 +55,7 @@ const createRequest = async (req) => {
 
     if (tokenUserID !== userID || tokenUserType !== "STUDENT") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Invalid user ID in token.`
+        `[INFO] - [${new Date().toISOString()}] - User change password attempt failed: Invalid user ID in token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -66,7 +66,7 @@ const createRequest = async (req) => {
     const authData = await Auth.findOne({ userID: userID });
     if (!authData.isActive) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Inactive or non-existent user.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Inactive or non-existent user.`,
       );
 
       return {
@@ -77,7 +77,7 @@ const createRequest = async (req) => {
 
     if (requestType === "") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Request type is required.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Request type is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -85,12 +85,12 @@ const createRequest = async (req) => {
       };
     } else if (reason === "") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Reason is required.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Reason is required.`,
       );
       return { status: statusCodes.BAD_REQUEST, message: "Reason is required" };
     } else if (fromDate === "") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From date is required.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From date is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -98,7 +98,7 @@ const createRequest = async (req) => {
       };
     } else if (toDate === "") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: To date is required.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: To date is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -106,7 +106,7 @@ const createRequest = async (req) => {
       };
     } else if (fromSession === "") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From session is required.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From session is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -114,7 +114,7 @@ const createRequest = async (req) => {
       };
     } else if (toSession === "") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: To session is required.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: To session is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -122,7 +122,7 @@ const createRequest = async (req) => {
       };
     } else if (requestType === "OD" && proofLink === "") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Proof link is required.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Proof link is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -130,7 +130,7 @@ const createRequest = async (req) => {
       };
     } else if (fromDate > toDate) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From date cannot be greater than To date.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From date cannot be greater than To date.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -142,7 +142,7 @@ const createRequest = async (req) => {
       (toSession === "FN" || toSession === "AN")
     ) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From date and session conflict with To date and session.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From date and session conflict with To date and session.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -154,7 +154,7 @@ const createRequest = async (req) => {
     const users = await UserDetails.findOne({ userID: userID });
     if (!users) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: User does not exist.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: User does not exist.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -170,7 +170,7 @@ const createRequest = async (req) => {
 
       if (request.fromDate <= fromDate && request.toDate >= toDate) {
         console.log(
-          `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Overlapping request exists.`
+          `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Overlapping request exists.`,
         );
         return {
           status: statusCodes.BAD_REQUEST,
@@ -182,7 +182,7 @@ const createRequest = async (req) => {
         request.fromSession === fromSession
       ) {
         console.log(
-          `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Overlapping request exists.`
+          `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Overlapping request exists.`,
         );
         return {
           status: statusCodes.BAD_REQUEST,
@@ -191,7 +191,7 @@ const createRequest = async (req) => {
         };
       } else if (request.toDate === toDate && request.toSession === toSession) {
         console.log(
-          `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Overlapping request exists.`
+          `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Overlapping request exists.`,
         );
         return {
           status: statusCodes.BAD_REQUEST,
@@ -206,7 +206,7 @@ const createRequest = async (req) => {
 
     let days =
       Math.floor(
-        (new Date(toDate) - new Date(fromDate)) / (1000 * 60 * 60 * 24)
+        (new Date(toDate) - new Date(fromDate)) / (1000 * 60 * 60 * 24),
       ) + 1;
 
     if (
@@ -279,7 +279,7 @@ const createRequest = async (req) => {
     await newProofs.save();
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Request created successfully: ${requestID} by User: ${userID}.`
+      `[INFO] - [${new Date().toISOString()}] - Request created successfully: ${requestID} by User: ${userID}.`,
     );
     return {
       status: statusCodes.CREATED,
@@ -288,7 +288,7 @@ const createRequest = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error creating request:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -306,7 +306,7 @@ const getAllRequests = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Fetch all requests attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - Fetch all requests attempt failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -317,7 +317,7 @@ const getAllRequests = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Fetch all requests attempt failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - Fetch all requests attempt failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -326,8 +326,12 @@ const getAllRequests = async (req) => {
     }
 
     const { tokenUserID, tokenUserType } = await getTokenData(token);
+
     const requestUserData = await RequestUserMap.find();
-    const requestData = await Request.find();
+    const requestData = await Request.find().sort({ updatedAt: -1 });
+    const statusData = await Status.find();
+
+    const { pageNumber, pageSize } = req.query;
 
     let requests = [];
 
@@ -336,7 +340,17 @@ const getAllRequests = async (req) => {
         .filter((r) => r.userID === tokenUserID)
         .map((r) => r.requestID);
 
-      requests = requestData.filter((r) => requestIDs.includes(r.requestID));
+      const statusMap = statusData.reduce((acc, s) => {
+        acc[s.requestID] = s.inchargeStatus;
+        return acc;
+      }, {});
+
+      requests = requestData
+        .filter((r) => requestIDs.includes(r.requestID))
+        .map((r) => ({
+          ...r.toObject(),
+          status: statusMap[r.requestID] || "PENDING",
+        }));
     } else if (tokenUserType === "ADVISOR") {
       const departmentDetails = await UserDepartmentDetails.findOne({
         userID: tokenUserID,
@@ -381,18 +395,25 @@ const getAllRequests = async (req) => {
       requests = requestData.filter((r) => requestIDs.includes(r.requestID));
     }
 
+    const startIndex = (Number(pageNumber) - 1) * Number(pageSize);
+    const endIndex = startIndex + Number(pageSize);
+    const totalRecords = requests.length;
+
+    requests = requests.slice(startIndex, endIndex);
+
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Fetched all requests successfully for User Type: ${tokenUserType}.`
+      `[INFO] - [${new Date().toISOString()}] - Fetched all requests successfully for User Type: ${tokenUserType}.`,
     );
+
     return {
       status: statusCodes.OK,
       message: "Fetched all requests successfully",
-      data: requests,
+      data: { total: totalRecords, data: requests },
     };
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error fetching all requests:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -411,7 +432,7 @@ const getRequestByID = async (req) => {
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Fetch request by ID attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - Fetch request by ID attempt failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -422,7 +443,7 @@ const getRequestByID = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Fetch request by ID attempt failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - Fetch request by ID attempt failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -434,7 +455,7 @@ const getRequestByID = async (req) => {
 
     if (tokenUserType === "ADMIN") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Fetch request by ID attempt failed: Admin users are not authorized.`
+        `[INFO] - [${new Date().toISOString()}] - Fetch request by ID attempt failed: Admin users are not authorized.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -464,7 +485,7 @@ const getRequestByID = async (req) => {
 
     if (!request) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Fetch request by ID attempt failed: Request does not exist.`
+        `[INFO] - [${new Date().toISOString()}] - Fetch request by ID attempt failed: Request does not exist.`,
       );
       return {
         status: statusCodes.NOT_FOUND,
@@ -485,7 +506,7 @@ const getRequestByID = async (req) => {
       toDate: request.toDate,
       toSession: request.toSession,
       days: request.days,
-      proofs: proofs.proofLink,
+      proofLink: proofs.proofLink,
       advisorStatus: status.advisorStatus,
       inchargeStatus: status.inchargeStatus,
       advisorNote: notes.advisorNote,
@@ -493,7 +514,7 @@ const getRequestByID = async (req) => {
     };
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Fetched request by ID successfully: ${requestID}.`
+      `[INFO] - [${new Date().toISOString()}] - Fetched request by ID successfully: ${requestID}.`,
     );
     return {
       status: statusCodes.OK,
@@ -503,7 +524,7 @@ const getRequestByID = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error fetching request by ID:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,
@@ -526,17 +547,15 @@ const updateRequest = async (req) => {
       toDate,
       toSession,
       proofLink,
-      advisorStatus,
-      inchargeStatus,
-      advisorNote,
-      inchargeNote,
+      status,
+      notes,
     } = req.body;
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
     if (!token) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Update request attempt failed: Authorization token is missing.`
+        `[INFO] - [${new Date().toISOString()}] - Update request attempt failed: Authorization token is missing.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -547,7 +566,7 @@ const updateRequest = async (req) => {
     const tokenVerification = await verifyToken(token);
     if (!tokenVerification) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Update request attempt failed: Expired token.`
+        `[INFO] - [${new Date().toISOString()}] - Update request attempt failed: Expired token.`,
       );
       return {
         status: statusCodes.UNAUTHORIZED,
@@ -562,7 +581,7 @@ const updateRequest = async (req) => {
     });
     if (requestsCount === 0) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Update request attempt failed: Request does not exist.`
+        `[INFO] - [${new Date().toISOString()}] - Update request attempt failed: Request does not exist.`,
       );
       return {
         status: statusCodes.NOT_FOUND,
@@ -589,7 +608,7 @@ const updateRequest = async (req) => {
         ) {
         }
         console.log(
-          `[INFO] - [${new Date().toISOString()}] - Update request attempt failed: Unauthorized access by Advisor.`
+          `[INFO] - [${new Date().toISOString()}] - Update request attempt failed: Unauthorized access by Advisor.`,
         );
         return {
           status: statusCodes.UNAUTHORIZED,
@@ -601,7 +620,7 @@ const updateRequest = async (req) => {
           userDeptDetails.department !== requestUserDeptDetails.department
         ) {
           console.log(
-            `[INFO] - [${new Date().toISOString()}] - Update request attempt failed: Unauthorized access by In-Charge.`
+            `[INFO] - [${new Date().toISOString()}] - Update request attempt failed: Unauthorized access by In-Charge.`,
           );
           return {
             status: statusCodes.UNAUTHORIZED,
@@ -610,7 +629,7 @@ const updateRequest = async (req) => {
         }
       } else {
         console.log(
-          `[INFO] - [${new Date().toISOString()}] - Update request attempt failed: Unauthorized access by HOD.`
+          `[INFO] - [${new Date().toISOString()}] - Update request attempt failed: Unauthorized access by HOD.`,
         );
         return {
           status: statusCodes.UNAUTHORIZED,
@@ -626,7 +645,7 @@ const updateRequest = async (req) => {
         statusData.inchargeStatus !== "PENDING")
     ) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Update request attempt failed: Cannot update approved request.`
+        `[INFO] - [${new Date().toISOString()}] - Update request attempt failed: Cannot update approved request.`,
       );
       return {
         status: statusCodes.FORBIDDEN,
@@ -637,7 +656,7 @@ const updateRequest = async (req) => {
 
     if (requestType === "") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Request type is required.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Request type is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -645,12 +664,12 @@ const updateRequest = async (req) => {
       };
     } else if (reason === "") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Reason is required.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Reason is required.`,
       );
       return { status: statusCodes.BAD_REQUEST, message: "Reason is required" };
     } else if (fromDate === "") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From date is required.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From date is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -658,7 +677,7 @@ const updateRequest = async (req) => {
       };
     } else if (toDate === "") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: To date is required.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: To date is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -666,7 +685,7 @@ const updateRequest = async (req) => {
       };
     } else if (fromSession === "") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From session is required.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From session is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -674,7 +693,7 @@ const updateRequest = async (req) => {
       };
     } else if (toSession === "") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: To session is required.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: To session is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -682,7 +701,7 @@ const updateRequest = async (req) => {
       };
     } else if (requestType === "OD" && proofLink === "") {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Proof link is required.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Proof link is required.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -690,7 +709,7 @@ const updateRequest = async (req) => {
       };
     } else if (fromDate > toDate) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From date cannot be greater than To date.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From date cannot be greater than To date.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -702,7 +721,7 @@ const updateRequest = async (req) => {
       (toSession === "FN" || toSession === "AN")
     ) {
       console.log(
-        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From date and session conflict with To date and session.`
+        `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: From date and session conflict with To date and session.`,
       );
       return {
         status: statusCodes.BAD_REQUEST,
@@ -722,7 +741,7 @@ const updateRequest = async (req) => {
 
       if (request.fromDate <= fromDate && request.toDate >= toDate) {
         console.log(
-          `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Overlapping request exists.`
+          `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Overlapping request exists.`,
         );
         return {
           status: statusCodes.BAD_REQUEST,
@@ -734,7 +753,7 @@ const updateRequest = async (req) => {
         request.fromSession === fromSession
       ) {
         console.log(
-          `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Overlapping request exists.`
+          `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Overlapping request exists.`,
         );
         return {
           status: statusCodes.BAD_REQUEST,
@@ -743,7 +762,7 @@ const updateRequest = async (req) => {
         };
       } else if (request.toDate === toDate && request.toSession === toSession) {
         console.log(
-          `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Overlapping request exists.`
+          `[INFO] - [${new Date().toISOString()}] - Request creation attempt failed: Overlapping request exists.`,
         );
         return {
           status: statusCodes.BAD_REQUEST,
@@ -755,7 +774,7 @@ const updateRequest = async (req) => {
 
     let days =
       Math.floor(
-        (new Date(toDate) - new Date(fromDate)) / (1000 * 60 * 60 * 24)
+        (new Date(toDate) - new Date(fromDate)) / (1000 * 60 * 60 * 24),
       ) + 1;
 
     if (
@@ -781,7 +800,7 @@ const updateRequest = async (req) => {
           updatedAt: new Date().toISOString(),
           updatedBy: tokenUserID,
         },
-      }
+      },
     );
 
     await Proofs.updateOne(
@@ -792,7 +811,7 @@ const updateRequest = async (req) => {
           updatedAt: new Date().toISOString(),
           updatedBy: tokenUserID,
         },
-      }
+      },
     );
 
     await Status.updateOne(
@@ -804,7 +823,7 @@ const updateRequest = async (req) => {
           updatedAt: new Date().toISOString(),
           updatedBy: tokenUserID,
         },
-      }
+      },
     );
 
     await Notes.updateOne(
@@ -816,11 +835,11 @@ const updateRequest = async (req) => {
           updatedAt: new Date().toISOString(),
           updatedBy: tokenUserID,
         },
-      }
+      },
     );
 
     console.log(
-      `[INFO] - [${new Date().toISOString()}] - Request updated successfully: ${requestID} by User: ${tokenUserID}.`
+      `[INFO] - [${new Date().toISOString()}] - Request updated successfully: ${requestID} by User: ${tokenUserID}.`,
     );
     return {
       status: statusCodes.OK,
@@ -829,7 +848,7 @@ const updateRequest = async (req) => {
   } catch (error) {
     console.error(
       `[ERROR] - [${new Date().toISOString()}] - Error updating request:`,
-      error
+      error,
     );
     return {
       status: statusCodes.INTERNAL_SERVER_ERROR,

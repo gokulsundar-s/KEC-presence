@@ -73,6 +73,8 @@ export default function Dashboard() {
     }
   };
 
+  // console.log("dashboardData.hourLoginCounts", dashboardData.hourLoginCounts);
+
   return (
     <div className="page-container">
       <p className="page-header">Welcome {name}🎉</p>
@@ -95,8 +97,12 @@ export default function Dashboard() {
           {userType === "ADMIN" && (
             <>
               <div className="dashboard-bar-graph-container">
-                <BarGraph />
-                <LineGraph />
+                <BarGraph
+                  data={dashboardData && dashboardData.departmentUserTypeCounts}
+                />
+                <LineGraph
+                  data={dashboardData && dashboardData.hourLoginCounts}
+                />
               </div>
               {dashboardData && (
                 <SessionsTable sessionsData={dashboardData.sessionData} />

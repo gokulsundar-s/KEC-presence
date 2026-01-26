@@ -20,7 +20,7 @@ export default function SessionsTable({ sessionsData }) {
               <td>{formateDuration(session.loginTime)} ago</td>
               <td>{session.device}</td>
               <td>
-                <p>{formatTags(session.isActive ? "Active" : "Inactive")}</p>
+                <p>{formatTags(session.isActive ? "ACTIVE" : "INACTIVE")}</p>
               </td>
             </tr>
           ))}

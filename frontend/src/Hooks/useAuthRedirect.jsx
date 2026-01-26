@@ -28,15 +28,15 @@ const useAuthRedirect = () => {
             });
 
             if (response.status === 200) {
-              Cookies.remove("authToken");
+              Cookies.remove("token");
               navigate("/login");
             }
           } else {
-            Cookies.remove("authToken");
+            Cookies.remove("token");
             navigate("/login");
           }
         } catch {
-          Cookies.remove("authToken");
+          Cookies.remove("token");
           navigate("/login");
         }
       }

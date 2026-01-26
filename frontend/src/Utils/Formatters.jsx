@@ -21,6 +21,11 @@ export const formatDateTime = (dateString) => {
   return formatted;
 };
 
+export const formatDate = (dateString) => {
+  if (!dateString) return "-";
+  return dateString.split("T")[0].split("-").reverse().join("-");
+};
+
 export const formateDuration = (durationInMinutes) => {
   if (durationInMinutes == null) return "-";
 
@@ -46,23 +51,29 @@ export const formateDuration = (durationInMinutes) => {
 export const formatTags = (tagValue) => {
   if (!tagValue) return "-";
   const color = {
-    Active: "#005a3e",
-    Inactive: "#b20000",
-    Student: "#004085",
-    "Class Advisor": "#065f4b",
-    "Year Incharge": "#b5590e",
-    "Head of Department": "#8a198f",
-    Admin: "#a61b1b",
+    ACTIVE: "#005a3e",
+    INACTIVE: "#b20000",
+    STUDENT: "#004085",
+    ADVISOR: "#065f4b",
+    INCHARGE: "#b5590e",
+    HOD: "#8a198f",
+    ADMIN: "#a61b1b",
+    OD: "#055160",
+    PENDING: "#856404",
+    LEAVE: "#ff5500",
   };
 
   const backgroundColor = {
-    Active: "#d1fae5",
-    Inactive: "#f8d7da",
-    Student: "#cce5ff",
-    "Class Advisor": "#d1fae5",
-    "Year Incharge": "#fef3c7",
-    "Head of Department": "#fae8ff",
-    Admin: "#fee2e2",
+    ACTIVE: "#d1fae5",
+    INACTIVE: "#f8d7da",
+    STUDENT: "#cce5ff",
+    ADVISOR: "#d1fae5",
+    INCHARGE: "#fef3c7",
+    HOD: "#fae8ff",
+    ADMIN: "#fee2e2",
+    OD: "#e0f2fe",
+    PENDING: "#fff3cd",
+    LEAVE: "#fff0e1",
   };
 
   return (
@@ -73,7 +84,7 @@ export const formatTags = (tagValue) => {
         backgroundColor: backgroundColor[tagValue] || "var(--primary--color)",
       }}
     >
-      {tagValue}
+      {getGenericCodeNameByValue(tagValue)}
     </div>
   );
 };

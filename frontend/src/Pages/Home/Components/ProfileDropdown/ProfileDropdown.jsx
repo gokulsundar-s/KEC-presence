@@ -3,6 +3,7 @@ import axios from "axios";
 import { baseUrl } from "../../../../Utils/Constants";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { HeaderProfileIcon, LogoutIcon } from "../../../../Assets/Icons";
 import "./ProfileDropdown.css";
 
 export default function ProfileDropdown({
@@ -36,19 +37,19 @@ export default function ProfileDropdown({
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
 
         if (response.status === 200) {
-          Cookies.remove("authToken");
+          Cookies.remove("token");
           navigate("/login");
         }
       } else {
-        Cookies.remove("authToken");
+        Cookies.remove("token");
         navigate("/login");
       }
     } catch {
-      Cookies.remove("authToken");
+      Cookies.remove("token");
       navigate("/login");
     }
   };
@@ -70,9 +71,11 @@ export default function ProfileDropdown({
             toggleProfileDropdown();
           }}
         >
-          Profile
+          <HeaderProfileIcon />
+          User Profile
         </button>
         <button className="red-button" onClick={handleLogout}>
+          <LogoutIcon />
           Logout
         </button>
       </div>

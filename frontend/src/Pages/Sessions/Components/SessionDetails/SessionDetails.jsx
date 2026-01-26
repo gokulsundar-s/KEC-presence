@@ -34,7 +34,7 @@ export default function SessionDetails({ sessionData }) {
                 <th>Is Active</th>
                 <td>
                   <p>
-                    {formatTags(sessionData.isActive ? "Active" : "Inactive")}
+                    {formatTags(sessionData.isActive ? "ACTIVE" : "INACTIVE")}
                   </p>
                 </td>
               </tr>

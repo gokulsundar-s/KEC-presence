@@ -3,8 +3,6 @@ import Logo from "../../../../assets/kec-logo.png";
 import {
   DashboardIcon,
   NewRequestIcon,
-  HistoryIcon,
-  SettingsIcon,
   UsersInfoIcon,
   GenericCodesIcon,
   SessionIcon,
@@ -83,51 +81,15 @@ export default function Sidebar() {
           </button>
         )}
 
-        {userType === "STU" && (
+        {userType === "STUDENT" && (
           <button
             className={`sidebar-button ${
-              activeTab === "/new-request" ? "sidebar-active-button" : ""
+              activeTab === "/requests" ? "sidebar-active-button" : ""
             }`}
-            onClick={() => navigate("/new-request")}
+            onClick={() => navigate("/requests")}
           >
             <NewRequestIcon />
             <p>New Request</p>
-          </button>
-        )}
-
-        {userType === "STU" && (
-          <button
-            className={`sidebar-button ${
-              activeTab === "/history" ? "sidebar-active-button" : ""
-            }`}
-            onClick={() => navigate("/history")}
-          >
-            <HistoryIcon />
-            <p>History</p>
-          </button>
-        )}
-
-        {userType === "CA" && (
-          <button
-            className={`sidebar-button ${
-              activeTab === "/approval" ? "sidebar-active-button" : ""
-            }`}
-            onClick={() => navigate("/approval")}
-          >
-            <NewRequestIcon />
-            <p>Approvals</p>
-          </button>
-        )}
-
-        {userType === "CA" && (
-          <button
-            className={`sidebar-button ${
-              activeTab === "/approval-history" ? "sidebar-active-button" : ""
-            }`}
-            onClick={() => navigate("/approval-history")}
-          >
-            <HistoryIcon />
-            <p>History</p>
           </button>
         )}
       </div>

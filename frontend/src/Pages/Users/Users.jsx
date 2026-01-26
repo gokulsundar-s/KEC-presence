@@ -1,7 +1,7 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../../Utils/Constants";
 import {
   showErrorToast,
@@ -15,7 +15,6 @@ import UsersDetails from "./Components/UsersDetails/UsersDetails";
 import UsersForm from "./Components/UsersForm/UsersForm";
 import ExportUsersData from "./Components/ExportUsersData/ExportUsersData";
 import { DataExporter } from "../../Utils/DataExporter";
-import { getGenericCodeNameByValue } from "../../Utils/GenericCodeServices";
 import { formatTags } from "../../Utils/Formatters";
 import {
   FilterIcon,
@@ -409,9 +408,7 @@ export default function UserInfo() {
                         : user.name}
                     </td>
                     <td>{user.userID}</td>
-                    <td>
-                      {formatTags(getGenericCodeNameByValue(user.userType))}
-                    </td>
+                    <td>{formatTags(user.userType)}</td>
                     <td>
                       {user.mail.length > 35
                         ? `${user.mail.substring(0, 15)}...${user.mail.substring(user.mail.length - 12)}`
@@ -476,7 +473,7 @@ export default function UserInfo() {
         )}
       </div>
 
-      {/* Side tab for adding new user */}
+      {/* Side tab for adding or editing user */}
       <SideTab
         open={openAddUserSider || openEditUserSider}
         setOpen={openAddUserSider ? setOpenAddUserSider : setOpenEditUserSider}
@@ -505,7 +502,7 @@ export default function UserInfo() {
         />
       </SideTab>
 
-      {/* Side tab for editing user information*/}
+      {/* Side tab to view user information*/}
       <SideTab
         open={openUserInfoSider}
         setOpen={setOpenUserInfoSider}

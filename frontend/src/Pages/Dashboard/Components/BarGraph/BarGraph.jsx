@@ -1,7 +1,14 @@
 import ApexChart from "react-apexcharts";
 import "./BarGraph.css";
 
-export default function BarGraph() {
+export default function BarGraph({ data }) {
+  const departments = data ? Object.keys(data) : [];
+
+  const advisorData = departments.map((dept) => data[dept].ADVISOR || 0);
+  const inchargeData = departments.map((dept) => data[dept].INCHARGE || 0);
+  const studentData = departments.map((dept) => data[dept].STUDENT || 0);
+  const hodData = departments.map((dept) => data[dept].HOD || 0);
+
   const chartOptions = {
     chart: {
       type: "bar",
@@ -20,22 +27,8 @@ export default function BarGraph() {
     dataLabels: {
       enabled: false,
     },
-
     xaxis: {
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
+      categories: departments,
     },
     fill: {
       opacity: 1,
@@ -51,21 +44,25 @@ export default function BarGraph() {
         },
       },
     },
-    colors: ["#1f2937", "#5e6a78", "#9197a2"],
+    colors: ["#1f2937", "#5e6a78", "#9197a2", "#b8bdc4"],
   };
 
   const chartSeries = [
     {
-      name: "Class Advisor",
-      data: [25, 28, 26, 27, 29, 28, 30, 29, 31, 32, 30, 31],
+      name: "Students",
+      data: studentData,
+    },
+    {
+      name: "Advisor",
+      data: advisorData,
     },
     {
       name: "Incharge",
-      data: [18, 20, 19, 21, 22, 21, 23, 22, 24, 25, 23, 24],
+      data: inchargeData,
     },
     {
-      name: "Students",
-      data: [150, 165, 160, 172, 180, 175, 185, 182, 190, 195, 188, 192],
+      name: "HOD",
+      data: hodData,
     },
   ];
 

@@ -12,6 +12,7 @@ export default function Header() {
 
   // State variables for data handling
   const [token, setToken] = useState("");
+  const [userType, setUserType] = useState("");
   const [name, setName] = useState("");
   const [mail, setMail] = useState("");
 
@@ -29,6 +30,7 @@ export default function Header() {
   useEffect(() => {
     if (token) {
       const decodedToken = jwtDecode(token);
+      setUserType(decodedToken.userType);
       setName(decodedToken.name);
       setMail(decodedToken.mail);
     }
@@ -80,31 +82,37 @@ export default function Header() {
     <div className="header-container">
       <div></div>
       <div className="header-left-container">
-        <div className="header-profile-wrapper" ref={notificationDropdownRef}>
-          <button
-            className="header-notification-button"
-            onClick={toggleNotificationDropdown}
-          >
-            <NotificationIcon />
-          </button>
-          <div
-            className={`header-dropdown-container ${
-              notificationDropdownOpen ? "open" : ""
-            }`}
-          >
-            {notificationDropdownOpen && (
-              <NotificationDropdown notifications={{}} />
-            )}
+        {userType !== "ADMIN" && (
+          <div className="header-profile-wrapper" ref={notificationDropdownRef}>
+            <button
+              className="header-notification-button"
+              onClick={toggleNotificationDropdown}
+            >
+              <NotificationIcon />
+            </button>
+            <div
+              className={`header-dropdown-container ${
+                notificationDropdownOpen ? "open" : ""
+              }`}
+            >
+              {notificationDropdownOpen && (
+                <NotificationDropdown notifications={{}} />
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="header-dropdown-wrapper" ref={profileDropdownRef}>
           <button
             className="header-profile-container"
             onClick={toggleProfileDropdown}
           >
-            {name.charAt(0).toUpperCase()}
-            
+            <p className="header-profile-icon">
+              {name.charAt(0).toUpperCase()}
+            </p>
+            <p className="header-profile-name">
+              {name.length > 15 ? name.slice(0, 15) + "..." : name}
+            </p>
           </button>
           <div
             className={`header-dropdown-container ${
