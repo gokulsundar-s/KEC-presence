@@ -496,7 +496,7 @@ export default function UserInfo() {
         }
       >
         <UsersForm
-          userID={openEditUserSider ? selectedUsers[0] : null}
+          userID={openEditUserSider && selectedUsers && selectedUsers[0]}
           userData={userData}
           setUserData={setUserData}
         />

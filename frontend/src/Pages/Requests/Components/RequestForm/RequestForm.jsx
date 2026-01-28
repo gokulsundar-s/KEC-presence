@@ -29,9 +29,9 @@ export default function RequestForm({
 
   // useEffect to fetch request data when selectedRequest changes
   useEffect(() => {
-    const getUserData = async () => {
+    const getRequestsData = async () => {
       try {
-        if (requestID) {  
+        if (requestID) {
           setLoading(true);
           const response = await axios.get(`${baseUrl}/requests/${requestID}`, {
             headers: {
@@ -51,8 +51,9 @@ export default function RequestForm({
         setLoading(false);
       }
     };
-
-    getUserData();
+    if (requestID && token) {
+      getRequestsData();
+    }
   }, [requestID, token]);
 
   return (

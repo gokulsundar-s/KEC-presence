@@ -176,7 +176,7 @@ export default function NewRequest() {
         setRequestsData([]);
         setSelectedRequests([]);
         refreshRequestData();
-        // setOpenAddRequestSider(false);
+        setOpenAddRequestSider(false);
         showSuccessToast(response.data.message);
       } else {
         showErrorToast(response.data.message);
@@ -404,7 +404,9 @@ export default function NewRequest() {
         }
       >
         <RequestForm
-          requestID={selectedRequests ? selectedRequests[0] : null}
+          requestID={
+            openEditRequestSider && selectedRequests && selectedRequests[0]
+          }
           requestData={requestData}
           setRequestData={setRequestData}
         />
