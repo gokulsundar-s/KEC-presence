@@ -3,8 +3,9 @@ import { baseUrl } from "./Constants";
 
 let genericCodesCache = [];
 
-export const getGenericCodesData = async (token) => {
+export const getGenericCodesData = async (token, setLoading = () => {}) => {
   if (!token) return;
+  setLoading(true);
 
   const response = await axios.get(`${baseUrl}/generic-codes`, {
     params: {
@@ -17,6 +18,7 @@ export const getGenericCodesData = async (token) => {
   });
   if (response.data.status === 200) {
     genericCodesCache = response.data.data.data;
+    setLoading(false);
   }
 };
 

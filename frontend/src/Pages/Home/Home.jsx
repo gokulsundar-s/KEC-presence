@@ -9,10 +9,9 @@ import Users from "../Users/Users";
 import GenericCodes from "../GenericCodes/GenericCodes";
 import Sessions from "../Sessions/Sessions";
 import NewRequest from "../Requests/NewRequest";
-import Approval from "../Approval/Approval";
-import ApprovalsHistory from "../Approval/ApprovalsHistory";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { getGenericCodesData } from "../../Utils/GenericCodeServices";
 import "./Home.css";
 
 export default function Home() {
@@ -21,6 +20,7 @@ export default function Home() {
 
   // State variables for data handling
   const [userType, setUserType] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // useEffect to check authentication token and fetch user data
   useEffect(() => {
@@ -34,8 +34,17 @@ export default function Home() {
       return;
     }
   }, [navigate]);
+
+  // useEffect to fetch generic codes data on component mount
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      getGenericCodesData(token, setLoading);
+    }
+  }, []);
+
   return (
-    <LoadingWrapper>
+    <LoadingWrapper loading={loading}>
       <div className="home-container">
         <Sidebar />
         <div className="home-pages-container">

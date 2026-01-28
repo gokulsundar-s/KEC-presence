@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./LoadingWrapper.css";
 
-export default function LoadingWrapper({ children, duration = 2000 }) {
-  const [isLoading, setIsLoading] = useState(true);
+export default function LoadingWrapper({
+  children,
+  loading = false,
+  duration = 2000,
+}) {
+  const [isLoading, setIsLoading] = useState(loading ? false : true);
 
   useEffect(() => {
-    setTimeout(() => setIsLoading(false), duration);
-  }, [duration]);
+    if (!loading) {
+      const timer = setTimeout(() => setIsLoading(false), duration);
+      return () => clearTimeout(timer);
+    }
+  }, [duration, loading]);
 
   return (
     <div>
-      {isLoading ? (
+      {isLoading || loading ? (
         <div className="loading-wrapper">
           <svg
             width="150"
